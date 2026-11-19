@@ -42,11 +42,11 @@ def file_list(project: str, cfg: dict, root: Path) -> list[str]:
         return [f for r in recs for f in (f"{r}.rec", f"{r}_stage.txt", f"{r}_respevt.txt")]
     if project == "slpdb":
         recs = (root / "RECORDS").read_text().split()
-        return ["README.st"] + [f"{r}.{e}" for r in recs for e in ("hea", "dat", "st")]
+        return ["README.st"] + [f"{r}.{e}" for r in recs for e in ("hea", "dat", "st", "ecg")]  # .ecg: beat annotations for detector validation
     if project == "apnea-ecg":
         recs = [f"a{i:02d}" for i in range(1, 21)] + [f"b{i:02d}" for i in range(1, 6)] + \
                [f"c{i:02d}" for i in range(1, 11)]
-        return ["additional-information.txt"] + [f"{r}.{e}" for r in recs for e in ("hea", "dat", "apn")]
+        return ["additional-information.txt"] + [f"{r}.{e}" for r in recs for e in ("hea", "dat", "apn", "qrs")]  # .qrs: QRS annotations for detector validation
     if project == "capslpdb":
         recs = cfg["datasets"]["cap"]["records"]
         return [f"{r}.{e}" for r in recs for e in ("edf", "txt")]

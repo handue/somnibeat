@@ -255,7 +255,8 @@ def save_model(out_dir: Path, task: str, name: str, model, cols, labels, thr, p_
     out = test[keep].copy()
     for i, l in enumerate(labels):
         out[f"p_{l}"] = p_te[:, i]
-    out.to_csv(mdir / f"{task}_{name}_ucddb_predictions.csv.gz", index=False)
+    out.to_csv(mdir / f"{task}_{name}_ucddb_predictions.csv.gz", index=False,
+               compression={"method": "gzip", "mtime": 0})
 
 
 def plot_bland_altman(result: dict, figs: Path) -> None:

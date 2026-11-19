@@ -1,5 +1,4 @@
 {
-  "generated_utc": "2026-11-19T19:24:49+00:00",
   "ucddb": {
     "records": {
       "ucddb002": {
@@ -11456,5 +11455,7 @@
       "note": ""
     }
   ],
+  "n_checks": 587,
+  "n_failed": 0,
   "all_pass": true
 }

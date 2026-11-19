@@ -1,0 +1,220 @@
+# Somnibeat: an overnight sleep report from heartbeat intervals
+
+**Research prototype · not a diagnostic tool.**
+Live demo: https://handue.github.io/somnibeat/ · Code: https://github.com/handue/somnibeat
+
+Every number in this document is filled in from `results/*.json` by
+`scripts/render_docs.py`; none is typed by hand.
+
+## 1. Problem and who it is for
+
+Sleep is measured properly with polysomnography (PSG): a night in a sleep lab
+with EEG, airflow and oxygen sensors. It is expensive, has waiting lists, and
+measures one unusual night. Many people already have a much simpler signal
+from a night of sleep: the time between heartbeats (RR intervals), recorded by
+a Holter monitor, a hospital ECG or a chest strap. Heart rate and its
+variability change with sleep stage and with breathing pauses, so the RR
+series carries some sleep information.
+
+Somnibeat asks a narrow question: **from RR intervals alone, how well can we
+estimate the numbers a sleep report starts with (total sleep time, sleep
+efficiency, wake bouts, minutes with suspected apnea), and how wrong can that
+estimate be?** The second half of the question is the point of the project:
+every number in the report is shown next to its measured error on recordings
+the model never saw.
+
+Intended users are researchers and clinicians who already have overnight RR
+data and want a quick, transparent first look, and students of sleep
+physiology. It is not intended for self-diagnosis.
+
+## 2. Method
+
+**Data.** Four public PhysioNet databases (Open Data Commons Attribution
+License v1.0), all with ECG and expert annotations:
+
+| Database | Role | Size used | Population |
+|---|---|---|---|
+| CAP Sleep Database | stage training | {{v:sleep_wake/data/train/cap/records}} records | 15 healthy controls and patients with sleep disorders (insomnia, PLM, narcolepsy, RBD, sleep-disordered breathing, bruxism) |
+| MIT-BIH Polysomnographic Database | stage training | {{v:sleep_wake/data/train/slpdb/records}} records, {{v:sleep_wake/data/train/slpdb/subjects}} subjects | men evaluated for sleep apnea, all male |
+| Apnea-ECG | apnea training | {{v:apnea/data/train/apnea-ecg/records}} records, {{v:apnea/data/train/apnea-ecg/subjects}} subjects | per-minute apnea labels |
+| UCDDB (St. Vincent's / UCD) | external test only | {{v:sleep_wake/data/test/ucddb/records}} records | adults with suspected sleep-disordered breathing (21 men, 4 women) |
+
+Before any modeling, `scripts/check_data.py` read the facts the plan relied on
+from the files themselves (sampling rates, channel names, 30 s epochs,
+alignment of stages, events and ECG, label definitions). All
+{{v:data_check/n_checks}} checks pass. Two surprises were resolved and
+documented: an undocumented UCDDB stage code 8 (dropped as unscored), and a
+difference in apnea labels (Apnea-ECG marks minutes containing apnea or
+hypopnea; for UCDDB we mark minutes overlapped by any scored apnea or
+hypopnea event).
+
+**ECG to RR.** An energy-envelope R-peak detector (Pan-Tompkins family) runs
+at each database's native sampling rate. Against the MIT-BIH beat
+annotations it finds {{pct:rpeak_validation/datasets/slpdb/pooled_sensitivity:2}}% of beats with
+{{pct:rpeak_validation/datasets/slpdb/pooled_ppv:2}}% positive predictive value. RR intervals outside 300-2000 ms, or more
+than 30 % away from the local median, are marked invalid and never
+interpolated ([`docs/rr_rules.md`](rr_rules.md)).
+
+**Features.** For each 30 s epoch (60 s for apnea): mean RR, SDNN, RMSSD,
+pNN50 and coefficient of variation over 30 s, 150 s and 300 s windows;
+Lomb-Scargle band powers, LF/HF and HF peak frequency; DFA alpha1. Each
+feature is also robustly z-scored within the night, differenced against
+neighbouring epochs and smoothed, plus time since the start of the night.
+
+**Models.** Gradient boosting (scikit-learn `HistGradientBoostingClassifier`)
+and logistic regression; no deep learning. Stages map to Wake, REM,
+light = S1 + S2 and deep = S3 + S4. Artifact or indeterminate epochs are dropped.
+
+**Same code in the browser.** The demo reimplements RR cleaning, every
+feature, tree inference and the report in JavaScript. Parity tests check it
+against the Python reference: features agree to about 1e-9 relative, class
+probabilities to about 1e-16 on non-boundary rows, and per-epoch labels and
+night metrics are identical on all three sample nights.
+
+## 3. Evaluation
+
+The protocol was written ([`docs/evaluation.md`](evaluation.md)) and the
+evaluation code tested before any model was trained, and a five-lens
+adversarial review of the pipeline ran before the first test-set number was
+computed ([`docs/review_2026-11-19.md`](review_2026-11-19.md)). It found, among
+other things, that the feature cache was missing a training database because a
+download had not finished. That would have silently changed every result. It
+was fixed before the single test run.
+
+- **Splits by subject.** Stage models train on CAP + MIT-BIH, apnea on
+  Apnea-ECG; everything is tested on UCDDB. Cross-validation folds keep
+  repeated recordings of one person together.
+- **Thresholds on training data only.** The sleep/wake and apnea thresholds
+  maximise epoch kappa on out-of-fold training predictions.
+- **One look at the test set.** UCDDB was predicted once. The primary model
+  (gradient boosting) was fixed by internal cross-validation before test
+  numbers were read.
+- **Baselines** on the same epochs: (a) asleep from lights-off; (b) the
+  training majority class. For sleep/wake these two are identical (the
+  majority class is sleep).
+- **Statistics.** Record-level bootstrap ({{v:sleep_wake/data/test/ucddb/records}} records, 2000 resamples) for
+  95 % CIs; Bland-Altman bias and limits of agreement.
+
+### Results on UCDDB (external)
+
+| Metric | Gradient boosting (primary) | Logistic regression | Asleep from lights-off |
+|---|---|---|---|
+| Total sleep time MAE (min) | {{pm:sleep_wake/models/gradient_boosting/external_ucddb/metrics/tst_mae_min:1}} | {{pm:sleep_wake/models/logistic_regression/external_ucddb/metrics/tst_mae_min:1}} | {{p:sleep_wake/baselines/asleep_from_lights_off/metrics/tst_mae_min:1}} |
+| Total sleep time bias (min) | {{sgn:sleep_wake/models/gradient_boosting/external_ucddb/metrics/tst_bias_min:1}} ({{ci:sleep_wake/models/gradient_boosting/external_ucddb/metrics/tst_bias_min:1}}) | {{sgn:sleep_wake/models/logistic_regression/external_ucddb/metrics/tst_bias_min:1}} | {{sgn:sleep_wake/baselines/asleep_from_lights_off/metrics/tst_bias_min:1}} |
+| Sleep efficiency MAE (pct. points) | {{pm:sleep_wake/models/gradient_boosting/external_ucddb/metrics/se_mae_pctpt:1}} | {{pm:sleep_wake/models/logistic_regression/external_ucddb/metrics/se_mae_pctpt:1}} | {{p:sleep_wake/baselines/asleep_from_lights_off/metrics/se_mae_pctpt:1}} |
+| Wake bouts MAE (count) | {{p:sleep_wake/models/gradient_boosting/external_ucddb/metrics/awakenings_mae:1}} | {{p:sleep_wake/models/logistic_regression/external_ucddb/metrics/awakenings_mae:1}} | {{p:sleep_wake/baselines/asleep_from_lights_off/metrics/awakenings_mae:1}} |
+| Sleep/wake epoch kappa | {{pm:sleep_wake/models/gradient_boosting/external_ucddb/metrics/kappa_pooled:2}} | {{pm:sleep_wake/models/logistic_regression/external_ucddb/metrics/kappa_pooled:2}} | {{p:sleep_wake/baselines/asleep_from_lights_off/metrics/kappa_pooled:2}} |
+| Wake epochs detected (sensitivity) | {{p:sleep_wake/models/gradient_boosting/external_ucddb/metrics/wake_sensitivity:2}} | {{p:sleep_wake/models/logistic_regression/external_ucddb/metrics/wake_sensitivity:2}} | {{p:sleep_wake/baselines/asleep_from_lights_off/metrics/wake_sensitivity:2}} |
+| Apnea minutes MAE (min) | {{pm:apnea/models/gradient_boosting/external_ucddb/metrics/apnea_min_mae:1}} | {{pm:apnea/models/logistic_regression/external_ucddb/metrics/apnea_min_mae:1}} | {{p:apnea/baselines/no_apnea/metrics/apnea_min_mae:1}} (no apnea) |
+| Apnea minute kappa | {{pm:apnea/models/gradient_boosting/external_ucddb/metrics/kappa_pooled:2}} | {{pm:apnea/models/logistic_regression/external_ucddb/metrics/kappa_pooled:2}} | {{p:apnea/baselines/no_apnea/metrics/kappa_pooled:2}} |
+| 3-stage kappa, experimental | {{pm:wake_nrem_rem/models/gradient_boosting/external_ucddb/metrics/kappa_pooled:2}} | {{pm:wake_nrem_rem/models/logistic_regression/external_ucddb/metrics/kappa_pooled:2}} | {{p:wake_nrem_rem/baselines/asleep_from_lights_off/metrics/kappa_pooled:2}} |
+| 4-stage kappa, experimental | {{pm:four_class/models/gradient_boosting/external_ucddb/metrics/kappa_pooled:2}} | {{pm:four_class/models/logistic_regression/external_ucddb/metrics/kappa_pooled:2}} | {{p:four_class/baselines/asleep_from_lights_off/metrics/kappa_pooled:2}} |
+
+Bland-Altman for total sleep time (gradient boosting): bias
+{{v:sleep_wake/models/gradient_boosting/external_ucddb/bland_altman/tst_min/bias:1}} min, 95 % limits of agreement
+{{v:sleep_wake/models/gradient_boosting/external_ucddb/bland_altman/tst_min/loa_low:0}} to {{v:sleep_wake/models/gradient_boosting/external_ucddb/bland_altman/tst_min/loa_high:0}} min
+([`results/figures/`](../results/figures/)).
+
+**What the numbers say.**
+
+- On average, the model gets a night's total sleep time much closer than the
+  trivial rule (which assumes no wake at all), and its group-level bias is
+  small. For a single night, however, the error can exceed two hours. The
+  report is a rough first look, not a measurement.
+- Wake detection is the weak point: the model finds about
+  {{pct:sleep_wake/models/gradient_boosting/external_ucddb/metrics/wake_sensitivity:0}} % of wake epochs. That is why wake-bout counts are least reliable.
+- Logistic regression beat gradient boosting on this test set for total
+  sleep time, although gradient boosting was clearly better in internal
+  cross-validation (kappa {{p:sleep_wake/models/gradient_boosting/internal_cv/metrics/kappa_pooled:2}} vs
+  {{p:sleep_wake/models/logistic_regression/internal_cv/metrics/kappa_pooled:2}}). We keep the model chosen before the test was
+  run and report both. The gap suggests gradient boosting partly fits
+  dataset-specific patterns that do not transfer.
+- Apnea minutes transfer poorly. Internal cross-validation kappa
+  {{p:apnea/models/gradient_boosting/internal_cv/metrics/kappa_pooled:2}} drops to
+  {{p:apnea/models/gradient_boosting/external_ucddb/metrics/kappa_pooled:2}} on UCDDB. Part of this is model error and
+  part is that the two databases define an "apnea minute" differently.
+- Three- and four-stage results are reported as they came out. They are
+  clearly above chance but far from clinical staging (REM recall
+  {{p:wake_nrem_rem/models/gradient_boosting/external_ucddb/metrics/recall_rem:2}}, deep-sleep recall
+  {{p:four_class/models/gradient_boosting/external_ucddb/metrics/recall_deep:2}}), so the demo labels them experimental.
+
+## 4. Who benefits, and who could be harmed
+
+**Who may benefit.**
+
+- Researchers with existing overnight ECG or RR data (Holter studies,
+  cardiology cohorts) can get a reproducible, documented sleep estimate
+  without a PSG, together with its expected error.
+- Clinicians and students get a transparent example of what heart rhythm
+  alone can and cannot say about sleep.
+- Everything runs in the browser, so no data is uploaded. This removes one
+  privacy barrier to trying it.
+
+**Who could be harmed, and how we try to limit it.**
+
+- **False reassurance.** Someone with significant sleep apnea could see a low
+  apnea-minute estimate and skip a sleep study. The model misses many apnea
+  minutes on the external test set. The report says on every screen that it
+  is not a diagnostic tool, and the apnea output is labeled a screening hint.
+- **Needless worry.** A noisy recording or an unusual heart rhythm (for
+  example atrial fibrillation, frequent ectopic beats, pacemakers or
+  beta-blockers) can produce false wake or apnea minutes. The report flags
+  low-quality stretches, but it does not detect arrhythmias.
+- **Unequal accuracy.** The training and test data are mostly sleep-clinic
+  patients, mostly men. MIT-BIH is all male, and UCDDB is 21 of 25 men. There
+  are no children, and the databases do not report ethnicity. Errors for
+  women, younger adults, healthy sleepers, children and under-represented
+  groups are unknown and may be larger.
+- **Overtrust in wearables.** Accuracy on consumer chest straps, watches or
+  rings has not been tested. We do not claim it, and the demo says so.
+- **Privacy.** Heartbeat recordings are health data. The demo never sends the
+  file anywhere, and our samples are public research data. Users should not
+  publish their own files.
+
+## 5. Limitations
+
+- Small external test set ({{v:sleep_wake/data/test/ucddb/records}} nights from one hospital); every confidence interval
+  is wide.
+- Mostly clinical populations; MIT-BIH contributes {{v:sleep_wake/data/train/slpdb/subjects}} subjects, all male;
+  CAP's healthy controls are 15 of {{v:sleep_wake/data/train/cap/records}} records.
+- ECG recorded in hospitals; R-peaks were detected by our own detector, not
+  by a wearable. No home-wearable validation.
+- Time in bed is taken as the scored span, because the databases have no
+  lights-off markers; the demo uses lights-off/on only if the user enters them.
+- Apnea labels differ between Apnea-ECG (training) and UCDDB (test), so
+  external apnea errors mix model error with label mismatch.
+- MIT-BIH records slp01a/b and slp02a/b are halves of two nights and are
+  normalized per half.
+- The test set was used once for the numbers above. Any later change will be
+  reported as a new, separately labeled result.
+
+## 6. If we had another month
+
+1. **Validate on wearable data.** Run the pipeline on a public dataset with
+   simultaneous PSG and a chest strap or watch, and report the drop in
+   accuracy honestly before making any claim about home use.
+2. **A larger and more diverse test set.** Use additional PSG databases with
+   more women, younger and healthy sleepers. Report errors per subgroup (sex,
+   age, AHI) instead of only overall.
+3. **Fix the apnea label mismatch.** Derive per-minute apnea labels for a
+   training database from scored events, the same way as the test set. Add
+   ECG-derived respiration features (QRS amplitude modulation), which are
+   known to help apnea detection.
+4. **Arrhythmia and quality screening.** Detect atrial fibrillation and
+   frequent ectopy in the RR series and refuse or flag those nights instead
+   of producing a confident report.
+5. **Calibrated uncertainty per night.** Show a per-night interval for total
+   sleep time (for example from conformal prediction on training nights)
+   instead of only the population-level error.
+6. **Sequence models within the no-deep-learning rule.** Use hidden Markov or
+   conditional random field smoothing of epoch probabilities to improve wake
+   bouts and REM continuity.
+
+## Data and acknowledgements
+
+Data: UCDDB (doi:10.13026/C26C7D), CAP Sleep Database (Terzano et al., Sleep
+Med 2001), MIT-BIH Polysomnographic Database (Ichimaru and Moody, 1999;
+doi:10.13026/C23K5S) and Apnea-ECG (Penzel et al., Computers in Cardiology
+2000), all distributed by PhysioNet (Pollard et al., Nature Health 2026) under
+the Open Data Commons Attribution License v1.0. Full attribution:
+[`SOURCES.md`](../SOURCES.md).

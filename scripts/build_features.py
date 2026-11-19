@@ -25,6 +25,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from somnibeat import datasets, features, rpeak, rr as rrm  # noqa: E402
 
 
+# Fixed gzip header time so the cache (and the SHA-256 stored in results/*.json) is reproducible.
+GZIP = {"method": "gzip", "mtime": 0}
+
 DETECTOR_SHA = hashlib.sha256(Path(rpeak.__file__).read_bytes()).hexdigest()
 
 REQUIRED = {"ucddb": ("{r}.rec", "{r}_stage.txt", "{r}_respevt.txt"),
@@ -124,9 +127,9 @@ def main() -> int:
             summary.append(res)
     cache = Path(cfg["paths"]["cache"])
     if stage:
-        pd.concat(stage).to_csv(cache / "stage_features.csv.gz", index=False)
+        pd.concat(stage).to_csv(cache / "stage_features.csv.gz", index=False, compression=GZIP)
     if apnea:
-        pd.concat(apnea).to_csv(cache / "apnea_features.csv.gz", index=False)
+        pd.concat(apnea).to_csv(cache / "apnea_features.csv.gz", index=False, compression=GZIP)
     (cache / "record_summary.json").write_text(json.dumps(
         {"detector_sha256": DETECTOR_SHA, "datasets": a.datasets, "records": summary}, indent=2))
     return 0

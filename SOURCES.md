@@ -30,8 +30,40 @@ https://opendatacommons.org/licenses/by/1-0/
 
 ## Code and models
 
-No third-party models or code are included yet. This section will list every
-library and its license once the pipeline exists.
+- All Somnibeat code (Python package, scripts, web demo, tests) was written for
+  this project and is released under the MIT License (`LICENSE`).
+- No pretrained or third-party models are used. Every model in
+  `results/models/` and `web/data/models.json` is trained from the datasets
+  above by `scripts/train_eval.py`.
+- The web demo has no third-party JavaScript, CSS or fonts and makes no
+  network requests outside its own files.
+- The R-peak detector follows the general energy-envelope approach of
+  Pan J, Tompkins WJ. "A real-time QRS detection algorithm." *IEEE Trans Biomed
+  Eng* 32(3):230-236 (1985); the implementation is our own.
+- Lomb-Scargle periodogram: Lomb NR, *Astrophys Space Sci* 39:447-462 (1976);
+  Scargle JD, *Astrophys J* 263:835-853 (1982). DFA: Peng C-K et al., *Chaos*
+  5:82-87 (1995). Implementations are our own.
+
+### Python libraries (pinned in `requirements.txt`)
+
+License strings are read from each installed package's metadata.
+
+| Package | Version | License | Home page |
+|---|---|---|---|
+| numpy | 2.5.5 | BSD-3-Clause (bundled parts: 0BSD, MIT, Zlib, CC0-1.0) | https://numpy.org |
+| scipy | 1.18.1 | BSD License | https://scipy.org |
+| pandas | 3.1.1 | BSD-3-Clause | https://pandas.pydata.org |
+| wfdb | 4.3.1 | MIT License | https://github.com/MIT-LCP/wfdb-python |
+| pyEDFlib | 0.1.42 | BSD License | https://github.com/holgern/pyedflib |
+| scikit-learn | 1.9.1 | BSD-3-Clause | https://scikit-learn.org |
+| matplotlib | 3.11.2 | Matplotlib License (PSF-based) | https://matplotlib.org |
+| pytest | 9.2.0 | MIT | https://docs.pytest.org |
+
+### Build and hosting
+
+- GitHub Actions (`actions/checkout`, `configure-pages`, `upload-pages-artifact`,
+  `deploy-pages`, all MIT) deploy `web/` to GitHub Pages.
+- Node.js runs the JavaScript side of the parity tests; no npm packages are used.
 
 ## Brand assets
 

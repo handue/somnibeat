@@ -1,10 +1,10 @@
 PY ?= .venv/bin/python
 CONFIG ?= config/default.toml
 
-.PHONY: reproduce setup download check features rpeaks evaluate web parity test clean-results
+.PHONY: reproduce setup download check features rpeaks evaluate web docs parity test clean-results
 
 ## One command: raw downloads -> results/*.json
-reproduce: setup download check features rpeaks evaluate web parity test
+reproduce: setup download check features rpeaks evaluate web docs parity test
 
 setup:
 	test -x $(PY) || python3 -m venv .venv
@@ -28,6 +28,10 @@ evaluate:
 ## Web demo data (web/data/*) from results/*.json and the trained models
 web:
 	$(PY) scripts/export_web.py
+
+## README.md and docs/WRITEUP.md, every number filled from results/*.json
+docs:
+	$(PY) scripts/render_docs.py
 
 ## Python/JavaScript parity tests (needs node)
 parity:

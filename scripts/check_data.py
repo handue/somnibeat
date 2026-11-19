@@ -360,13 +360,14 @@ def main() -> int:
     import tomllib
     cap_records = tomllib.loads(Path(a.config).read_text())["datasets"]["cap"]["records"]
     report = {
-        "generated_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "ucddb": check_ucddb(base / "ucddb"),
         "cap": check_cap(base / "capslpdb", cap_records),
         "slpdb": check_slpdb(base / "slpdb"),
         "apnea_ecg": check_apnea_ecg(base / "apnea-ecg"),
     }
     report["checks"] = checks
+    report["n_checks"] = len(checks)
+    report["n_failed"] = sum(not c["pass"] for c in checks)
     report["all_pass"] = all(c["pass"] for c in checks)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(report, indent=2, default=str))

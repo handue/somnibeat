@@ -215,7 +215,7 @@ def export_results(cfg: dict, out: Path) -> dict:
 
     dc = raw["data_check.json"]
     data_check = {"all_pass": dc["all_pass"], "n_checks": len(dc["checks"]),
-                  "n_failed": sum(1 for c in dc["checks"] if not c["pass"]), "generated_utc": dc.get("generated_utc")}
+                  "n_failed": sum(1 for c in dc["checks"] if not c["pass"])}
 
     stage_data, apnea_data = raw["sleep_wake.json"]["data"], raw["apnea.json"]["data"]
     blocks = {
