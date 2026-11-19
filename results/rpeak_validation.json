@@ -1,0 +1,555 @@
+{
+  "tolerance_ms": 150.0,
+  "datasets": {
+    "slpdb": {
+      "reference": "beat annotations (.ecg)",
+      "records": 18,
+      "pooled_sensitivity": 0.9992643106509358,
+      "pooled_ppv": 0.9978042889555735,
+      "min_record_sensitivity": 0.9976453967506476,
+      "min_record_ppv": 0.9934876353075772,
+      "per_record": [
+        {
+          "record": "slp01a",
+          "ref_beats": 7806,
+          "detected": 7807,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9998718934153216,
+          "ppv": 0.9997438196490329,
+          "median_signed_timing_error_ms": -8.548940351829515,
+          "median_abs_timing_error_offset_corrected_ms": 1.4937487630959367
+        },
+        {
+          "record": "slp01b",
+          "ref_beats": 11467,
+          "detected": 11480,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9998255864655097,
+          "ppv": 0.9986933797909407,
+          "median_signed_timing_error_ms": -8.067710999966948,
+          "median_abs_timing_error_offset_corrected_ms": 1.1146578335683444
+        },
+        {
+          "record": "slp02a",
+          "ref_beats": 16145,
+          "detected": 16155,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9980179622174048,
+          "ppv": 0.9974001857010214,
+          "median_signed_timing_error_ms": -15.269931822331273,
+          "median_abs_timing_error_offset_corrected_ms": 5.484133587231099
+        },
+        {
+          "record": "slp02b",
+          "ref_beats": 11315,
+          "detected": 11363,
+          "reference_gaps_excluded": 1,
+          "sensitivity": 0.9977021652673442,
+          "ppv": 0.9934876353075772,
+          "median_signed_timing_error_ms": -10.406721893559734,
+          "median_abs_timing_error_offset_corrected_ms": 3.0759749279241078
+        },
+        {
+          "record": "slp03",
+          "ref_beats": 24917,
+          "detected": 24923,
+          "reference_gaps_excluded": 3,
+          "sensitivity": 0.999879600272906,
+          "ppv": 0.999638887774345,
+          "median_signed_timing_error_ms": -18.91596649340954,
+          "median_abs_timing_error_offset_corrected_ms": 1.6655920936727853
+        },
+        {
+          "record": "slp04",
+          "ref_beats": 27029,
+          "detected": 27113,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9987050945280994,
+          "ppv": 0.9956109615313687,
+          "median_signed_timing_error_ms": -1.7443857104808558,
+          "median_abs_timing_error_offset_corrected_ms": 3.2872343608687515
+        },
+        {
+          "record": "slp14",
+          "ref_beats": 22920,
+          "detected": 23001,
+          "reference_gaps_excluded": 1,
+          "sensitivity": 0.9982547993019197,
+          "ppv": 0.9947393591582975,
+          "median_signed_timing_error_ms": -8.837259968316857,
+          "median_abs_timing_error_offset_corrected_ms": 1.003201900402928
+        },
+        {
+          "record": "slp16",
+          "ref_beats": 27604,
+          "detected": 27732,
+          "reference_gaps_excluded": 1,
+          "sensitivity": 0.999021880886828,
+          "ppv": 0.9944107889802394,
+          "median_signed_timing_error_ms": -14.977037867083709,
+          "median_abs_timing_error_offset_corrected_ms": 1.683242215676728
+        },
+        {
+          "record": "slp32",
+          "ref_beats": 21718,
+          "detected": 21817,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9994014181784695,
+          "ppv": 0.9948663885960489,
+          "median_signed_timing_error_ms": -10.242381979423953,
+          "median_abs_timing_error_offset_corrected_ms": 1.2813919079235347
+        },
+        {
+          "record": "slp37",
+          "ref_beats": 30611,
+          "detected": 30629,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9998366600241743,
+          "ppv": 0.9992490776714879,
+          "median_signed_timing_error_ms": -16.33091752847804,
+          "median_abs_timing_error_offset_corrected_ms": 1.9578616156650241
+        },
+        {
+          "record": "slp41",
+          "ref_beats": 25884,
+          "detected": 25910,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9996522948539638,
+          "ppv": 0.9986491702045542,
+          "median_signed_timing_error_ms": -17.17075666965684,
+          "median_abs_timing_error_offset_corrected_ms": 1.8509821129555348
+        },
+        {
+          "record": "slp45",
+          "ref_beats": 27686,
+          "detected": 27730,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9996388066170627,
+          "ppv": 0.9980526505589614,
+          "median_signed_timing_error_ms": -12.067828656654456,
+          "median_abs_timing_error_offset_corrected_ms": 2.8644929770962335
+        },
+        {
+          "record": "slp48",
+          "ref_beats": 24711,
+          "detected": 24748,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9996762575371292,
+          "ppv": 0.9981816712461613,
+          "median_signed_timing_error_ms": -28.51897827349603,
+          "median_abs_timing_error_offset_corrected_ms": 4.815332395082805
+        },
+        {
+          "record": "slp59",
+          "ref_beats": 16901,
+          "detected": 16901,
+          "reference_gaps_excluded": 1,
+          "sensitivity": 1.0,
+          "ppv": 1.0,
+          "median_signed_timing_error_ms": -9.34427373977087,
+          "median_abs_timing_error_offset_corrected_ms": 1.004369199449684
+        },
+        {
+          "record": "slp60",
+          "ref_beats": 25017,
+          "detected": 25017,
+          "reference_gaps_excluded": 2,
+          "sensitivity": 1.0,
+          "ppv": 1.0,
+          "median_signed_timing_error_ms": -9.804001729207812,
+          "median_abs_timing_error_offset_corrected_ms": 1.0191454221057938
+        },
+        {
+          "record": "slp61",
+          "ref_beats": 25482,
+          "detected": 25426,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 0.9976453967506476,
+          "ppv": 0.9998426807205223,
+          "median_signed_timing_error_ms": -9.558957752915376,
+          "median_abs_timing_error_offset_corrected_ms": 1.188825734288912
+        },
+        {
+          "record": "slp66",
+          "ref_beats": 15775,
+          "detected": 15775,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 1.0,
+          "ppv": 1.0,
+          "median_signed_timing_error_ms": -9.665657712503162,
+          "median_abs_timing_error_offset_corrected_ms": 1.00796475618381
+        },
+        {
+          "record": "slp67x",
+          "ref_beats": 5374,
+          "detected": 5374,
+          "reference_gaps_excluded": 0,
+          "sensitivity": 1.0,
+          "ppv": 1.0,
+          "median_signed_timing_error_ms": -9.126077762857676,
+          "median_abs_timing_error_offset_corrected_ms": 1.0070506300507986
+        }
+      ]
+    },
+    "apnea-ecg": {
+      "reference": "machine QRS annotations (.qrs)",
+      "records": 35,
+      "pooled_sensitivity": 0.9927579279357124,
+      "pooled_ppv": 0.9923711650011112,
+      "min_record_sensitivity": 0.9184174248690378,
+      "min_record_ppv": 0.9268820610284025,
+      "per_record": [
+        {
+          "record": "a01",
+          "ref_beats": 29938,
+          "detected": 29938,
+          "reference_gaps_excluded": 2,
+          "sensitivity": 1.0,
+          "ppv": 1.0,
+          "median_signed_timing_error_ms": 39.1904540001633,
+          "median_abs_timing_error_offset_corrected_ms": 2.6522841046698886
+        },
+        {
+          "record": "a02",
+          "ref_beats": 35152,
+          "detected": 37884,
+          "reference_gaps_excluded": 2186,
+          "sensitivity": 0.9989189804278562,
+          "ppv": 0.9268820610284025,
+          "median_signed_timing_error_ms": 30.953572535839413,
+          "median_abs_timing_error_offset_corrected_ms": 3.0485775602180354
+        },
+        {
+          "record": "a03",
+          "ref_beats": 34254,
+          "detected": 34186,
+          "reference_gaps_excluded": 6,
+          "sensitivity": 0.9976645063350266,
+          "ppv": 0.9996489791142573,
+          "median_signed_timing_error_ms": 45.92078662426502,
+          "median_abs_timing_error_offset_corrected_ms": 2.962184132229595
+        },
+        {
+          "record": "a04",
+          "ref_beats": 31231,
+          "detected": 31218,
+          "reference_gaps_excluded": 6,
+          "sensitivity": 0.9987192212865422,
+          "ppv": 0.9991351143571017,
+          "median_signed_timing_error_ms": 41.70598437758599,
+          "median_abs_timing_error_offset_corrected_ms": 2.2054725250200136
+        },
+        {
+          "record": "a05",
+          "ref_beats": 28759,
+          "detected": 28762,
+          "reference_gaps_excluded": 5,
+          "sensitivity": 0.9992002503564101,
+          "ppv": 0.9990960294833461,
+          "median_signed_timing_error_ms": 43.3779913505532,
+          "median_abs_timing_error_offset_corrected_ms": 2.6872964840549685
+        },
+        {
+          "record": "a06",
+          "ref_beats": 27241,
+          "detected": 28572,
+          "reference_gaps_excluded": 1216,
+          "sensitivity": 0.9991556844462391,
+          "ppv": 0.9526109477810444,
+          "median_signed_timing_error_ms": 31.23401825359906,
+          "median_abs_timing_error_offset_corrected_ms": 5.328781820935546
+        },
+        {
+          "record": "a07",
+          "ref_beats": 37470,
+          "detected": 37469,
+          "reference_gaps_excluded": 5,
+          "sensitivity": 0.999759807846277,
+          "ppv": 0.9997864901652033,
+          "median_signed_timing_error_ms": 47.672465840150835,
+          "median_abs_timing_error_offset_corrected_ms": 2.4252175571746193
+        },
+        {
+          "record": "a08",
+          "ref_beats": 41124,
+          "detected": 41127,
+          "reference_gaps_excluded": 9,
+          "sensitivity": 0.999489349285089,
+          "ppv": 0.9994164417535926,
+          "median_signed_timing_error_ms": 45.16560605043196,
+          "median_abs_timing_error_offset_corrected_ms": 2.7097041711385828
+        },
+        {
+          "record": "a09",
+          "ref_beats": 31553,
+          "detected": 31563,
+          "reference_gaps_excluded": 11,
+          "sensitivity": 1.0,
+          "ppv": 0.999683173335868,
+          "median_signed_timing_error_ms": 38.03328021240304,
+          "median_abs_timing_error_offset_corrected_ms": 2.9633745543833356
+        },
+        {
+          "record": "a10",
+          "ref_beats": 32297,
+          "detected": 32303,
+          "reference_gaps_excluded": 3,
+          "sensitivity": 0.9998142242313528,
+          "ppv": 0.9996285174751571,
+          "median_signed_timing_error_ms": 41.139103821478784,
+          "median_abs_timing_error_offset_corrected_ms": 2.5417582173759
+        },
+        {
+          "record": "a11",
+          "ref_beats": 33171,
+          "detected": 33182,
+          "reference_gaps_excluded": 10,
+          "sensitivity": 0.9993367700702421,
+          "ppv": 0.9990054849014526,
+          "median_signed_timing_error_ms": 40.97355214616982,
+          "median_abs_timing_error_offset_corrected_ms": 2.364881785979378
+        },
+        {
+          "record": "a12",
+          "ref_beats": 33895,
+          "detected": 34590,
+          "reference_gaps_excluded": 669,
+          "sensitivity": 0.9983478389142941,
+          "ppv": 0.9782885226944203,
+          "median_signed_timing_error_ms": 36.78950549328874,
+          "median_abs_timing_error_offset_corrected_ms": 3.1333249262388563
+        },
+        {
+          "record": "a13",
+          "ref_beats": 39756,
+          "detected": 39757,
+          "reference_gaps_excluded": 15,
+          "sensitivity": 0.9991699366133414,
+          "ppv": 0.9991448046884825,
+          "median_signed_timing_error_ms": 45.01384682771459,
+          "median_abs_timing_error_offset_corrected_ms": 2.683429893295397
+        },
+        {
+          "record": "a14",
+          "ref_beats": 29018,
+          "detected": 29017,
+          "reference_gaps_excluded": 2,
+          "sensitivity": 0.9999655386311944,
+          "ppv": 1.0,
+          "median_signed_timing_error_ms": 39.078896724277,
+          "median_abs_timing_error_offset_corrected_ms": 2.6164586861341377
+        },
+        {
+          "record": "a15",
+          "ref_beats": 33968,
+          "detected": 33953,
+          "reference_gaps_excluded": 22,
+          "sensitivity": 0.9989696184644371,
+          "ppv": 0.9994109504314788,
+          "median_signed_timing_error_ms": 48.976788406434935,
+          "median_abs_timing_error_offset_corrected_ms": 2.331036546820542
+        },
+        {
+          "record": "a16",
+          "ref_beats": 34954,
+          "detected": 34928,
+          "reference_gaps_excluded": 14,
+          "sensitivity": 0.9987698117525892,
+          "ppv": 0.9995132844709116,
+          "median_signed_timing_error_ms": 47.781450868569664,
+          "median_abs_timing_error_offset_corrected_ms": 2.4585595624557754
+        },
+        {
+          "record": "a17",
+          "ref_beats": 36270,
+          "detected": 33620,
+          "reference_gaps_excluded": 116,
+          "sensitivity": 0.9184174248690378,
+          "ppv": 0.9908090422367638,
+          "median_signed_timing_error_ms": 46.9630011702975,
+          "median_abs_timing_error_offset_corrected_ms": 3.0555860121239675
+        },
+        {
+          "record": "a18",
+          "ref_beats": 30250,
+          "detected": 30270,
+          "reference_gaps_excluded": 4,
+          "sensitivity": 0.999900826446281,
+          "ppv": 0.9992401717872481,
+          "median_signed_timing_error_ms": 37.68966940970131,
+          "median_abs_timing_error_offset_corrected_ms": 3.0525119864250883
+        },
+        {
+          "record": "a19",
+          "ref_beats": 38774,
+          "detected": 38771,
+          "reference_gaps_excluded": 5,
+          "sensitivity": 0.9997163047402898,
+          "ppv": 0.9997936602099508,
+          "median_signed_timing_error_ms": 70.42264398478437,
+          "median_abs_timing_error_offset_corrected_ms": 2.2968767043494154
+        },
+        {
+          "record": "a20",
+          "ref_beats": 34363,
+          "detected": 34386,
+          "reference_gaps_excluded": 39,
+          "sensitivity": 0.9851293542473009,
+          "ppv": 0.9844704240097715,
+          "median_signed_timing_error_ms": 87.44140265116584,
+          "median_abs_timing_error_offset_corrected_ms": 3.3205989493581
+        },
+        {
+          "record": "b01",
+          "ref_beats": 35091,
+          "detected": 35093,
+          "reference_gaps_excluded": 4,
+          "sensitivity": 0.9992305719415234,
+          "ppv": 0.9991736243695324,
+          "median_signed_timing_error_ms": 41.11342310807231,
+          "median_abs_timing_error_offset_corrected_ms": 2.779559122700448
+        },
+        {
+          "record": "b02",
+          "ref_beats": 35344,
+          "detected": 34797,
+          "reference_gaps_excluded": 26,
+          "sensitivity": 0.9834200995925758,
+          "ppv": 0.9988792137253212,
+          "median_signed_timing_error_ms": 39.055417383679014,
+          "median_abs_timing_error_offset_corrected_ms": 2.5878976075546234
+        },
+        {
+          "record": "b03",
+          "ref_beats": 28996,
+          "detected": 28987,
+          "reference_gaps_excluded": 47,
+          "sensitivity": 0.996930611118775,
+          "ppv": 0.9972401421326802,
+          "median_signed_timing_error_ms": 40.68588155860198,
+          "median_abs_timing_error_offset_corrected_ms": 2.635818786075106
+        },
+        {
+          "record": "b04",
+          "ref_beats": 24664,
+          "detected": 24668,
+          "reference_gaps_excluded": 167,
+          "sensitivity": 0.970969834576711,
+          "ppv": 0.9708123885195394,
+          "median_signed_timing_error_ms": 52.47193160266761,
+          "median_abs_timing_error_offset_corrected_ms": 10.723624658567132
+        },
+        {
+          "record": "b05",
+          "ref_beats": 27702,
+          "detected": 26507,
+          "reference_gaps_excluded": 523,
+          "sensitivity": 0.9313767958992131,
+          "ppv": 0.9733655260874486,
+          "median_signed_timing_error_ms": 42.13754093871103,
+          "median_abs_timing_error_offset_corrected_ms": 3.363102747243829
+        },
+        {
+          "record": "c01",
+          "ref_beats": 27710,
+          "detected": 27688,
+          "reference_gaps_excluded": 24,
+          "sensitivity": 0.9972212197762541,
+          "ppv": 0.9980135798902051,
+          "median_signed_timing_error_ms": 45.744959819785436,
+          "median_abs_timing_error_offset_corrected_ms": 2.5422876396987704
+        },
+        {
+          "record": "c02",
+          "ref_beats": 32177,
+          "detected": 32167,
+          "reference_gaps_excluded": 26,
+          "sensitivity": 0.99819747024272,
+          "ppv": 0.9985077874840675,
+          "median_signed_timing_error_ms": 42.648804002965335,
+          "median_abs_timing_error_offset_corrected_ms": 3.2525719379918883
+        },
+        {
+          "record": "c03",
+          "ref_beats": 23766,
+          "detected": 23778,
+          "reference_gaps_excluded": 5,
+          "sensitivity": 0.9997475385003787,
+          "ppv": 0.9992429977289932,
+          "median_signed_timing_error_ms": 40.82471441324742,
+          "median_abs_timing_error_offset_corrected_ms": 2.2711557353432
+        },
+        {
+          "record": "c04",
+          "ref_beats": 28216,
+          "detected": 28125,
+          "reference_gaps_excluded": 22,
+          "sensitivity": 0.9953218032322086,
+          "ppv": 0.9985422222222222,
+          "median_signed_timing_error_ms": 41.38921386220318,
+          "median_abs_timing_error_offset_corrected_ms": 2.0158357638138114
+        },
+        {
+          "record": "c05",
+          "ref_beats": 28004,
+          "detected": 27978,
+          "reference_gaps_excluded": 35,
+          "sensitivity": 0.9970004285102129,
+          "ppv": 0.9979269425977554,
+          "median_signed_timing_error_ms": 45.09616398172511,
+          "median_abs_timing_error_offset_corrected_ms": 2.8733873750752537
+        },
+        {
+          "record": "c06",
+          "ref_beats": 28111,
+          "detected": 28082,
+          "reference_gaps_excluded": 36,
+          "sensitivity": 0.996584966738999,
+          "ppv": 0.9976141300477174,
+          "median_signed_timing_error_ms": 45.09186545328703,
+          "median_abs_timing_error_offset_corrected_ms": 2.8751312784152105
+        },
+        {
+          "record": "c07",
+          "ref_beats": 31907,
+          "detected": 31954,
+          "reference_gaps_excluded": 48,
+          "sensitivity": 0.9979001473030996,
+          "ppv": 0.9964323715340803,
+          "median_signed_timing_error_ms": 41.863284167448,
+          "median_abs_timing_error_offset_corrected_ms": 1.9084848981947289
+        },
+        {
+          "record": "c08",
+          "ref_beats": 30672,
+          "detected": 30887,
+          "reference_gaps_excluded": 169,
+          "sensitivity": 0.9925991131977048,
+          "ppv": 0.9856897723961537,
+          "median_signed_timing_error_ms": 43.997870472594514,
+          "median_abs_timing_error_offset_corrected_ms": 2.5077684131247224
+        },
+        {
+          "record": "c09",
+          "ref_beats": 31200,
+          "detected": 31193,
+          "reference_gaps_excluded": 14,
+          "sensitivity": 0.9986858974358974,
+          "ppv": 0.9989100118616356,
+          "median_signed_timing_error_ms": 40.13690658393898,
+          "median_abs_timing_error_offset_corrected_ms": 2.3358536382147577
+        },
+        {
+          "record": "c10",
+          "ref_beats": 24010,
+          "detected": 24041,
+          "reference_gaps_excluded": 23,
+          "sensitivity": 0.9989587671803415,
+          "ppv": 0.9976706459797845,
+          "median_signed_timing_error_ms": 36.173274402244715,
+          "median_abs_timing_error_offset_corrected_ms": 2.712900610276847
+        }
+      ]
+    }
+  }
+}

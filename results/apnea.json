@@ -1,0 +1,923 @@
+{
+  "task": "apnea",
+  "labels": [
+    "normal",
+    "apnea"
+  ],
+  "unit": "minute",
+  "models": {
+    "gradient_boosting": {
+      "n_features": 119,
+      "threshold_p_apnea": 0.36,
+      "internal_cv": {
+        "n_records": 35,
+        "n_minutes": 17023,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": -16.885714285714286,
+            "ci_low": -52.23999999999998,
+            "ci_high": 15.914705882352925
+          },
+          "apnea_min_mae": {
+            "point": 74.14285714285714,
+            "ci_low": 52.12686090225564,
+            "ci_high": 97.83529411764704
+          },
+          "kappa_pooled": {
+            "point": 0.6010076383183375,
+            "ci_low": 0.48219311913616336,
+            "ci_high": 0.6945038413712356
+          },
+          "accuracy": {
+            "point": 0.8147800035246431,
+            "ci_low": 0.7663700083331142,
+            "ci_high": 0.8613579104910104
+          },
+          "sensitivity": {
+            "point": 0.7124865612041161,
+            "ci_low": 0.5790880554273228,
+            "ci_high": 0.8185963681910945
+          },
+          "specificity": {
+            "point": 0.8781392694063926,
+            "ci_low": 0.8257237812749044,
+            "ci_high": 0.9240369348742666
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": -16.885714285714286,
+            "mae": 74.14285714285714,
+            "sd": 101.05757573505007,
+            "loa_low": -214.95856272641242,
+            "loa_high": 181.18713415498382,
+            "per_record_error": [
+              -24.0,
+              -241.0,
+              97.0,
+              4.0,
+              -20.0,
+              -206.0,
+              5.0,
+              64.0,
+              -69.0,
+              -89.0,
+              -220.0,
+              18.0,
+              32.0,
+              -77.0,
+              16.0,
+              -41.0,
+              -95.0,
+              -140.0,
+              -149.0,
+              -165.0,
+              145.0,
+              166.0,
+              90.0,
+              1.0,
+              -57.0,
+              4.0,
+              44.0,
+              0.0,
+              0.0,
+              13.0,
+              15.0,
+              160.0,
+              59.0,
+              41.0,
+              28.0
+            ]
+          }
+        }
+      },
+      "external_ucddb": {
+        "n_records": 25,
+        "n_minutes": 10391,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": 0.56,
+            "ci_low": -39.68,
+            "ci_high": 38.20499999999998
+          },
+          "apnea_min_mae": {
+            "point": 78.24,
+            "ci_low": 54.99700000000001,
+            "ci_high": 104.56
+          },
+          "kappa_pooled": {
+            "point": 0.24900447997574027,
+            "ci_low": 0.1486826505624739,
+            "ci_high": 0.33684069537796485
+          },
+          "accuracy": {
+            "point": 0.7051294389375421,
+            "ci_low": 0.65994130039956,
+            "ci_high": 0.750610536637767
+          },
+          "sensitivity": {
+            "point": 0.45163610212153904,
+            "ci_low": 0.30443137229383704,
+            "ci_high": 0.593178364666019
+          },
+          "specificity": {
+            "point": 0.7977660972404731,
+            "ci_low": 0.7268608634050165,
+            "ci_high": 0.8639516774529786
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": 0.56,
+            "mae": 78.24,
+            "sd": 103.08656556506284,
+            "loa_low": -201.48966850752316,
+            "loa_high": 202.60966850752317,
+            "per_record_error": [
+              93.0,
+              -170.0,
+              -33.0,
+              -118.0,
+              1.0,
+              -5.0,
+              8.0,
+              73.0,
+              27.0,
+              40.0,
+              93.0,
+              -172.0,
+              40.0,
+              141.0,
+              -4.0,
+              189.0,
+              138.0,
+              49.0,
+              -14.0,
+              -123.0,
+              50.0,
+              -122.0,
+              14.0,
+              -210.0,
+              29.0
+            ]
+          }
+        },
+        "per_record": [
+          {
+            "record": "ucddb002",
+            "ref_apnea_min": 110.0,
+            "pred_apnea_min": 203.0,
+            "total_min": 374.0,
+            "kappa": 0.23032512914007894
+          },
+          {
+            "record": "ucddb003",
+            "ref_apnea_min": 216.0,
+            "pred_apnea_min": 46.0,
+            "total_min": 441.0,
+            "kappa": 0.20714957666980244
+          },
+          {
+            "record": "ucddb005",
+            "ref_apnea_min": 63.0,
+            "pred_apnea_min": 30.0,
+            "total_min": 413.0,
+            "kappa": 0.05781281584798873
+          },
+          {
+            "record": "ucddb006",
+            "ref_apnea_min": 125.0,
+            "pred_apnea_min": 7.0,
+            "total_min": 404.0,
+            "kappa": -0.03392919461786019
+          },
+          {
+            "record": "ucddb007",
+            "ref_apnea_min": 81.0,
+            "pred_apnea_min": 82.0,
+            "total_min": 406.0,
+            "kappa": 0.20939993193935041
+          },
+          {
+            "record": "ucddb008",
+            "ref_apnea_min": 21.0,
+            "pred_apnea_min": 16.0,
+            "total_min": 384.0,
+            "kappa": 0.06382978723404255
+          },
+          {
+            "record": "ucddb009",
+            "ref_apnea_min": 77.0,
+            "pred_apnea_min": 85.0,
+            "total_min": 462.0,
+            "kappa": 0.17705735660847863
+          },
+          {
+            "record": "ucddb010",
+            "ref_apnea_min": 153.0,
+            "pred_apnea_min": 226.0,
+            "total_min": 453.0,
+            "kappa": 0.34169178102232495
+          },
+          {
+            "record": "ucddb011",
+            "ref_apnea_min": 40.0,
+            "pred_apnea_min": 67.0,
+            "total_min": 450.0,
+            "kappa": 0.2322972657162886
+          },
+          {
+            "record": "ucddb012",
+            "ref_apnea_min": 151.0,
+            "pred_apnea_min": 191.0,
+            "total_min": 432.0,
+            "kappa": 0.5491106126890365
+          },
+          {
+            "record": "ucddb013",
+            "ref_apnea_min": 70.0,
+            "pred_apnea_min": 163.0,
+            "total_min": 405.0,
+            "kappa": 0.3942972954084842
+          },
+          {
+            "record": "ucddb014",
+            "ref_apnea_min": 187.0,
+            "pred_apnea_min": 15.0,
+            "total_min": 387.0,
+            "kappa": 0.008020506036050916
+          },
+          {
+            "record": "ucddb015",
+            "ref_apnea_min": 43.0,
+            "pred_apnea_min": 83.0,
+            "total_min": 458.0,
+            "kappa": 0.14866521653154033
+          },
+          {
+            "record": "ucddb017",
+            "ref_apnea_min": 65.0,
+            "pred_apnea_min": 206.0,
+            "total_min": 394.0,
+            "kappa": 0.28582143660774545
+          },
+          {
+            "record": "ucddb018",
+            "ref_apnea_min": 9.0,
+            "pred_apnea_min": 5.0,
+            "total_min": 411.0,
+            "kappa": -0.0158898305084719
+          },
+          {
+            "record": "ucddb019",
+            "ref_apnea_min": 92.0,
+            "pred_apnea_min": 281.0,
+            "total_min": 426.0,
+            "kappa": 0.24094632162247884
+          },
+          {
+            "record": "ucddb020",
+            "ref_apnea_min": 68.0,
+            "pred_apnea_min": 206.0,
+            "total_min": 376.0,
+            "kappa": 0.1277730375426622
+          },
+          {
+            "record": "ucddb021",
+            "ref_apnea_min": 87.0,
+            "pred_apnea_min": 136.0,
+            "total_min": 456.0,
+            "kappa": 0.1291910181482623
+          },
+          {
+            "record": "ucddb022",
+            "ref_apnea_min": 33.0,
+            "pred_apnea_min": 19.0,
+            "total_min": 394.0,
+            "kappa": -0.06519704689612098
+          },
+          {
+            "record": "ucddb023",
+            "ref_apnea_min": 151.0,
+            "pred_apnea_min": 28.0,
+            "total_min": 430.0,
+            "kappa": 0.08996701404092573
+          },
+          {
+            "record": "ucddb024",
+            "ref_apnea_min": 152.0,
+            "pred_apnea_min": 202.0,
+            "total_min": 454.0,
+            "kappa": 0.27768155637008096
+          },
+          {
+            "record": "ucddb025",
+            "ref_apnea_min": 312.0,
+            "pred_apnea_min": 190.0,
+            "total_min": 355.0,
+            "kappa": 0.1906119027661357
+          },
+          {
+            "record": "ucddb026",
+            "ref_apnea_min": 89.0,
+            "pred_apnea_min": 103.0,
+            "total_min": 419.0,
+            "kappa": 0.2984512348262871
+          },
+          {
+            "record": "ucddb027",
+            "ref_apnea_min": 217.0,
+            "pred_apnea_min": 7.0,
+            "total_min": 446.0,
+            "kappa": 0.023888670947494417
+          },
+          {
+            "record": "ucddb028",
+            "ref_apnea_min": 169.0,
+            "pred_apnea_min": 198.0,
+            "total_min": 361.0,
+            "kappa": 0.43286609825663847
+          }
+        ]
+      }
+    },
+    "logistic_regression": {
+      "n_features": 98,
+      "threshold_p_apnea": 0.46,
+      "internal_cv": {
+        "n_records": 35,
+        "n_minutes": 17023,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": 6.542857142857143,
+            "ci_low": -40.24338235294116,
+            "ci_high": 53.8770833333333
+          },
+          "apnea_min_mae": {
+            "point": 116.2,
+            "ci_low": 93.93897058823529,
+            "ci_high": 139.1220588235294
+          },
+          "kappa_pooled": {
+            "point": 0.38815107538674654,
+            "ci_low": 0.3050268153500508,
+            "ci_high": 0.46567743968841846
+          },
+          "accuracy": {
+            "point": 0.7090407096281501,
+            "ci_low": 0.6694676505380472,
+            "ci_high": 0.7493767818378974
+          },
+          "sensitivity": {
+            "point": 0.6372293042543388,
+            "ci_low": 0.5777958678253059,
+            "ci_high": 0.7066331276731038
+          },
+          "specificity": {
+            "point": 0.7535197869101978,
+            "ci_low": 0.6910202426198575,
+            "ci_high": 0.8134019732544603
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": 6.542857142857143,
+            "mae": 116.2,
+            "sd": 136.38059695899105,
+            "loa_low": -260.7631128967653,
+            "loa_high": 273.84882718247957,
+            "per_record_error": [
+              -191.0,
+              -172.0,
+              74.0,
+              -78.0,
+              -97.0,
+              1.0,
+              -155.0,
+              117.0,
+              -112.0,
+              277.0,
+              -87.0,
+              -231.0,
+              26.0,
+              -178.0,
+              -92.0,
+              -110.0,
+              70.0,
+              -157.0,
+              -78.0,
+              -159.0,
+              192.0,
+              109.0,
+              36.0,
+              115.0,
+              -22.0,
+              152.0,
+              72.0,
+              98.0,
+              8.0,
+              84.0,
+              130.0,
+              231.0,
+              231.0,
+              112.0,
+              13.0
+            ]
+          }
+        }
+      },
+      "external_ucddb": {
+        "n_records": 25,
+        "n_minutes": 10391,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": 35.08,
+            "ci_low": -2.8829999999999947,
+            "ci_high": 71.68699999999997
+          },
+          "apnea_min_mae": {
+            "point": 83.4,
+            "ci_low": 61.35600000000001,
+            "ci_high": 105.08
+          },
+          "kappa_pooled": {
+            "point": 0.16915477998695624,
+            "ci_low": 0.11475376283684047,
+            "ci_high": 0.2220520337160068
+          },
+          "accuracy": {
+            "point": 0.6417091713983255,
+            "ci_low": 0.5998415221864882,
+            "ci_high": 0.6807822902334996
+          },
+          "sensitivity": {
+            "point": 0.48831355627472134,
+            "ci_low": 0.40836681762774607,
+            "ci_high": 0.5873016844859076
+          },
+          "specificity": {
+            "point": 0.6977660972404731,
+            "ci_low": 0.6318055738009386,
+            "ci_high": 0.7625630932319313
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": 35.08,
+            "mae": 83.4,
+            "sd": 96.69234716356823,
+            "loa_low": -154.43700044059375,
+            "loa_high": 224.59700044059372,
+            "per_record_error": [
+              -28.0,
+              -104.0,
+              22.0,
+              18.0,
+              -47.0,
+              50.0,
+              22.0,
+              84.0,
+              115.0,
+              24.0,
+              9.0,
+              -32.0,
+              95.0,
+              108.0,
+              152.0,
+              123.0,
+              137.0,
+              92.0,
+              51.0,
+              204.0,
+              -119.0,
+              -185.0,
+              175.0,
+              -78.0,
+              -11.0
+            ]
+          }
+        },
+        "per_record": [
+          {
+            "record": "ucddb002",
+            "ref_apnea_min": 110.0,
+            "pred_apnea_min": 82.0,
+            "total_min": 374.0,
+            "kappa": 0.16530278232405904
+          },
+          {
+            "record": "ucddb003",
+            "ref_apnea_min": 216.0,
+            "pred_apnea_min": 112.0,
+            "total_min": 441.0,
+            "kappa": 0.4319371727748691
+          },
+          {
+            "record": "ucddb005",
+            "ref_apnea_min": 63.0,
+            "pred_apnea_min": 85.0,
+            "total_min": 413.0,
+            "kappa": -0.08136628714246054
+          },
+          {
+            "record": "ucddb006",
+            "ref_apnea_min": 125.0,
+            "pred_apnea_min": 143.0,
+            "total_min": 404.0,
+            "kappa": -0.10300322660709839
+          },
+          {
+            "record": "ucddb007",
+            "ref_apnea_min": 81.0,
+            "pred_apnea_min": 34.0,
+            "total_min": 406.0,
+            "kappa": 0.18172988198727574
+          },
+          {
+            "record": "ucddb008",
+            "ref_apnea_min": 21.0,
+            "pred_apnea_min": 71.0,
+            "total_min": 384.0,
+            "kappa": 0.0027824151363383415
+          },
+          {
+            "record": "ucddb009",
+            "ref_apnea_min": 77.0,
+            "pred_apnea_min": 99.0,
+            "total_min": 462.0,
+            "kappa": 0.2867132867132869
+          },
+          {
+            "record": "ucddb010",
+            "ref_apnea_min": 153.0,
+            "pred_apnea_min": 237.0,
+            "total_min": 453.0,
+            "kappa": 0.24317317663325275
+          },
+          {
+            "record": "ucddb011",
+            "ref_apnea_min": 40.0,
+            "pred_apnea_min": 155.0,
+            "total_min": 450.0,
+            "kappa": 0.1101526211015261
+          },
+          {
+            "record": "ucddb012",
+            "ref_apnea_min": 151.0,
+            "pred_apnea_min": 175.0,
+            "total_min": 432.0,
+            "kappa": 0.16528380805164708
+          },
+          {
+            "record": "ucddb013",
+            "ref_apnea_min": 70.0,
+            "pred_apnea_min": 79.0,
+            "total_min": 405.0,
+            "kappa": 0.4494268032870043
+          },
+          {
+            "record": "ucddb014",
+            "ref_apnea_min": 187.0,
+            "pred_apnea_min": 155.0,
+            "total_min": 387.0,
+            "kappa": 0.30283394278339426
+          },
+          {
+            "record": "ucddb015",
+            "ref_apnea_min": 43.0,
+            "pred_apnea_min": 138.0,
+            "total_min": 458.0,
+            "kappa": 0.039251020695480754
+          },
+          {
+            "record": "ucddb017",
+            "ref_apnea_min": 65.0,
+            "pred_apnea_min": 173.0,
+            "total_min": 394.0,
+            "kappa": 0.22617210515978806
+          },
+          {
+            "record": "ucddb018",
+            "ref_apnea_min": 9.0,
+            "pred_apnea_min": 161.0,
+            "total_min": 411.0,
+            "kappa": 0.06719225945171114
+          },
+          {
+            "record": "ucddb019",
+            "ref_apnea_min": 92.0,
+            "pred_apnea_min": 215.0,
+            "total_min": 426.0,
+            "kappa": 0.08936440770866688
+          },
+          {
+            "record": "ucddb020",
+            "ref_apnea_min": 68.0,
+            "pred_apnea_min": 205.0,
+            "total_min": 376.0,
+            "kappa": 0.14005991868178908
+          },
+          {
+            "record": "ucddb021",
+            "ref_apnea_min": 87.0,
+            "pred_apnea_min": 179.0,
+            "total_min": 456.0,
+            "kappa": 0.20079866888519138
+          },
+          {
+            "record": "ucddb022",
+            "ref_apnea_min": 33.0,
+            "pred_apnea_min": 84.0,
+            "total_min": 394.0,
+            "kappa": 0.27134191448439143
+          },
+          {
+            "record": "ucddb023",
+            "ref_apnea_min": 151.0,
+            "pred_apnea_min": 355.0,
+            "total_min": 430.0,
+            "kappa": 0.1428830298088248
+          },
+          {
+            "record": "ucddb024",
+            "ref_apnea_min": 152.0,
+            "pred_apnea_min": 33.0,
+            "total_min": 454.0,
+            "kappa": 0.10990021363476557
+          },
+          {
+            "record": "ucddb025",
+            "ref_apnea_min": 312.0,
+            "pred_apnea_min": 127.0,
+            "total_min": 355.0,
+            "kappa": 0.11478256328576833
+          },
+          {
+            "record": "ucddb026",
+            "ref_apnea_min": 89.0,
+            "pred_apnea_min": 264.0,
+            "total_min": 419.0,
+            "kappa": 0.20696625873259672
+          },
+          {
+            "record": "ucddb027",
+            "ref_apnea_min": 217.0,
+            "pred_apnea_min": 139.0,
+            "total_min": 446.0,
+            "kappa": 0.05771457592686632
+          },
+          {
+            "record": "ucddb028",
+            "ref_apnea_min": 169.0,
+            "pred_apnea_min": 158.0,
+            "total_min": 361.0,
+            "kappa": -0.06664294664542189
+          }
+        ]
+      }
+    }
+  },
+  "baselines": {
+    "no_apnea": {
+      "n_records": 25,
+      "n_minutes": 10391,
+      "metrics": {
+        "apnea_min_bias": {
+          "point": -111.24,
+          "ci_low": -139.72,
+          "ci_high": -86.358
+        },
+        "apnea_min_mae": {
+          "point": 111.24,
+          "ci_low": 86.358,
+          "ci_high": 139.72
+        },
+        "kappa_pooled": {
+          "point": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0
+        },
+        "accuracy": {
+          "point": 0.7323645462419401,
+          "ci_low": 0.6603060345170338,
+          "ci_high": 0.7933055151974525
+        },
+        "sensitivity": {
+          "point": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0
+        },
+        "specificity": {
+          "point": 1.0,
+          "ci_low": 1.0,
+          "ci_high": 1.0
+        }
+      },
+      "bland_altman": {
+        "apnea_min": {
+          "bias": -111.24,
+          "mae": 111.24,
+          "sd": 71.97295788465739,
+          "loa_low": -252.3069974539285,
+          "loa_high": 29.826997453928485,
+          "per_record_error": [
+            -110.0,
+            -216.0,
+            -63.0,
+            -125.0,
+            -81.0,
+            -21.0,
+            -77.0,
+            -153.0,
+            -40.0,
+            -151.0,
+            -70.0,
+            -187.0,
+            -43.0,
+            -65.0,
+            -9.0,
+            -92.0,
+            -68.0,
+            -87.0,
+            -33.0,
+            -151.0,
+            -152.0,
+            -312.0,
+            -89.0,
+            -217.0,
+            -169.0
+          ]
+        }
+      },
+      "predicted_class": "normal"
+    },
+    "majority_class": {
+      "n_records": 25,
+      "n_minutes": 10391,
+      "metrics": {
+        "apnea_min_bias": {
+          "point": -111.24,
+          "ci_low": -139.72,
+          "ci_high": -86.358
+        },
+        "apnea_min_mae": {
+          "point": 111.24,
+          "ci_low": 86.358,
+          "ci_high": 139.72
+        },
+        "kappa_pooled": {
+          "point": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0
+        },
+        "accuracy": {
+          "point": 0.7323645462419401,
+          "ci_low": 0.6603060345170338,
+          "ci_high": 0.7933055151974525
+        },
+        "sensitivity": {
+          "point": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0
+        },
+        "specificity": {
+          "point": 1.0,
+          "ci_low": 1.0,
+          "ci_high": 1.0
+        }
+      },
+      "bland_altman": {
+        "apnea_min": {
+          "bias": -111.24,
+          "mae": 111.24,
+          "sd": 71.97295788465739,
+          "loa_low": -252.3069974539285,
+          "loa_high": 29.826997453928485,
+          "per_record_error": [
+            -110.0,
+            -216.0,
+            -63.0,
+            -125.0,
+            -81.0,
+            -21.0,
+            -77.0,
+            -153.0,
+            -40.0,
+            -151.0,
+            -70.0,
+            -187.0,
+            -43.0,
+            -65.0,
+            -9.0,
+            -92.0,
+            -68.0,
+            -87.0,
+            -33.0,
+            -151.0,
+            -152.0,
+            -312.0,
+            -89.0,
+            -217.0,
+            -169.0
+          ]
+        }
+      },
+      "predicted_class": "normal"
+    }
+  },
+  "data": {
+    "train": {
+      "apnea-ecg": {
+        "records": 35,
+        "subjects": 34,
+        "minutes_labeled": 17023,
+        "minutes_used_for_fitting": 16740
+      }
+    },
+    "test": {
+      "ucddb": {
+        "records": 25,
+        "subjects": 25,
+        "minutes_labeled": 10391,
+        "minutes_low_quality": 86
+      }
+    },
+    "class_counts_train": {
+      "normal": 10512,
+      "apnea": 6511
+    },
+    "class_counts_test": {
+      "normal": 7610,
+      "apnea": 2781
+    }
+  },
+  "feature_cache_sha256": "7286372af138364bfb0a974ed28375e3237e10dbca98eef7e01324da06eb9180",
+  "records": {
+    "apnea-ecg": [
+      "a01",
+      "a02",
+      "a03",
+      "a04",
+      "a05",
+      "a06",
+      "a07",
+      "a08",
+      "a09",
+      "a10",
+      "a11",
+      "a12",
+      "a13",
+      "a14",
+      "a15",
+      "a16",
+      "a17",
+      "a18",
+      "a19",
+      "a20",
+      "b01",
+      "b02",
+      "b03",
+      "b04",
+      "b05",
+      "c01",
+      "c02",
+      "c03",
+      "c04",
+      "c05",
+      "c06",
+      "c07",
+      "c08",
+      "c09",
+      "c10"
+    ],
+    "ucddb": [
+      "ucddb002",
+      "ucddb003",
+      "ucddb005",
+      "ucddb006",
+      "ucddb007",
+      "ucddb008",
+      "ucddb009",
+      "ucddb010",
+      "ucddb011",
+      "ucddb012",
+      "ucddb013",
+      "ucddb014",
+      "ucddb015",
+      "ucddb017",
+      "ucddb018",
+      "ucddb019",
+      "ucddb020",
+      "ucddb021",
+      "ucddb022",
+      "ucddb023",
+      "ucddb024",
+      "ucddb025",
+      "ucddb026",
+      "ucddb027",
+      "ucddb028"
+    ]
+  },
+  "config_sha256": "3c72771b1ef488cc8fa6aa43506b6c1e221c02ebb4684937caca28159ce812b3",
+  "seed": 20261204
+}

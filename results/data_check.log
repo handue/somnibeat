@@ -1,0 +1,589 @@
+[PASS] UCDDB      records present: expected >=1, observed 25
+[PASS] UCDDB      ucddb002 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb002 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [748, 749.0]
+[PASS] UCDDB      ucddb002 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb002 resp events inside recording: expected 0 <= t <= duration, observed [1089.0, 17701.0, 22470.0]
+[PASS] UCDDB      ucddb002 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 123, 'best_shift_s': 0, 'mae_at_best': 0.392, 'mae_at_zero': 0.392}
+[PASS] UCDDB      ucddb003 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb003 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [882, 882.6]
+[PASS] UCDDB      ucddb003 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb003 resp events inside recording: expected 0 <= t <= duration, observed [5112.0, 26021.0, 26478.0]
+[PASS] UCDDB      ucddb003 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 304, 'best_shift_s': -10, 'mae_at_best': 1.158, 'mae_at_zero': 1.263}
+[PASS] UCDDB      ucddb005 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb005 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [826, 826.6]
+[PASS] UCDDB      ucddb005 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb005 resp events inside recording: expected 0 <= t <= duration, observed [237.0, 16966.0, 24798.0]
+[PASS] UCDDB      ucddb005 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 54, 'best_shift_s': 0, 'mae_at_best': 0.564, 'mae_at_zero': 0.564}
+[PASS] UCDDB      ucddb006 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb006 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [808, 808.9]
+[PASS] UCDDB      ucddb006 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb006 resp events inside recording: expected 0 <= t <= duration, observed [937.0, 24188.0, 24267.0]
+[PASS] UCDDB      ucddb006 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 180, 'best_shift_s': -10, 'mae_at_best': 0.739, 'mae_at_zero': 0.827}
+[PASS] UCDDB      ucddb007 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb007 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [813, 813.5]
+[PASS] UCDDB      ucddb007 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb007 resp events inside recording: expected 0 <= t <= duration, observed [2032.0, 24295.0, 24405.0]
+[PASS] UCDDB      ucddb007 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 63, 'best_shift_s': 0, 'mae_at_best': 0.193, 'mae_at_zero': 0.193}
+[PASS] UCDDB      ucddb008 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb008 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [768, 768.033]
+[PASS] UCDDB      ucddb008 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5, 8]
+[PASS] UCDDB      ucddb008 resp events inside recording: expected 0 <= t <= duration, observed [2949.0, 21742.0, 23041.0]
+[PASS] UCDDB      ucddb008 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 15, 'best_shift_s': 0, 'mae_at_best': 0.295, 'mae_at_zero': 0.295}
+[PASS] UCDDB      ucddb009 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb009 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [925, 925.3]
+[PASS] UCDDB      ucddb009 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb009 resp events inside recording: expected 0 <= t <= duration, observed [4552.0, 27562.0, 27759.0]
+[PASS] UCDDB      ucddb009 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 74, 'best_shift_s': 0, 'mae_at_best': 0.619, 'mae_at_zero': 0.619}
+[PASS] UCDDB      ucddb010 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb010 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [907, 907.033]
+[PASS] UCDDB      ucddb010 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb010 resp events inside recording: expected 0 <= t <= duration, observed [1598.0, 25259.0, 27211.0]
+[PASS] UCDDB      ucddb010 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 227, 'best_shift_s': -30, 'mae_at_best': 1.001, 'mae_at_zero': 1.158}
+[PASS] UCDDB      ucddb011 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb011 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [900, 901.0]
+[PASS] UCDDB      ucddb011 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb011 resp events inside recording: expected 0 <= t <= duration, observed [4696.0, 24559.0, 27030.0]
+[PASS] UCDDB      ucddb011 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 34, 'best_shift_s': 0, 'mae_at_best': 0.125, 'mae_at_zero': 0.125}
+[PASS] UCDDB      ucddb012 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb012 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [864, 864.7]
+[PASS] UCDDB      ucddb012 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb012 resp events inside recording: expected 0 <= t <= duration, observed [2683.0, 25467.0, 25941.0]
+[PASS] UCDDB      ucddb012 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 117, 'best_shift_s': 0, 'mae_at_best': 0.302, 'mae_at_zero': 0.302}
+[PASS] UCDDB      ucddb013 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb013 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [811, 811.1]
+[PASS] UCDDB      ucddb013 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb013 resp events inside recording: expected 0 <= t <= duration, observed [6154.0, 22701.0, 24333.0]
+[PASS] UCDDB      ucddb013 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 63, 'best_shift_s': 0, 'mae_at_best': 0.407, 'mae_at_zero': 0.407}
+[PASS] UCDDB      ucddb014 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb014 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [774, 774.633]
+[PASS] UCDDB      ucddb014 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3]
+[PASS] UCDDB      ucddb014 resp events inside recording: expected 0 <= t <= duration, observed [1646.0, 22879.0, 23239.0]
+[PASS] UCDDB      ucddb014 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 178, 'best_shift_s': 10, 'mae_at_best': 0.541, 'mae_at_zero': 0.604}
+[PASS] UCDDB      ucddb015 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb015 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [916, 916.267]
+[PASS] UCDDB      ucddb015 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb015 resp events inside recording: expected 0 <= t <= duration, observed [3536.0, 25755.0, 27488.0]
+[PASS] UCDDB      ucddb015 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 37, 'best_shift_s': -10, 'mae_at_best': 0.938, 'mae_at_zero': 0.939}
+[PASS] UCDDB      ucddb017 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb017 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [789, 789.467]
+[PASS] UCDDB      ucddb017 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb017 resp events inside recording: expected 0 <= t <= duration, observed [5086.0, 22489.0, 23684.0]
+[PASS] UCDDB      ucddb017 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 64, 'best_shift_s': 0, 'mae_at_best': 0.874, 'mae_at_zero': 0.874}
+[PASS] UCDDB      ucddb018 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb018 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [822, 822.833]
+[PASS] UCDDB      ucddb018 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb018 resp events inside recording: expected 0 <= t <= duration, observed [17751.0, 22360.0, 24685.0]
+[PASS] UCDDB      ucddb018 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 8, 'best_shift_s': 30, 'mae_at_best': 0.332, 'mae_at_zero': 0.953}
+[PASS] UCDDB      ucddb019 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb019 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [852, 852.433]
+[PASS] UCDDB      ucddb019 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb019 resp events inside recording: expected 0 <= t <= duration, observed [2350.0, 25267.0, 25573.0]
+[PASS] UCDDB      ucddb019 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 98, 'best_shift_s': -10, 'mae_at_best': 0.515, 'mae_at_zero': 0.588}
+[PASS] UCDDB      ucddb020 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb020 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [752, 752.867]
+[PASS] UCDDB      ucddb020 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb020 resp events inside recording: expected 0 <= t <= duration, observed [2030.0, 22498.0, 22586.0]
+[PASS] UCDDB      ucddb020 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 70, 'best_shift_s': -20, 'mae_at_best': 0.935, 'mae_at_zero': 0.953}
+[PASS] UCDDB      ucddb021 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb021 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [913, 913.633]
+[PASS] UCDDB      ucddb021 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb021 resp events inside recording: expected 0 <= t <= duration, observed [1782.0, 26145.0, 27409.0]
+[PASS] UCDDB      ucddb021 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 78, 'best_shift_s': -10, 'mae_at_best': 0.58, 'mae_at_zero': 0.583}
+[PASS] UCDDB      ucddb022 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb022 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [787, 788.0]
+[PASS] UCDDB      ucddb022 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb022 resp events inside recording: expected 0 <= t <= duration, observed [6083.0, 23107.0, 23640.0]
+[PASS] UCDDB      ucddb022 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 22, 'best_shift_s': 0, 'mae_at_best': 0.249, 'mae_at_zero': 0.249}
+[PASS] UCDDB      ucddb023 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb023 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [861, 861.667]
+[PASS] UCDDB      ucddb023 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb023 resp events inside recording: expected 0 <= t <= duration, observed [1818.0, 25281.0, 25850.0]
+[PASS] UCDDB      ucddb023 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 189, 'best_shift_s': -10, 'mae_at_best': 0.766, 'mae_at_zero': 0.769}
+[PASS] UCDDB      ucddb024 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb024 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [908, 908.333]
+[PASS] UCDDB      ucddb024 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5, 8]
+[PASS] UCDDB      ucddb024 resp events inside recording: expected 0 <= t <= duration, observed [1945.0, 25361.0, 27250.0]
+[PASS] UCDDB      ucddb024 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 132, 'best_shift_s': 0, 'mae_at_best': 0.576, 'mae_at_zero': 0.576}
+[PASS] UCDDB      ucddb025 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb025 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [711, 711.667]
+[PASS] UCDDB      ucddb025 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4]
+[PASS] UCDDB      ucddb025 resp events inside recording: expected 0 <= t <= duration, observed [352.0, 21219.0, 21350.0]
+[PASS] UCDDB      ucddb025 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 427, 'best_shift_s': -10, 'mae_at_best': 1.478, 'mae_at_zero': 1.59}
+[PASS] UCDDB      ucddb026 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb026 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [838, 838.667]
+[PASS] UCDDB      ucddb026 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb026 resp events inside recording: expected 0 <= t <= duration, observed [1040.0, 25015.0, 25160.0]
+[PASS] UCDDB      ucddb026 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 77, 'best_shift_s': 0, 'mae_at_best': 0.176, 'mae_at_zero': 0.176}
+[PASS] UCDDB      ucddb027 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb027 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [893, 893.033]
+[PASS] UCDDB      ucddb027 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb027 resp events inside recording: expected 0 <= t <= duration, observed [1061.0, 25974.0, 26791.0]
+[PASS] UCDDB      ucddb027 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 348, 'best_shift_s': -10, 'mae_at_best': 1.176, 'mae_at_zero': 1.233}
+[PASS] UCDDB      ucddb028 ECG fs: expected 128.0, observed [128.0]
+[PASS] UCDDB      ucddb028 stage epochs match 30 s x EDF length: expected floor(duration/30) within 1, observed [721, 722.0]
+[PASS] UCDDB      ucddb028 stage codes known: expected subset of 0-8 (8 dropped), observed [0, 1, 2, 3, 4, 5]
+[PASS] UCDDB      ucddb028 resp events inside recording: expected 0 <= t <= duration, observed [2238.0, 21522.0, 21660.0]
+[PASS] UCDDB      ucddb028 event clock aligned to EDF start (SpO2 nadir test): expected best shift within +-30 s, observed {'events_with_listed_nadir': 180, 'best_shift_s': 0, 'mae_at_best': 1.586, 'mae_at_zero': 1.586}
+[PASS] CAP        configured records downloaded: expected [], observed []
+[PASS] CAP        records present: expected >=1, observed 49
+[PASS] CAP        brux1 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        brux1 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        brux1 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1030}
+[PASS] CAP        brux1 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1400.0
+[PASS] CAP        brux1 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1400.0, 32330.0, 32340.0]
+[PASS] CAP        brux2 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        brux2 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        brux2 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1021, 30.0: 6, 60.0: 1}
+[PASS] CAP        brux2 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 180.0
+[PASS] CAP        brux2 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [180.0, 31290.0, 31321.0]
+[PASS] CAP        ins1 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins1 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins1 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 896, 30.0: 8, 60.0: 1}
+[PASS] CAP        ins1 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 15870.0
+[PASS] CAP        ins1 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [15870.0, 43350.0, 48000.0]
+[PASS] CAP        ins2 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins2 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins2 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1674}
+[PASS] CAP        ins2 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1.0
+[PASS] CAP        ins2 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1.0, 50251.0, 50250.0]
+[PASS] CAP        ins3 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins3 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins3 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 844, 30.0: 11}
+[PASS] CAP        ins3 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 4900.0
+[PASS] CAP        ins3 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [4900.0, 30910.0, 30901.0]
+[PASS] CAP        ins4 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins4 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins4 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 702, 30.0: 15}
+[PASS] CAP        ins4 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 12390.0
+[PASS] CAP        ins4 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [12390.0, 34380.0, 38191.0]
+[PASS] CAP        ins5 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins5 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins5 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1719}
+[PASS] CAP        ins5 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        ins5 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 51600.0, 51600.0]
+[PASS] CAP        ins6 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins6 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins6 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1056}
+[PASS] CAP        ins6 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 13820.0
+[PASS] CAP        ins6 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [13820.0, 45530.0, 48300.0]
+[PASS] CAP        ins7 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins7 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins7 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1482}
+[PASS] CAP        ins7 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        ins7 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 44490.0, 44490.0]
+[PASS] CAP        ins8 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins8 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins8 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 825, 30.0: 7}
+[PASS] CAP        ins8 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1590.0
+[PASS] CAP        ins8 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1590.0, 26790.0, 30000.0]
+[PASS] CAP        ins9 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        ins9 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        ins9 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1049}
+[PASS] CAP        ins9 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        ins9 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 31500.0, 33510.0]
+[PASS] CAP        n1 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        n1 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n1 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1132, 30.0: 7}
+[PASS] CAP        n1 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 210.0
+[PASS] CAP        n1 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [210.0, 34620.0, 34620.0]
+[PASS] CAP        n10 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        n10 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n10 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 843, 30.0: 8}
+[PASS] CAP        n10 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 3600.0
+[PASS] CAP        n10 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [3600.0, 29400.0, 29400.0]
+[PASS] CAP        n11 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        n11 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n11 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1048, 30.0: 2}
+[PASS] CAP        n11 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 30.0
+[PASS] CAP        n11 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [30.0, 31620.0, 31620.0]
+[PASS] CAP        n12 ECG channel found: expected >=1, observed ['EKG']
+[PASS] CAP        n12 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n12 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 977, 30.0: 6}
+[PASS] CAP        n12 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        n12 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 29700.0, 29700.0]
+[PASS] CAP        n13 ECG channel found: expected >=1, observed ['ECG']
+[PASS] CAP        n13 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n13 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 934, 30.0: 16, 60.0: 1}
+[PASS] CAP        n13 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 270.0
+[PASS] CAP        n13 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [270.0, 29370.0, 29427.0]
+[PASS] CAP        n14 ECG channel found: expected >=1, observed ['ECG']
+[PASS] CAP        n14 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n14 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 961, 30.0: 3}
+[PASS] CAP        n14 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 360.0
+[PASS] CAP        n14 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [360.0, 29400.0, 29551.0]
+[PASS] CAP        n15 ECG channel found: expected >=1, observed ['EKG']
+[PASS] CAP        n15 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n15 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 974, 30.0: 1}
+[PASS] CAP        n15 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 240.0
+[PASS] CAP        n15 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [240.0, 29550.0, 29650.0]
+[PASS] CAP        n2 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        n2 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n2 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 997, 30.0: 1}
+[PASS] CAP        n2 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 11220.0
+[PASS] CAP        n2 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [11220.0, 41220.0, 44100.0]
+[PASS] CAP        n3 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        n3 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n3 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 996, 30.0: 2}
+[PASS] CAP        n3 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 3030.0
+[PASS] CAP        n3 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [3030.0, 33060.0, 33061.0]
+[PASS] CAP        n4 ECG channel found: expected >=1, observed ['ekg']
+[PASS] CAP        n4 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n4 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 952, 30.0: 20, 60.0: 6}
+[PASS] CAP        n4 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1710.0
+[PASS] CAP        n4 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1710.0, 32040.0, 35740.0]
+[PASS] CAP        n5 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        n5 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n5 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1005, 30.0: 1}
+[PASS] CAP        n5 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1200.0
+[PASS] CAP        n5 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1200.0, 31440.0, 31441.0]
+[PASS] CAP        n6 ECG channel found: expected >=1, observed ['ECG']
+[PASS] CAP        n6 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n6 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1019, 30.0: 10}
+[PASS] CAP        n6 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 330.0
+[PASS] CAP        n6 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [330.0, 31530.0, 31625.0]
+[PASS] CAP        n7 ECG channel found: expected >=1, observed ['ECG']
+[PASS] CAP        n7 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n7 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 963, 30.0: 9, 60.0: 1}
+[PASS] CAP        n7 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        n7 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 29550.0, 29540.0]
+[PASS] CAP        n8 ECG channel found: expected >=1, observed ['EKG']
+[PASS] CAP        n8 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n8 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 982, 30.0: 9}
+[PASS] CAP        n8 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        n8 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 30030.0, 30040.0]
+[PASS] CAP        n9 ECG channel found: expected >=1, observed ['ECG']
+[PASS] CAP        n9 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        n9 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1011, 30.0: 8}
+[PASS] CAP        n9 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 60.0
+[PASS] CAP        n9 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [60.0, 30900.0, 31941.0]
+[PASS] CAP        narco1 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        narco1 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        narco1 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1086, 30.0: 8}
+[PASS] CAP        narco1 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 30.0
+[PASS] CAP        narco1 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [30.0, 33120.0, 33840.0]
+[PASS] CAP        narco2 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        narco2 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        narco2 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1148}
+[PASS] CAP        narco2 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        narco2 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 34470.0, 34470.0]
+[PASS] CAP        narco3 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        narco3 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        narco3 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1501, 30.0: 17}
+[PASS] CAP        narco3 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 30.0
+[PASS] CAP        narco3 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [30.0, 46110.0, 46051.0]
+[PASS] CAP        narco4 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        narco4 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        narco4 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1001, 30.0: 14}
+[PASS] CAP        narco4 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 120.0
+[PASS] CAP        narco4 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [120.0, 31020.0, 39300.0]
+[PASS] CAP        narco5 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        narco5 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        narco5 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 808, 30.0: 3}
+[PASS] CAP        narco5 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 30.0
+[PASS] CAP        narco5 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [30.0, 24480.0, 24480.0]
+[PASS] CAP        plm1 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm1 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm1 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1318}
+[PASS] CAP        plm1 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        plm1 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 39570.0, 39480.0]
+[PASS] CAP        plm10 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm10 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm10 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1002}
+[PASS] CAP        plm10 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 30.0
+[PASS] CAP        plm10 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [30.0, 30120.0, 30120.0]
+[PASS] CAP        plm2 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm2 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm2 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 900, 30.0: 1}
+[PASS] CAP        plm2 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        plm2 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 27090.0, 27090.0]
+[PASS] CAP        plm3 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm3 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm3 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 839}
+[PASS] CAP        plm3 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        plm3 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 25200.0, 25200.0]
+[PASS] CAP        plm4 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm4 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm4 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 850, 30.0: 4}
+[PASS] CAP        plm4 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 11820.0
+[PASS] CAP        plm4 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [11820.0, 37590.0, 41790.0]
+[PASS] CAP        plm5 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm5 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm5 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 818, 30.0: 3}
+[PASS] CAP        plm5 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 11130.0
+[PASS] CAP        plm5 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [11130.0, 35880.0, 42690.0]
+[PASS] CAP        plm6 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm6 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm6 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 658}
+[PASS] CAP        plm6 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 18150.0
+[PASS] CAP        plm6 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [18150.0, 37920.0, 37920.0]
+[PASS] CAP        plm7 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm7 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm7 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 989}
+[PASS] CAP        plm7 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1860.0
+[PASS] CAP        plm7 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1860.0, 31560.0, 31560.0]
+[PASS] CAP        plm8 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm8 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm8 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 716, 30.0: 9}
+[PASS] CAP        plm8 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 5550.0
+[PASS] CAP        plm8 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [5550.0, 27600.0, 27571.0]
+[PASS] CAP        plm9 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        plm9 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        plm9 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 993, 30.0: 6}
+[PASS] CAP        plm9 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1260.0
+[PASS] CAP        plm9 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1260.0, 31440.0, 31441.0]
+[PASS] CAP        rbd1 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        rbd1 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        rbd1 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 683, 30.0: 8}
+[PASS] CAP        rbd1 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 9270.0
+[PASS] CAP        rbd1 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [9270.0, 30270.0, 30271.0]
+[PASS] CAP        rbd2 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        rbd2 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        rbd2 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1193}
+[PASS] CAP        rbd2 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        rbd2 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 35820.0, 35820.0]
+[PASS] CAP        rbd3 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        rbd3 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        rbd3 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1209}
+[PASS] CAP        rbd3 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 0.0
+[PASS] CAP        rbd3 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [0.0, 36300.0, 36300.0]
+[PASS] CAP        rbd4 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        rbd4 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        rbd4 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1349, 30.0: 1}
+[PASS] CAP        rbd4 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 5940.0
+[PASS] CAP        rbd4 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [5940.0, 46500.0, 51541.0]
+[PASS] CAP        sdb1 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        sdb1 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        sdb1 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 758, 30.0: 6}
+[PASS] CAP        sdb1 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 30.0
+[PASS] CAP        sdb1 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [30.0, 23160.0, 28260.0]
+[PASS] CAP        sdb2 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        sdb2 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        sdb2 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 995, 30.0: 10}
+[PASS] CAP        sdb2 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 330.0
+[PASS] CAP        sdb2 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [330.0, 30810.0, 30781.0]
+[PASS] CAP        sdb3 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        sdb3 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        sdb3 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 792}
+[PASS] CAP        sdb3 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 6990.0
+[PASS] CAP        sdb3 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [6990.0, 30780.0, 30780.0]
+[PASS] CAP        sdb4 ECG channel found: expected >=1, observed ['ECG1-ECG2']
+[PASS] CAP        sdb4 stage epoch length: expected [30.0], observed [30.0]
+[PASS] CAP        sdb4 stages on a 30 s grid: expected every gap a multiple of 30 s, observed {0.0: 1044, 30.0: 25}
+[PASS] CAP        sdb4 stage onsets on whole seconds from EDF start: expected offset % 1 == 0, observed 1110.0
+[PASS] CAP        sdb4 stages inside EDF: expected first >= 0; at most 3 epochs past ECG end (dropped), observed [1110.0, 33960.0, 39090.0]
+[PASS] slpdb      records present: expected >=1, observed 18
+[PASS] slpdb      slp01a ECG fs: expected 250, observed 250
+[PASS] slpdb      slp01a stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 238}
+[PASS] slpdb      slp01a stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', '4', 'MT', 'R', 'W']
+[PASS] slpdb      slp01a annotations inside record: expected <= duration, observed [7200.0, 7200.0]
+[PASS] slpdb      slp01b ECG fs: expected 250, observed 250
+[PASS] slpdb      slp01b stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 358}
+[PASS] slpdb      slp01b stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', 'R', 'W']
+[PASS] slpdb      slp01b annotations inside record: expected <= duration, observed [10800.0, 10800.0]
+[PASS] slpdb      slp02a ECG fs: expected 250, observed 250
+[PASS] slpdb      slp02a stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 358}
+[PASS] slpdb      slp02a stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', '4', 'MT', 'R', 'W']
+[PASS] slpdb      slp02a annotations inside record: expected <= duration, observed [10800.0, 10800.0]
+[PASS] slpdb      slp02b ECG fs: expected 250, observed 250
+[PASS] slpdb      slp02b stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 268}
+[PASS] slpdb      slp02b stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', 'MT', 'R', 'W']
+[PASS] slpdb      slp02b annotations inside record: expected <= duration, observed [8100.0, 8100.0]
+[PASS] slpdb      slp03 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp03 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 718}
+[PASS] slpdb      slp03 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', 'R', 'W']
+[PASS] slpdb      slp03 annotations inside record: expected <= duration, observed [21600.0, 21600.0]
+[PASS] slpdb      slp04 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp04 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 718}
+[PASS] slpdb      slp04 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', 'R', 'W']
+[PASS] slpdb      slp04 annotations inside record: expected <= duration, observed [21600.0, 21600.0]
+[PASS] slpdb      slp14 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp14 stage epoch length: expected 30 s (+-0.01), observed {30.0: 713}
+[PASS] slpdb      slp14 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', '4', 'MT', 'R', 'W']
+[PASS] slpdb      slp14 annotations inside record: expected <= duration, observed [21600.0, 21600.0]
+[PASS] slpdb      slp16 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp16 stage epoch length: expected 30 s (+-0.01), observed {30.0: 693}
+[PASS] slpdb      slp16 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', '4', 'R', 'W']
+[PASS] slpdb      slp16 annotations inside record: expected <= duration, observed [21600.0, 21600.0]
+[PASS] slpdb      slp32 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp32 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 638}
+[PASS] slpdb      slp32 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', '4', 'W']
+[PASS] slpdb      slp32 annotations inside record: expected <= duration, observed [19200.0, 19200.0]
+[PASS] slpdb      slp37 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp37 stage epoch length: expected 30 s (+-0.01), observed {30.0: 697}
+[PASS] slpdb      slp37 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', 'R', 'W']
+[PASS] slpdb      slp37 annotations inside record: expected <= duration, observed [21000.0, 21000.0]
+[PASS] slpdb      slp41 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp41 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 778}
+[PASS] slpdb      slp41 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', 'R', 'W']
+[PASS] slpdb      slp41 annotations inside record: expected <= duration, observed [23400.0, 23400.0]
+[PASS] slpdb      slp45 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp45 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 758}
+[PASS] slpdb      slp45 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', '4', 'M', 'R', 'W']
+[PASS] slpdb      slp45 annotations inside record: expected <= duration, observed [22800.0, 22800.0]
+[PASS] slpdb      slp48 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp48 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 758}
+[PASS] slpdb      slp48 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', 'MT', 'R', 'W']
+[PASS] slpdb      slp48 annotations inside record: expected <= duration, observed [22800.0, 22800.0]
+[PASS] slpdb      slp59 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp59 stage epoch length: expected 30 s (+-0.01), observed {30.0: 457}
+[PASS] slpdb      slp59 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', '4', 'R', 'W']
+[PASS] slpdb      slp59 annotations inside record: expected <= duration, observed [14400.0, 14400.0]
+[PASS] slpdb      slp60 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp60 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 708}
+[PASS] slpdb      slp60 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', 'R', 'W']
+[PASS] slpdb      slp60 annotations inside record: expected <= duration, observed [21300.0, 21300.0]
+[PASS] slpdb      slp61 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp61 stage epoch length: expected 30 s (+-0.01), observed {30.0: 719}
+[PASS] slpdb      slp61 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', 'R', 'W']
+[PASS] slpdb      slp61 annotations inside record: expected <= duration, observed [22200.0, 22200.0]
+[PASS] slpdb      slp66 ECG fs: expected 250, observed 250
+[PASS] slpdb      slp66 stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 437}
+[PASS] slpdb      slp66 stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', 'W']
+[PASS] slpdb      slp66 annotations inside record: expected <= duration, observed [13170.0, 13200.0]
+[PASS] slpdb      slp67x ECG fs: expected 250, observed 250
+[PASS] slpdb      slp67x stage epoch length: expected 30 s (+-0.01), observed {29.996: 1, 30.0: 152}
+[PASS] slpdb      slp67x stage labels known: expected ['1', '2', '3', '4', 'M', 'MT', 'R', 'W'], observed ['1', '2', '3', 'W']
+[PASS] slpdb      slp67x annotations inside record: expected <= duration, observed [4620.0, 4620.0]
+[PASS] Apnea-ECG  learning-set records present: expected >=1, observed 35
+[PASS] Apnea-ECG  a01 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a01 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 488}]
+[PASS] Apnea-ECG  a01 labels never extend past the recording: expected labels <= minutes + 1, observed [489, 492.83]
+[PASS] Apnea-ECG  a01 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a02 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a02 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 527}]
+[PASS] Apnea-ECG  a02 labels never extend past the recording: expected labels <= minutes + 1, observed [528, 530.33]
+[PASS] Apnea-ECG  a02 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a03 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a03 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 518}]
+[PASS] Apnea-ECG  a03 labels never extend past the recording: expected labels <= minutes + 1, observed [519, 522.5]
+[PASS] Apnea-ECG  a03 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a04 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a04 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 491}]
+[PASS] Apnea-ECG  a04 labels never extend past the recording: expected labels <= minutes + 1, observed [492, 496.67]
+[PASS] Apnea-ECG  a04 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a05 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a05 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 453}]
+[PASS] Apnea-ECG  a05 labels never extend past the recording: expected labels <= minutes + 1, observed [454, 453.25]
+[PASS] Apnea-ECG  a05 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a06 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a06 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 509}]
+[PASS] Apnea-ECG  a06 labels never extend past the recording: expected labels <= minutes + 1, observed [510, 509.67]
+[PASS] Apnea-ECG  a06 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a07 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a07 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 510}]
+[PASS] Apnea-ECG  a07 labels never extend past the recording: expected labels <= minutes + 1, observed [511, 510.08]
+[PASS] Apnea-ECG  a07 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a08 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a08 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 500}]
+[PASS] Apnea-ECG  a08 labels never extend past the recording: expected labels <= minutes + 1, observed [501, 500.42]
+[PASS] Apnea-ECG  a08 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a09 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a09 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 494}]
+[PASS] Apnea-ECG  a09 labels never extend past the recording: expected labels <= minutes + 1, observed [495, 498.0]
+[PASS] Apnea-ECG  a09 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a10 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a10 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 516}]
+[PASS] Apnea-ECG  a10 labels never extend past the recording: expected labels <= minutes + 1, observed [517, 516.92]
+[PASS] Apnea-ECG  a10 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a11 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a11 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 465}]
+[PASS] Apnea-ECG  a11 labels never extend past the recording: expected labels <= minutes + 1, observed [466, 468.0]
+[PASS] Apnea-ECG  a11 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a12 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a12 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 576}]
+[PASS] Apnea-ECG  a12 labels never extend past the recording: expected labels <= minutes + 1, observed [577, 577.0]
+[PASS] Apnea-ECG  a12 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a13 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a13 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 494}]
+[PASS] Apnea-ECG  a13 labels never extend past the recording: expected labels <= minutes + 1, observed [495, 494.25]
+[PASS] Apnea-ECG  a13 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a14 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a14 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 508}]
+[PASS] Apnea-ECG  a14 labels never extend past the recording: expected labels <= minutes + 1, observed [509, 522.5]
+[PASS] Apnea-ECG  a14 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a15 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a15 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 509}]
+[PASS] Apnea-ECG  a15 labels never extend past the recording: expected labels <= minutes + 1, observed [510, 509.33]
+[PASS] Apnea-ECG  a15 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a16 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a16 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 481}]
+[PASS] Apnea-ECG  a16 labels never extend past the recording: expected labels <= minutes + 1, observed [482, 481.33]
+[PASS] Apnea-ECG  a16 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a17 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a17 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 484}]
+[PASS] Apnea-ECG  a17 labels never extend past the recording: expected labels <= minutes + 1, observed [485, 484.08]
+[PASS] Apnea-ECG  a17 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a18 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a18 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 488}]
+[PASS] Apnea-ECG  a18 labels never extend past the recording: expected labels <= minutes + 1, observed [489, 492.83]
+[PASS] Apnea-ECG  a18 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a19 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a19 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 501}]
+[PASS] Apnea-ECG  a19 labels never extend past the recording: expected labels <= minutes + 1, observed [502, 502.0]
+[PASS] Apnea-ECG  a19 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  a20 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  a20 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 509}]
+[PASS] Apnea-ECG  a20 labels never extend past the recording: expected labels <= minutes + 1, observed [510, 510.0]
+[PASS] Apnea-ECG  a20 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  b01 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  b01 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 486}]
+[PASS] Apnea-ECG  b01 labels never extend past the recording: expected labels <= minutes + 1, observed [487, 486.17]
+[PASS] Apnea-ECG  b01 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  b02 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  b02 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 516}]
+[PASS] Apnea-ECG  b02 labels never extend past the recording: expected labels <= minutes + 1, observed [517, 528.42]
+[PASS] Apnea-ECG  b02 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  b03 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  b03 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 440}]
+[PASS] Apnea-ECG  b03 labels never extend past the recording: expected labels <= minutes + 1, observed [441, 440.5]
+[PASS] Apnea-ECG  b03 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  b04 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  b04 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 428}]
+[PASS] Apnea-ECG  b04 labels never extend past the recording: expected labels <= minutes + 1, observed [429, 428.83]
+[PASS] Apnea-ECG  b04 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  b05 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  b05 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 432}]
+[PASS] Apnea-ECG  b05 labels never extend past the recording: expected labels <= minutes + 1, observed [433, 432.25]
+[PASS] Apnea-ECG  b05 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  c01 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c01 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 483}]
+[PASS] Apnea-ECG  c01 labels never extend past the recording: expected labels <= minutes + 1, observed [484, 483.17]
+[PASS] Apnea-ECG  c01 label symbols: expected ['A', 'N'], observed ['N']
+[PASS] Apnea-ECG  c02 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c02 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 501}]
+[PASS] Apnea-ECG  c02 labels never extend past the recording: expected labels <= minutes + 1, observed [502, 501.17]
+[PASS] Apnea-ECG  c02 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  c03 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c03 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 453}]
+[PASS] Apnea-ECG  c03 labels never extend past the recording: expected labels <= minutes + 1, observed [454, 453.33]
+[PASS] Apnea-ECG  c03 label symbols: expected ['A', 'N'], observed ['N']
+[PASS] Apnea-ECG  c04 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c04 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 481}]
+[PASS] Apnea-ECG  c04 labels never extend past the recording: expected labels <= minutes + 1, observed [482, 481.17]
+[PASS] Apnea-ECG  c04 label symbols: expected ['A', 'N'], observed ['N']
+[PASS] Apnea-ECG  c05 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c05 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 465}]
+[PASS] Apnea-ECG  c05 labels never extend past the recording: expected labels <= minutes + 1, observed [466, 465.5]
+[PASS] Apnea-ECG  c05 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  c06 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c06 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 467}]
+[PASS] Apnea-ECG  c06 labels never extend past the recording: expected labels <= minutes + 1, observed [468, 467.33]
+[PASS] Apnea-ECG  c06 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  c07 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c07 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 428}]
+[PASS] Apnea-ECG  c07 labels never extend past the recording: expected labels <= minutes + 1, observed [429, 428.17]
+[PASS] Apnea-ECG  c07 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  c08 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c08 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 512}]
+[PASS] Apnea-ECG  c08 labels never extend past the recording: expected labels <= minutes + 1, observed [513, 514.0]
+[PASS] Apnea-ECG  c08 label symbols: expected ['A', 'N'], observed ['N']
+[PASS] Apnea-ECG  c09 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c09 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 467}]
+[PASS] Apnea-ECG  c09 labels never extend past the recording: expected labels <= minutes + 1, observed [468, 467.5]
+[PASS] Apnea-ECG  c09 label symbols: expected ['A', 'N'], observed ['A', 'N']
+[PASS] Apnea-ECG  c10 ECG fs: expected 100, observed 100
+[PASS] Apnea-ECG  c10 one label per minute from t=0: expected spacing 60 s, first 0 s, observed [0.0, {60.0: 430}]
+[PASS] Apnea-ECG  c10 labels never extend past the recording: expected labels <= minutes + 1, observed [431, 430.83]
+[PASS] Apnea-ECG  c10 label symbols: expected ['A', 'N'], observed ['A', 'N']
+
+587/587 checks passed -> results/data_check.json
