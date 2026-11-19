@@ -8,7 +8,7 @@ import {
 } from './charts.js';
 
 // Link to the source repository. Empty string hides every repository link.
-const REPO_URL = '';
+const REPO_URL = 'https://github.com/handue/somnibeat';
 
 // Development only: replace the real worker with a local stub. Keep false.
 const USE_STUB_WORKER = false;
