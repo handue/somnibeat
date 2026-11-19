@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Somnibeat estimates total sleep time, sleep efficiency, wake bouts and suspected apnea minutes from one night of heartbeat (RR) intervals, computed entirely in your browser. Research prototype, not a diagnostic tool.">
+<title>Somnibeat</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/app.css">
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#/" aria-label="Somnibeat, start page">
+      <img class="brand-lockup" src="assets/somnibeat-lockup.svg" alt="Somnibeat" width="160" height="40">
+    </a>
+    <div class="header-right">
+      <p class="notice-pill">Research prototype · not a diagnostic tool</p>
+      <nav aria-label="Main">
+        <a class="nav-link" href="#/method" data-nav="method" aria-label="Method &amp; evaluation"><span class="lbl-long">Method &amp; evaluation</span><span class="lbl-short">Method</span></a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap" tabindex="-1">
+
+  <!-- 1. Start -->
+  <section class="screen screen-start" data-route="start" aria-labelledby="start-title" hidden>
+    <div class="hero">
+      <div class="hero-copy">
+        <h1 id="start-title" tabindex="-1">One heartbeat&#8209;interval file.<br>A look at last night's sleep.</h1>
+        <p class="lead">Get total sleep time, sleep efficiency, wake bouts and suspected sleep-apnea minutes, plus how far this kind of estimate can differ from a hospital sleep study.</p>
+        <div class="button-row">
+          <button type="button" class="btn btn-primary" id="btn-samples">Load a sample</button>
+          <button type="button" class="btn btn-secondary" id="btn-upload">Upload your file (RR CSV)</button>
+          <input type="file" id="file-input" accept=".csv,text/csv,text/plain" class="visually-hidden" tabindex="-1" aria-hidden="true">
+        </div>
+        <fieldset class="clock-fields">
+          <legend>Optional clock times</legend>
+          <div class="clock-grid">
+            <div class="field">
+              <label for="clock-start">Recording started at</label>
+              <input id="clock-start" type="time" aria-describedby="clock-help">
+            </div>
+            <div class="field">
+              <label for="clock-off">Lights off</label>
+              <input id="clock-off" type="time" aria-describedby="clock-help">
+            </div>
+            <div class="field">
+              <label for="clock-on">Lights on</label>
+              <input id="clock-on" type="time" aria-describedby="clock-help">
+            </div>
+          </div>
+          <p id="clock-help" class="caption">With the recording start time, the chart shows clock times. Lights off and lights on limit the analysis to time in bed and need the recording start time.</p>
+          <p id="clock-message" class="inline-message" role="status" aria-live="polite" hidden></p>
+        </fieldset>
+        <p class="body-muted small">Your file is never sent to a server; everything is computed in this browser. Expected columns: <code>time_s</code>, <code>rr_ms</code>.</p>
+      </div>
+
+      <div class="card drop-zone" id="drop-zone">
+        <div class="caption">Drop an RR CSV file here</div>
+        <div class="preview-tiles" aria-hidden="true">
+          <div class="preview-tile"><div class="caption">Total sleep time</div><div class="preview-value num">— h — m</div></div>
+          <div class="preview-tile"><div class="caption">Sleep efficiency</div><div class="preview-value num">— %</div></div>
+        </div>
+        <div class="preview-chart" aria-hidden="true">
+          <span style="--x:4%;--w:12%;--row:2" class="pv pv-light"></span>
+          <span style="--x:16%;--w:6%;--row:3" class="pv pv-deep"></span>
+          <span style="--x:22%;--w:14%;--row:2" class="pv pv-light"></span>
+          <span style="--x:36%;--w:8%;--row:1" class="pv pv-rem"></span>
+          <span style="--x:44%;--w:16%;--row:2" class="pv pv-light"></span>
+          <span style="--x:60%;--w:10%;--row:1" class="pv pv-rem"></span>
+          <span style="--x:70%;--w:24%;--row:2" class="pv pv-light"></span>
+        </div>
+        <div class="caption">Layout example, not real data.</div>
+        <button type="button" class="btn btn-secondary btn-small" id="btn-drop-browse">Choose a file</button>
+      </div>
+    </div>
+
+    <section class="samples" id="samples" aria-labelledby="samples-title" tabindex="-1">
+      <h2 id="samples-title">Three samples</h2>
+      <p class="body-muted small">Real overnight recordings from open research datasets. Choose one to see a full report.</p>
+      <div class="sample-grid" id="sample-grid">
+        <p class="body-muted small" id="samples-status">Loading samples…</p>
+      </div>
+    </section>
+  </section>
+
+  <!-- 4. Processing -->
+  <section class="screen screen-processing" data-route="processing" aria-labelledby="processing-title" hidden>
+    <div class="subheader">
+      <span class="caption">File: <span class="file-name" data-bind="job-file"></span></span>
+    </div>
+    <div class="card processing-card">
+      <h2 id="processing-title" tabindex="-1">Computing in your browser</h2>
+      <p class="body-muted small">Nothing leaves this device. This usually takes a few seconds.</p>
+      <div class="progress" role="progressbar" aria-label="Analysis progress" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" id="progress">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <ol class="steps" id="steps" aria-live="polite">
+        <li data-step="read"><span>Reading the file</span><span class="step-status">Waiting</span></li>
+        <li data-step="beats"><span>Finding usable heartbeats</span><span class="step-status">Waiting</span></li>
+        <li data-step="features"><span>Computing 30-second features</span><span class="step-status">Waiting</span></li>
+        <li data-step="report"><span>Building the report</span><span class="step-status">Waiting</span></li>
+      </ol>
+      <button type="button" class="btn btn-secondary" id="btn-cancel">Cancel</button>
+    </div>
+  </section>
+
+  <!-- 2. Report -->
+  <section class="screen screen-report" data-route="report" aria-labelledby="report-title" hidden>
+    <div class="subheader">
+      <h1 id="report-title" class="report-title" tabindex="-1">Night report</h1>
+      <div class="subheader-right">
+        <span class="caption">File: <span class="file-name" data-bind="report-file"></span></span>
+        <a class="btn btn-secondary btn-small" href="#/">Try another file</a>
+      </div>
+    </div>
+
+    <div class="card disclaimer">
+      <p>Research prototype. Do not use it for diagnosis or treatment decisions. The results below can differ from a hospital sleep study.</p>
+    </div>
+
+    <div class="warning-banner" id="quality-banner" role="alert" hidden></div>
+    <p id="stub-banner" class="warning-banner" hidden>Development stub: these numbers are synthetic, not real results.</p>
+
+    <div class="tiles" id="tiles">
+      <div class="card tile tile-hero">
+        <h2 class="tile-label">Total sleep time</h2>
+        <p class="tile-value num" id="tile-tst">—</p>
+        <p class="tile-help" id="tile-tst-help">Time judged asleep between lights off and lights on</p>
+      </div>
+      <div class="card tile">
+        <h2 class="tile-label">Sleep efficiency</h2>
+        <p class="tile-value num" id="tile-se">—</p>
+        <p class="tile-help">Share of time in bed judged asleep</p>
+      </div>
+      <div class="card tile">
+        <h2 class="tile-label">Wake bouts</h2>
+        <p class="tile-value num" id="tile-wake">—</p>
+        <p class="tile-help">Number of awake stretches during the night</p>
+      </div>
+      <div class="card tile">
+        <h2 class="tile-label">Suspected apnea</h2>
+        <p class="tile-value num" id="tile-apnea">—</p>
+        <p class="tile-help">Minutes with suspected breathing events</p>
+      </div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-head">
+        <h2>Sleep stages across the night</h2>
+        <div class="segmented" role="group" aria-label="Stage detail">
+          <button type="button" class="seg" data-mode="sleep_wake" aria-pressed="true" aria-label="Wake / sleep"><span class="lbl-long">Wake / sleep</span><span class="lbl-short">Wake/sleep</span></button>
+          <button type="button" class="seg" data-mode="wake_nrem_rem" aria-pressed="false" aria-label="3 stages (experimental)"><span class="lbl-long">3 stages (experimental)</span><span class="lbl-short">3 (exp.)</span></button>
+          <button type="button" class="seg" data-mode="four_class" aria-pressed="false" aria-label="4 stages (experimental)"><span class="lbl-long">4 stages (experimental)</span><span class="lbl-short">4 (exp.)</span></button>
+        </div>
+      </div>
+      <div class="chart-box" id="hypnogram"></div>
+      <ul class="legend" id="legend" aria-label="Chart legend"></ul>
+      <p class="caption" id="chart-note">Stages are shown by row position and text labels as well as color.</p>
+      <p class="caption" id="quality-line"></p>
+    </div>
+
+    <div class="trust-grid">
+      <div class="card trust-card">
+        <h2>How far can you trust this?</h2>
+        <p class="body-muted small" id="trust-intro">Errors against hospital sleep studies, measured on recordings the model never saw during training.</p>
+        <div id="trust-table"></div>
+        <a class="text-link" href="#/method">See full method &amp; evaluation</a>
+        <h3 class="minor-title">Total sleep time: estimate vs. sleep study</h3>
+        <div class="chart-box" id="trust-ba"></div>
+        <h3 class="minor-title">Compared with a trivial rule (asleep from lights off)</h3>
+        <div class="chart-box" id="trust-bars"></div>
+        <p class="caption" id="trust-bars-note"></p>
+      </div>
+      <div class="card limits-card">
+        <h2>Known limitations</h2>
+        <ul class="bullets" id="report-limitations"></ul>
+        <p class="caption push-bottom">Full evaluation: <a href="#/method">Method &amp; evaluation</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Method & evaluation -->
+  <section class="screen screen-method" data-route="method" aria-labelledby="method-title" hidden>
+    <div class="subheader">
+      <div></div>
+      <div class="subheader-right">
+        <a class="btn btn-secondary btn-small" href="#/">Try a sample</a>
+        <a class="btn btn-secondary btn-small" href="#/report" id="back-to-report" hidden>Back to report</a>
+      </div>
+    </div>
+    <div class="page-intro">
+      <h1 id="method-title" tabindex="-1">Method &amp; evaluation</h1>
+      <p class="lead">How the report is computed, what it was tested on, and where it can fail.</p>
+    </div>
+
+    <div class="card method-block">
+      <h2>Pipeline</h2>
+      <ol class="pipeline">
+        <li><strong>1. RR intervals</strong><span>Time between heartbeats, from your CSV, cleaned of implausible values and artifacts</span></li>
+        <li><strong>2. 30-second epochs</strong><span>Mean, variability and change versus neighbouring epochs</span></li>
+        <li><strong>3. Classifier</strong><span>Gradient boosting and logistic regression, no deep nets</span></li>
+        <li><strong>4. Report</strong><span>Sleep time, efficiency, wake bouts, apnea minutes</span></li>
+      </ol>
+    </div>
+
+    <div class="card method-block">
+      <h2>Data</h2>
+      <div id="method-datasets"></div>
+      <p class="body-muted small">All datasets are open. Most recordings are from sleep-clinic patients, so results may not carry over to healthy sleepers.</p>
+    </div>
+
+    <div class="card method-block">
+      <h2>Evaluation design</h2>
+      <ul class="bullets">
+        <li>Splits are by recording and by subject, so one person never appears on both sides.</li>
+        <li>Stage models train on CAP and MIT-BIH and are tested on UCDDB; the apnea model trains on Apnea-ECG and is tested on UCDDB.</li>
+        <li>The test set is never used to fit, normalize, select features, pick thresholds or choose models. Each model predicts it once.</li>
+        <li>Operating thresholds are fixed on out-of-fold predictions from the training data only.</li>
+        <li>Errors are estimate minus reference, with record-level bootstrap 95% intervals and Bland–Altman plots.</li>
+        <li>Every model is compared with a trivial rule scored on the same epochs.</li>
+        <li>Seeds and configs are fixed; one command rebuilds every number.</li>
+      </ul>
+    </div>
+
+    <div class="card method-block">
+      <h2>Results</h2>
+      <p class="body-muted small" id="method-results-intro">External test on UCDDB. Lower error is better; higher kappa is better.</p>
+      <div id="method-results"></div>
+      <div class="ba-grid">
+        <div>
+          <h3 class="minor-title">Total sleep time (Bland–Altman)</h3>
+          <div class="chart-box" id="method-ba-tst"></div>
+        </div>
+        <div>
+          <h3 class="minor-title">Suspected apnea minutes (Bland–Altman)</h3>
+          <div class="chart-box" id="method-ba-apnea"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card method-block">
+      <h2>R-peak detector validation</h2>
+      <div id="method-rpeak"></div>
+    </div>
+
+    <div class="card method-block">
+      <h2>Who benefits, and who could be harmed</h2>
+      <div class="two-col">
+        <div class="sub-card">
+          <h3>Who may benefit</h3>
+          <p>People who already have overnight heart recordings, sleep researchers and clinicians who want a quick first look at sleep from a heartbeat file.</p>
+        </div>
+        <div class="sub-card">
+          <h3>Who could be harmed</h3>
+          <p>Someone falsely reassured when apnea is missed, someone needlessly worried by a false alert, or anyone treating this research prototype as a diagnosis. Real heartbeat files should not appear in public videos or screenshots.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card method-block">
+      <h2>Limitations</h2>
+      <ul class="bullets" id="method-limitations"></ul>
+    </div>
+
+    <div class="card method-block">
+      <h2>Reproduce</h2>
+      <pre class="code-block"><code>make reproduce</code></pre>
+      <p class="body-muted small">Downloads the datasets, trains, evaluates and rewrites every number on this page.<span class="repo-link" hidden> Code: <a href="#" data-repo-link>source repository</a></span></p>
+    </div>
+  </section>
+
+  <!-- 5. File problem -->
+  <section class="screen screen-problem" data-route="problem" aria-labelledby="problem-title" hidden>
+    <div class="subheader">
+      <div></div>
+      <a class="btn btn-secondary btn-small" href="#/">Back to start</a>
+    </div>
+    <div class="card problem-card">
+      <p class="problem-label">File problem</p>
+      <h1 id="problem-title" tabindex="-1">We couldn't use this file</h1>
+      <p class="body" id="problem-reason"></p>
+      <ul class="bullets" id="problem-requirements">
+        <li>The file needs a header row with columns named <code>time_s</code> and <code>rr_ms</code>.</li>
+        <li>RR values should be in milliseconds, one row per heartbeat.</li>
+        <li><code>time_s</code> is the time of each beat in seconds since the recording started, increasing row by row.</li>
+        <li id="problem-min-hours">The recording needs enough hours of beats to make a report.</li>
+      </ul>
+      <p class="caption" id="problem-example-caption">Expected format</p>
+      <pre class="code-block" id="problem-example"><code>time_s,rr_ms</code></pre>
+      <div class="button-row">
+        <button type="button" class="btn btn-primary" id="btn-problem-upload">Choose another file</button>
+        <button type="button" class="btn btn-secondary" id="btn-problem-samples">Load a sample</button>
+      </div>
+    </div>
+  </section>
+
+  <noscript><p class="card">This page needs JavaScript to compute the report in your browser.</p></noscript>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p class="footer-notice">Research prototype · not a diagnostic tool</p>
+    <div id="attribution" class="caption"></div>
+    <p class="caption repo-link" hidden>Evaluation method and code: <a href="#" data-repo-link>source repository</a></p>
+  </div>
+</footer>
+</body>
+</html>

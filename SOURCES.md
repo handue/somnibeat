@@ -25,7 +25,7 @@ https://opendatacommons.org/licenses/by/1-0/
 
 - UCDDB: 25 adults (21 male, 4 female), suspected sleep-disordered breathing, age 50 ± 10 (28–68), AHI 1.7–90.9.
 - slpdb: 18 records from 16 male subjects (slp01a/b and slp02a/b are the same two subjects), mean age 40 (32–56).
-- CAP: 16 healthy controls (n1–n16); the remaining records are patients (insomnia, narcolepsy, NFLE, PLM, RBD, SDB, bruxism).
+- CAP: 49 records used: 15 healthy controls (n1–n15; n16 has no ECG channel) and 34 patients (SDB, insomnia, PLM, narcolepsy, RBD, bruxism). NFLE records are not used.
 - Apnea-ECG: 35 learning-set records (a01–a20, b01–b05, c01–c10).
 
 ## Code and models
@@ -36,3 +36,25 @@ library and its license once the pipeline exists.
 ## Brand assets
 
 `assets/somnibeat-mark.svg` and `assets/somnibeat-lockup.svg` were supplied by the project author.
+
+## Demo samples
+
+The web demo (`web/data/samples/`) ships three RR-interval files, copied
+unmodified from `data/cache/rr/` by `scripts/export_web.py`. They are derived
+data (RR intervals from R-peaks detected by this project's detector) and are
+redistributed under the Open Data Commons Attribution License v1.0 of their
+source databases. Attribution and the selection rules are also stored in
+`web/data/samples.json`; the export stops if a rule no longer picks the
+listed record.
+
+| Sample id | File | Source record | Selection rule |
+|---|---|---|---|
+| `ordinary` | `ucddb018.csv` | UCDDB `ucddb018`, https://physionet.org/content/ucddb/1.0.0/ | UCDDB record with the fewest reference apnea minutes (`results/apnea.json`) |
+| `apnea` | `ucddb025.csv` | UCDDB `ucddb025`, https://physionet.org/content/ucddb/1.0.0/ | UCDDB record with the most reference apnea minutes (`results/apnea.json`) |
+| `noisy` | `apnea-ecg-c04.csv` | Apnea-ECG `c04`, https://physionet.org/content/apnea-ecg/1.0.0/ | Apnea-ECG record with the lowest fraction of valid RR intervals (`data/cache/record_summary.json`) |
+
+- Both UCDDB samples are part of the external test set, so the demo shows
+  nights the models never saw during training.
+- `c04` is an Apnea-ECG training record and has no sleep-stage reference.
+- License: Open Data Commons Attribution License v1.0,
+  https://opendatacommons.org/licenses/by/1-0/

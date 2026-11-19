@@ -206,10 +206,11 @@ def epoch_features(t: np.ndarray, rr: np.ndarray, valid: np.ndarray, epoch_start
         z = feats[f"z_{key}"]
         for o in cfg_feat["neighbor_offsets"]:
             sh = np.full(n, math.nan)
-            if o > 0:
-                sh[:n - o] = z[o:]
-            else:
-                sh[-o:] = z[:n + o]
+            if abs(o) < n:  # shorter grids: the neighbor is off the grid -> NaN
+                if o > 0:
+                    sh[:n - o] = z[o:]
+                else:
+                    sh[-o:] = z[:n + o]
             feats[f"d{o:+d}_{key}"] = z - sh
         for win in cfg_feat["rolling_windows_epochs"]:
             feats[f"roll{win}_{key}"] = _rolling_nanmean(z, win)

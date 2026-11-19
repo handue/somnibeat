@@ -1,10 +1,10 @@
 PY ?= .venv/bin/python
 CONFIG ?= config/default.toml
 
-.PHONY: reproduce setup download check features rpeaks evaluate test clean-results
+.PHONY: reproduce setup download check features rpeaks evaluate web parity test clean-results
 
 ## One command: raw downloads -> results/*.json
-reproduce: setup download check features rpeaks evaluate test
+reproduce: setup download check features rpeaks evaluate web parity test
 
 setup:
 	test -x $(PY) || python3 -m venv .venv
@@ -23,7 +23,15 @@ rpeaks:
 	$(PY) scripts/validate_rpeaks.py
 
 evaluate:
-	$(PY) scripts/train_eval.py --config $(CONFIG) --tasks sleep_wake wake_nrem_rem four_class
+	$(PY) scripts/train_eval.py --config $(CONFIG) --tasks sleep_wake wake_nrem_rem four_class apnea
+
+## Web demo data (web/data/*) from results/*.json and the trained models
+web:
+	$(PY) scripts/export_web.py
+
+## Python/JavaScript parity tests (needs node)
+parity:
+	$(PY) -m pytest -q tests/test_parity_*.py
 
 test:
 	$(PY) -m pytest -q tests

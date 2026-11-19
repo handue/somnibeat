@@ -1,0 +1,53 @@
+[
+ {
+  "id": "ordinary",
+  "title": "An ordinary night",
+  "summary": "A UCDDB night with the fewest reference apnea minutes in the test set (9 reference apnea minutes).",
+  "file": "samples/ucddb018.csv",
+  "selection": "UCDDB record with the fewest reference apnea minutes.",
+  "has_stage_reference": true,
+  "source": {
+   "dataset": "St. Vincent's University Hospital / University College Dublin Sleep Apnea Database (UCDDB)",
+   "license": "ODC-By 1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "url": "https://physionet.org/content/ucddb/1.0.0/",
+   "doi": "10.13026/C26C7D",
+   "note": "Part of the external test set: the models never saw this night during training. Reference sleep stages and apnea events exist for it.",
+   "record": "ucddb018"
+  }
+ },
+ {
+  "id": "apnea",
+  "title": "Many suspected apnea minutes",
+  "summary": "A UCDDB night with the most reference apnea minutes in the test set (312 reference apnea minutes).",
+  "file": "samples/ucddb025.csv",
+  "selection": "UCDDB record with the most reference apnea minutes.",
+  "has_stage_reference": true,
+  "source": {
+   "dataset": "St. Vincent's University Hospital / University College Dublin Sleep Apnea Database (UCDDB)",
+   "license": "ODC-By 1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "url": "https://physionet.org/content/ucddb/1.0.0/",
+   "doi": "10.13026/C26C7D",
+   "note": "Part of the external test set: the models never saw this night during training. Reference sleep stages and apnea events exist for it.",
+   "record": "ucddb025"
+  }
+ },
+ {
+  "id": "noisy",
+  "title": "A noisy night",
+  "summary": "An Apnea-ECG night with many missing or unusable beats, to show how the report marks stretches without enough usable data.",
+  "file": "samples/apnea-ecg-c04.csv",
+  "selection": "Apnea-ECG record with the lowest fraction of valid RR intervals after cleaning (data/cache/record_summary.json).",
+  "has_stage_reference": false,
+  "source": {
+   "dataset": "Apnea-ECG Database (apnea-ecg)",
+   "license": "ODC-By 1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "url": "https://physionet.org/content/apnea-ecg/1.0.0/",
+   "doi": null,
+   "note": "Part of the apnea training set. It has no sleep-stage reference, so the hypnogram cannot be compared with a reference for this night.",
+   "record": "c04"
+  }
+ }
+]

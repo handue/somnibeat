@@ -1,0 +1,3256 @@
+{
+ "schema": 1,
+ "generated_from": {
+  "sleep_wake.json": "41c9d65aab85718ed3d90df69db59ce933c25ebba86c198aef77d7d190cc76bf",
+  "wake_nrem_rem.json": "a780befeadb296ca6a66adee6b681e036378fd4f587290e1ec07ba137b9f6969",
+  "four_class.json": "75d1cd3da1aec94152e3b5734c97e4c6388160ba9e60bcab4bdf41d3fca6329b",
+  "apnea.json": "25ce6dfe1d9440dd9023269d7838f0082b48555703e2eb83753c95f18e5fdaa1",
+  "rpeak_validation.json": "27cba216b957b49b02523ea37f76a7b1bbc12b7c3a1ba2312ecb1b4aa0cecc01",
+  "data_check.json": "0ea49818fb42a008a23c13f7950752aca6c9a928069465b303f39a7a173eb066"
+ },
+ "primary_model": "gradient_boosting",
+ "config_sha256": "3c72771b1ef488cc8fa6aa43506b6c1e221c02ebb4684937caca28159ce812b3",
+ "tasks": {
+  "sleep_wake": {
+   "labels": [
+    "sleep",
+    "wake"
+   ],
+   "unit": "epoch",
+   "models": {
+    "gradient_boosting": {
+     "n_features": 119,
+     "threshold_p_wake": 0.39,
+     "internal_cv": {
+      "n_records": 67,
+      "n_epochs": 59632,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.4673528688335014,
+        "ci_low": 0.3858914114226658,
+        "ci_high": 0.5418780703196999
+       },
+       "kappa_mean_per_record": {
+        "point": 0.4419899222024931,
+        "ci_low": 0.38977326407428614,
+        "ci_high": 0.49441209772906614
+       },
+       "accuracy": {
+        "point": 0.8134390931043735,
+        "ci_low": 0.776178218735362,
+        "ci_high": 0.8464595699612231
+       },
+       "wake_sensitivity": {
+        "point": 0.5737740488933892,
+        "ci_low": 0.5050758418006405,
+        "ci_high": 0.6437401936543892
+       },
+       "sleep_sensitivity": {
+        "point": 0.8857791555691394,
+        "ci_low": 0.8468860389612415,
+        "ci_high": 0.9165885824654
+       },
+       "tst_bias_min": {
+        "point": 4.932835820895522,
+        "ci_low": -12.792310188189482,
+        "ci_high": 23.160995989304805
+       },
+       "tst_mae_min": {
+        "point": 51.365671641791046,
+        "ci_low": 38.73168397144711,
+        "ci_high": 66.44659420289855
+       },
+       "se_bias_pctpt": {
+        "point": -0.20060701862951744,
+        "ci_low": -4.814866064158201,
+        "ci_high": 4.110536727961007
+       },
+       "se_mae_pctpt": {
+        "point": 12.793452398732507,
+        "ci_low": 9.386014783008868,
+        "ci_high": 16.49420937713357
+       },
+       "awakenings_bias": {
+        "point": 5.641791044776119,
+        "ci_low": 3.5221855010660983,
+        "ci_high": 7.955240342405619
+       },
+       "awakenings_mae": {
+        "point": 8.238805970149254,
+        "ci_low": 6.705772607550483,
+        "ci_high": 10.015157342657343
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": 4.932835820895522,
+        "mae": 51.365671641791046,
+        "sd": 79.46592063165362,
+        "loa_low": -150.82036861714556,
+        "loa_high": 160.6860402589366
+       },
+       "se_pct": {
+        "bias": -0.20060701862951744,
+        "mae": 12.793452398732507,
+        "sd": 18.714104067596168,
+        "loa_low": -36.880250991118004,
+        "loa_high": 36.479036953858966
+       },
+       "awakenings": {
+        "bias": 5.641791044776119,
+        "mae": 8.238805970149254,
+        "sd": 9.357708688299189,
+        "loa_low": -12.699317984290289,
+        "loa_high": 23.98290007384253
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.33959637332481124,
+        "ci_low": 0.2634951270633548,
+        "ci_high": 0.40886594123022724
+       },
+       "kappa_mean_per_record": {
+        "point": 0.3359053454536676,
+        "ci_low": 0.28289379432783296,
+        "ci_high": 0.38701445326939193
+       },
+       "accuracy": {
+        "point": 0.77919514778088,
+        "ci_low": 0.7408511177142519,
+        "ci_high": 0.8134101979503849
+       },
+       "wake_sensitivity": {
+        "point": 0.4476311875929467,
+        "ci_low": 0.3565548021197679,
+        "ci_high": 0.5313561556657707
+       },
+       "sleep_sensitivity": {
+        "point": 0.8763303665899048,
+        "ci_low": 0.8245600290290125,
+        "ci_high": 0.9216909832567757
+       },
+       "tst_bias_min": {
+        "point": 12.26,
+        "ci_low": -13.602999999999994,
+        "ci_high": 37.422499999999985
+       },
+       "tst_mae_min": {
+        "point": 50.94,
+        "ci_low": 35.1795,
+        "ci_high": 68.94449999999998
+       },
+       "se_bias_pctpt": {
+        "point": 2.9306201028035797,
+        "ci_low": -3.210250873190861,
+        "ci_high": 8.99235003204809
+       },
+       "se_mae_pctpt": {
+        "point": 12.092707184665409,
+        "ci_low": 8.405288364842677,
+        "ci_high": 16.255968663698802
+       },
+       "awakenings_bias": {
+        "point": -0.24,
+        "ci_low": -2.880999999999998,
+        "ci_high": 2.3209999999999944
+       },
+       "awakenings_mae": {
+        "point": 5.2,
+        "ci_low": 3.6,
+        "ci_high": 7.08
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": 12.26,
+        "mae": 50.94,
+        "sd": 67.20508413307236,
+        "loa_low": -119.46196490082183,
+        "loa_high": 143.98196490082182
+       },
+       "se_pct": {
+        "bias": 2.9306201028035797,
+        "mae": 12.092707184665409,
+        "sd": 15.786064363839824,
+        "loa_low": -28.010066050322475,
+        "loa_high": 33.87130625592963
+       },
+       "awakenings": {
+        "bias": -0.24,
+        "mae": 5.2,
+        "sd": 6.977822009767804,
+        "loa_low": -13.916531139144896,
+        "loa_high": 13.436531139144895
+       }
+      }
+     },
+     "threshold": 0.39
+    },
+    "logistic_regression": {
+     "n_features": 98,
+     "threshold_p_wake": 0.29,
+     "internal_cv": {
+      "n_records": 67,
+      "n_epochs": 59632,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.3531069717240115,
+        "ci_low": 0.2866034032599885,
+        "ci_high": 0.4150988762670062
+       },
+       "kappa_mean_per_record": {
+        "point": 0.3321210495352271,
+        "ci_low": 0.2836162924858993,
+        "ci_high": 0.38139509394906523
+       },
+       "accuracy": {
+        "point": 0.7577978266702442,
+        "ci_low": 0.7276524211836018,
+        "ci_high": 0.7842322075668888
+       },
+       "wake_sensitivity": {
+        "point": 0.5509185592362216,
+        "ci_low": 0.4956542955065371,
+        "ci_high": 0.6055803814640682
+       },
+       "sleep_sensitivity": {
+        "point": 0.8202418897087718,
+        "ci_low": 0.785627453112829,
+        "ci_high": 0.8514715361542637
+       },
+       "tst_bias_min": {
+        "point": -15.111940298507463,
+        "ci_low": -35.674038461538444,
+        "ci_high": 6.336029411764691
+       },
+       "tst_mae_min": {
+        "point": 72.35074626865672,
+        "ci_low": 58.372997146619845,
+        "ci_high": 87.48566176470588
+       },
+       "se_bias_pctpt": {
+        "point": -2.887586235556327,
+        "ci_low": -7.023693556834064,
+        "ci_high": 1.4681997486465563
+       },
+       "se_mae_pctpt": {
+        "point": 16.07567483392349,
+        "ci_low": 13.620726266300837,
+        "ci_high": 18.492816057020054
+       },
+       "awakenings_bias": {
+        "point": 10.35820895522388,
+        "ci_low": 7.615,
+        "ci_high": 13.400074626865672
+       },
+       "awakenings_mae": {
+        "point": 12.08955223880597,
+        "ci_low": 9.83569460390356,
+        "ci_high": 14.671896200814109
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": -15.111940298507463,
+        "mae": 72.35074626865672,
+        "sd": 94.39969106650152,
+        "loa_low": -200.13533478885046,
+        "loa_high": 169.9114541918355
+       },
+       "se_pct": {
+        "bias": -2.887586235556327,
+        "mae": 16.07567483392349,
+        "sd": 19.088747490189412,
+        "loa_low": -40.301531316327576,
+        "loa_high": 34.52635884521492
+       },
+       "awakenings": {
+        "bias": 10.35820895522388,
+        "mae": 12.08955223880597,
+        "sd": 11.985725717952134,
+        "loa_low": -13.1338134519623,
+        "loa_high": 33.85023136241006
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.3489042372479368,
+        "ci_low": 0.26448893101510246,
+        "ci_high": 0.4186509596590256
+       },
+       "kappa_mean_per_record": {
+        "point": 0.32352275845714273,
+        "ci_low": 0.25079198999902685,
+        "ci_high": 0.3904542034495038
+       },
+       "accuracy": {
+        "point": 0.7657167613362857,
+        "ci_low": 0.7289233342657461,
+        "ci_high": 0.7981133760377584
+       },
+       "wake_sensitivity": {
+        "point": 0.5207138304652645,
+        "ci_low": 0.4349888466571467,
+        "ci_high": 0.5936897800827411
+       },
+       "sleep_sensitivity": {
+        "point": 0.8374929980705794,
+        "ci_low": 0.8089943312061512,
+        "ci_high": 0.8657979936817247
+       },
+       "tst_bias_min": {
+        "point": -7.1,
+        "ci_low": -21.8605,
+        "ci_high": 7.682999999999983
+       },
+       "tst_mae_min": {
+        "point": 32.74,
+        "ci_low": 24.319000000000003,
+        "ci_high": 41.101499999999994
+       },
+       "se_bias_pctpt": {
+        "point": -1.524789657305481,
+        "ci_low": -4.9459043408636925,
+        "ci_high": 1.9838714208919221
+       },
+       "se_mae_pctpt": {
+        "point": 7.719336988229665,
+        "ci_low": 5.794858683746688,
+        "ci_high": 9.675652817811255
+       },
+       "awakenings_bias": {
+        "point": 3.8,
+        "ci_low": 0.8,
+        "ci_high": 6.72
+       },
+       "awakenings_mae": {
+        "point": 6.84,
+        "ci_low": 4.84,
+        "ci_high": 8.72
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": -7.1,
+        "mae": 32.74,
+        "sd": 39.24124106090428,
+        "loa_low": -84.01283247937238,
+        "loa_high": 69.81283247937239
+       },
+       "se_pct": {
+        "bias": -1.524789657305481,
+        "mae": 7.719336988229665,
+        "sd": 9.21075042067594,
+        "loa_low": -19.57786048183032,
+        "loa_high": 16.52828116721936
+       },
+       "awakenings": {
+        "bias": 3.8,
+        "mae": 6.84,
+        "sd": 7.643079658532067,
+        "loa_low": -11.180436130722853,
+        "loa_high": 18.78043613072285
+       }
+      }
+     },
+     "threshold": 0.29
+    }
+   },
+   "baselines": {
+    "asleep_from_lights_off": {
+     "n_records": 25,
+     "n_epochs": 20774,
+     "metrics": {
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "kappa_mean_per_record": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.7734186964474824,
+       "ci_low": 0.7307975894966215,
+       "ci_high": 0.8128576342780935
+      },
+      "wake_sensitivity": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "sleep_sensitivity": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      },
+      "tst_bias_min": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "tst_mae_min": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "se_bias_pctpt": {
+       "point": 22.836871554870125,
+       "ci_low": 18.86564062430683,
+       "ci_high": 27.101526094502542
+      },
+      "se_mae_pctpt": {
+       "point": 22.836871554870125,
+       "ci_low": 18.86564062430683,
+       "ci_high": 27.101526094502542
+      },
+      "awakenings_bias": {
+       "point": -14.16,
+       "ci_low": -17.08,
+       "ci_high": -11.639000000000006
+      },
+      "awakenings_mae": {
+       "point": 14.16,
+       "ci_low": 11.639000000000003,
+       "ci_high": 17.08
+      }
+     },
+     "bland_altman": {
+      "tst_min": {
+       "bias": 94.14,
+       "mae": 94.14,
+       "sd": 44.46288714572338,
+       "loa_low": 6.992741194382177,
+       "loa_high": 181.28725880561782
+      },
+      "se_pct": {
+       "bias": 22.836871554870125,
+       "mae": 22.836871554870125,
+       "sd": 10.936513096735283,
+       "loa_low": 1.4013058852689717,
+       "loa_high": 44.272437224471275
+      },
+      "awakenings": {
+       "bias": -14.16,
+       "mae": 14.16,
+       "sd": 7.063285354564122,
+       "loa_low": -28.004039294945677,
+       "loa_high": -0.31596070505432117
+      }
+     },
+     "predicted_class": "sleep"
+    },
+    "majority_class": {
+     "n_records": 25,
+     "n_epochs": 20774,
+     "metrics": {
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "kappa_mean_per_record": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.7734186964474824,
+       "ci_low": 0.7307975894966215,
+       "ci_high": 0.8128576342780935
+      },
+      "wake_sensitivity": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "sleep_sensitivity": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      },
+      "tst_bias_min": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "tst_mae_min": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "se_bias_pctpt": {
+       "point": 22.836871554870125,
+       "ci_low": 18.86564062430683,
+       "ci_high": 27.101526094502542
+      },
+      "se_mae_pctpt": {
+       "point": 22.836871554870125,
+       "ci_low": 18.86564062430683,
+       "ci_high": 27.101526094502542
+      },
+      "awakenings_bias": {
+       "point": -14.16,
+       "ci_low": -17.08,
+       "ci_high": -11.639000000000006
+      },
+      "awakenings_mae": {
+       "point": 14.16,
+       "ci_low": 11.639000000000003,
+       "ci_high": 17.08
+      }
+     },
+     "bland_altman": {
+      "tst_min": {
+       "bias": 94.14,
+       "mae": 94.14,
+       "sd": 44.46288714572338,
+       "loa_low": 6.992741194382177,
+       "loa_high": 181.28725880561782
+      },
+      "se_pct": {
+       "bias": 22.836871554870125,
+       "mae": 22.836871554870125,
+       "sd": 10.936513096735283,
+       "loa_low": 1.4013058852689717,
+       "loa_high": 44.272437224471275
+      },
+      "awakenings": {
+       "bias": -14.16,
+       "mae": 14.16,
+       "sd": 7.063285354564122,
+       "loa_low": -28.004039294945677,
+       "loa_high": -0.31596070505432117
+      }
+     },
+     "predicted_class": "sleep",
+     "note": "Identical to the lights-off baseline: the training majority class is the same class."
+    }
+   },
+   "data": {
+    "train": {
+     "cap": {
+      "records": 49,
+      "subjects": 49,
+      "epochs_labeled": 49451,
+      "epochs_used_for_fitting": 47385
+     },
+     "slpdb": {
+      "records": 18,
+      "subjects": 16,
+      "epochs_labeled": 10181,
+      "epochs_used_for_fitting": 10145
+     }
+    },
+    "test": {
+     "ucddb": {
+      "records": 25,
+      "subjects": 25,
+      "epochs_labeled": 20774,
+      "epochs_low_quality": 169
+     }
+    },
+    "class_counts_train": {
+     "sleep": 45806,
+     "wake": 13826
+    },
+    "class_counts_test": {
+     "sleep": 16067,
+     "wake": 4707
+    }
+   }
+  },
+  "wake_nrem_rem": {
+   "labels": [
+    "wake",
+    "nrem",
+    "rem"
+   ],
+   "unit": "epoch",
+   "models": {
+    "gradient_boosting": {
+     "n_features": 119,
+     "internal_cv": {
+      "n_records": 67,
+      "n_epochs": 59632,
+      "labels": [
+       "wake",
+       "nrem",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        7545,
+        5365,
+        916
+       ],
+       [
+        3672,
+        31267,
+        1598
+       ],
+       [
+        1036,
+        4916,
+        3317
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.42477200989422953,
+        "ci_low": 0.3645309884882355,
+        "ci_high": 0.4802122116920843
+       },
+       "accuracy": {
+        "point": 0.7064830963241213,
+        "ci_low": 0.6744238123046503,
+        "ci_high": 0.7372822186395183
+       },
+       "recall_wake": {
+        "point": 0.5457109793143353,
+        "ci_low": 0.4791219135910566,
+        "ci_high": 0.6155886250917056
+       },
+       "precision_wake": {
+        "point": 0.615767567126418,
+        "ci_low": 0.52131712451314,
+        "ci_high": 0.7050823681155569
+       },
+       "minutes_bias_wake": {
+        "point": -11.738805970149254,
+        "ci_low": -29.38712121212121,
+        "ci_high": 5.1449842436974675
+       },
+       "minutes_mae_wake": {
+        "point": 50.97761194029851,
+        "ci_low": 38.41595149253731,
+        "ci_high": 65.22802473262033
+       },
+       "recall_nrem": {
+        "point": 0.8557626515586939,
+        "ci_low": 0.8205679024012258,
+        "ci_high": 0.8849721236593521
+       },
+       "precision_nrem": {
+        "point": 0.7525512660055839,
+        "ci_low": 0.7165199324375612,
+        "ci_high": 0.7851598090533725
+       },
+       "minutes_bias_nrem": {
+        "point": 37.3955223880597,
+        "ci_low": 22.13391132572432,
+        "ci_high": 53.1536538461538
+       },
+       "minutes_mae_nrem": {
+        "point": 59.87313432835821,
+        "ci_low": 47.69263130252101,
+        "ci_high": 72.6530303030303
+       },
+       "recall_rem": {
+        "point": 0.35785953177257523,
+        "ci_low": 0.27852953883820225,
+        "ci_high": 0.4329266079428331
+       },
+       "precision_rem": {
+        "point": 0.568856113874121,
+        "ci_low": 0.4839830303754957,
+        "ci_high": 0.6437452659247371
+       },
+       "minutes_bias_rem": {
+        "point": -25.65671641791045,
+        "ci_low": -33.86176470588235,
+        "ci_high": -17.139382249378627
+       },
+       "minutes_mae_rem": {
+        "point": 32.134328358208954,
+        "ci_low": 25.211262620719936,
+        "ci_high": 39.364620081411125
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "labels": [
+       "wake",
+       "nrem",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        2063,
+        2158,
+        486
+       ],
+       [
+        1277,
+        10851,
+        923
+       ],
+       [
+        502,
+        1588,
+        926
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.3328905941464702,
+        "ci_low": 0.2635325874881031,
+        "ci_high": 0.39655355061087966
+       },
+       "accuracy": {
+        "point": 0.6662173871185135,
+        "ci_low": 0.6324030183798779,
+        "ci_high": 0.6997133937859626
+       },
+       "recall_wake": {
+        "point": 0.4382834076906735,
+        "ci_low": 0.3478171436433682,
+        "ci_high": 0.521967684731162
+       },
+       "precision_wake": {
+        "point": 0.5369599167100468,
+        "ci_low": 0.4516725707970076,
+        "ci_high": 0.6416460872416204
+       },
+       "minutes_bias_wake": {
+        "point": -17.3,
+        "ci_low": -40.16299999999999,
+        "ci_high": 5.862999999999984
+       },
+       "minutes_mae_wake": {
+        "point": 47.7,
+        "ci_low": 33.3185,
+        "ci_high": 63.94149999999999
+       },
+       "recall_nrem": {
+        "point": 0.8314305417209409,
+        "ci_low": 0.7925463209242849,
+        "ci_high": 0.8703963731802731
+       },
+       "precision_nrem": {
+        "point": 0.7433719257381654,
+        "ci_low": 0.7025645494585381,
+        "ci_high": 0.7847730640992057
+       },
+       "minutes_bias_nrem": {
+        "point": 30.92,
+        "ci_low": 8.895000000000008,
+        "ci_high": 52.281499999999994
+       },
+       "minutes_mae_nrem": {
+        "point": 54.24,
+        "ci_low": 40.818000000000005,
+        "ci_high": 68.7805
+       },
+       "recall_rem": {
+        "point": 0.30702917771883287,
+        "ci_low": 0.20394938900071002,
+        "ci_high": 0.4101165076046805
+       },
+       "precision_rem": {
+        "point": 0.39657387580299786,
+        "ci_low": 0.2942322511488982,
+        "ci_high": 0.5046951426130001
+       },
+       "minutes_bias_rem": {
+        "point": -13.62,
+        "ci_low": -29.261999999999997,
+        "ci_high": 1.5409999999999946
+       },
+       "minutes_mae_rem": {
+        "point": 33.22,
+        "ci_low": 23.5,
+        "ci_high": 44.76149999999999
+       }
+      }
+     },
+     "external_ucddb_sleep_wake": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.350318307495065,
+        "ci_low": 0.273591212521782,
+        "ci_high": 0.41594309930315027
+       },
+       "kappa_mean_per_record": {
+        "point": 0.33888298993614596,
+        "ci_low": 0.2862030956497568,
+        "ci_high": 0.39114574527508517
+       },
+       "accuracy": {
+        "point": 0.7870896312698565,
+        "ci_low": 0.7527969871141557,
+        "ci_high": 0.8191728675620841
+       },
+       "wake_sensitivity": {
+        "point": 0.4382834076906735,
+        "ci_low": 0.3478171436433682,
+        "ci_high": 0.521967684731162
+       },
+       "sleep_sensitivity": {
+        "point": 0.8892761560963466,
+        "ci_low": 0.8448026807691433,
+        "ci_high": 0.9289362903932471
+       },
+       "tst_bias_min": {
+        "point": 17.3,
+        "ci_low": -5.862999999999995,
+        "ci_high": 40.16299999999998
+       },
+       "tst_mae_min": {
+        "point": 47.7,
+        "ci_low": 33.3185,
+        "ci_high": 63.94149999999999
+       },
+       "se_bias_pctpt": {
+        "point": 4.143738029218147,
+        "ci_low": -1.299156263950027,
+        "ci_high": 9.553332124818628
+       },
+       "se_mae_pctpt": {
+        "point": 11.310273151805486,
+        "ci_low": 8.006683922975448,
+        "ci_high": 15.07561655265312
+       },
+       "awakenings_bias": {
+        "point": 0.76,
+        "ci_low": -2.32,
+        "ci_high": 3.5609999999999946
+       },
+       "awakenings_mae": {
+        "point": 5.96,
+        "ci_low": 4.28,
+        "ci_high": 7.8
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": 17.3,
+        "mae": 47.7,
+        "sd": 60.74279792699707,
+        "loa_low": -101.75588393691426,
+        "loa_high": 136.35588393691427
+       },
+       "se_pct": {
+        "bias": 4.143738029218147,
+        "mae": 11.310273151805486,
+        "sd": 14.301339016006933,
+        "loa_low": -23.886886442155443,
+        "loa_high": 32.174362500591734
+       },
+       "awakenings": {
+        "bias": 0.76,
+        "mae": 5.96,
+        "sd": 7.595393340703298,
+        "loa_low": -14.126970947778464,
+        "loa_high": 15.646970947778463
+       }
+      }
+     },
+     "threshold": null
+    },
+    "logistic_regression": {
+     "n_features": 98,
+     "internal_cv": {
+      "n_records": 67,
+      "n_epochs": 59632,
+      "labels": [
+       "wake",
+       "nrem",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        4941,
+        8044,
+        841
+       ],
+       [
+        2603,
+        32756,
+        1178
+       ],
+       [
+        1293,
+        6100,
+        1876
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.289737360495407,
+        "ci_low": 0.23566645642248543,
+        "ci_high": 0.3380514128857895
+       },
+       "accuracy": {
+        "point": 0.6636202039173598,
+        "ci_low": 0.6297323929051634,
+        "ci_high": 0.6954858800978475
+       },
+       "recall_wake": {
+        "point": 0.35737017213944744,
+        "ci_low": 0.3057280142456384,
+        "ci_high": 0.4128521855620223
+       },
+       "precision_wake": {
+        "point": 0.5591264003621138,
+        "ci_low": 0.45202664911160984,
+        "ci_high": 0.6715042670188108
+       },
+       "minutes_bias_wake": {
+        "point": -37.23134328358209,
+        "ci_low": -59.988212347354136,
+        "ci_high": -17.678917910447762
+       },
+       "minutes_mae_wake": {
+        "point": 67.9776119402985,
+        "ci_low": 50.947528702640646,
+        "ci_high": 86.83881787330317
+       },
+       "recall_nrem": {
+        "point": 0.8965158606344253,
+        "ci_low": 0.8622788651402326,
+        "ci_high": 0.9240500800100448
+       },
+       "precision_nrem": {
+        "point": 0.6984221748400853,
+        "ci_low": 0.6610673467357628,
+        "ci_high": 0.7330321395327773
+       },
+       "minutes_bias_nrem": {
+        "point": 77.33582089552239,
+        "ci_low": 60.01721630816507,
+        "ci_high": 96.1975565514298
+       },
+       "minutes_mae_nrem": {
+        "point": 88.81343283582089,
+        "ci_low": 72.77842809364549,
+        "ci_high": 106.07727272727273
+       },
+       "recall_rem": {
+        "point": 0.20239508037544504,
+        "ci_low": 0.15044575957699666,
+        "ci_high": 0.25319164016775897
+       },
+       "precision_rem": {
+        "point": 0.4816431322207959,
+        "ci_low": 0.3963816218813571,
+        "ci_high": 0.5657621031147078
+       },
+       "minutes_bias_rem": {
+        "point": -40.1044776119403,
+        "ci_low": -49.534023066485744,
+        "ci_high": -30.991940298507462
+       },
+       "minutes_mae_rem": {
+        "point": 44.73134328358209,
+        "ci_low": 36.838487251243784,
+        "ci_high": 53.09905303030303
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "labels": [
+       "wake",
+       "nrem",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        1531,
+        2906,
+        270
+       ],
+       [
+        744,
+        12016,
+        291
+       ],
+       [
+        371,
+        2198,
+        447
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.2688215162923894,
+        "ci_low": 0.21110219953300602,
+        "ci_high": 0.3216430211265816
+       },
+       "accuracy": {
+        "point": 0.6736304996630403,
+        "ci_low": 0.6460901500770556,
+        "ci_high": 0.700447912496656
+       },
+       "recall_wake": {
+        "point": 0.325260250690461,
+        "ci_low": 0.2599569334243244,
+        "ci_high": 0.38709010746283473
+       },
+       "precision_wake": {
+        "point": 0.5786092214663643,
+        "ci_low": 0.49798450013207496,
+        "ci_high": 0.6656278360306321
+       },
+       "minutes_bias_wake": {
+        "point": -41.22,
+        "ci_low": -57.44199999999999,
+        "ci_high": -25.636000000000024
+       },
+       "minutes_mae_wake": {
+        "point": 45.14,
+        "ci_low": 31.758500000000005,
+        "ci_high": 59.2405
+       },
+       "recall_nrem": {
+        "point": 0.9206957321278063,
+        "ci_low": 0.8977082582538871,
+        "ci_high": 0.9413859686648514
+       },
+       "precision_nrem": {
+        "point": 0.7018691588785047,
+        "ci_low": 0.6696866731785241,
+        "ci_high": 0.7348306436212787
+       },
+       "minutes_bias_nrem": {
+        "point": 81.38,
+        "ci_low": 67.19500000000001,
+        "ci_high": 94.6205
+       },
+       "minutes_mae_nrem": {
+        "point": 81.38,
+        "ci_low": 67.19500000000001,
+        "ci_high": 94.6205
+       },
+       "recall_rem": {
+        "point": 0.14820954907161804,
+        "ci_low": 0.08533535758317179,
+        "ci_high": 0.2244064597867973
+       },
+       "precision_rem": {
+        "point": 0.44345238095238093,
+        "ci_low": 0.29411764705882354,
+        "ci_high": 0.5839396970724539
+       },
+       "minutes_bias_rem": {
+        "point": -40.16,
+        "ci_low": -53.580999999999996,
+        "ci_high": -27.3595
+       },
+       "minutes_mae_rem": {
+        "point": 42.76,
+        "ci_low": 31.279500000000002,
+        "ci_high": 54.980999999999995
+       }
+      }
+     },
+     "external_ucddb_sleep_wake": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.30272219774665504,
+        "ci_low": 0.23713712978623092,
+        "ci_high": 0.3644368433622961
+       },
+       "kappa_mean_per_record": {
+        "point": 0.27681244752832623,
+        "ci_low": 0.22495528440045928,
+        "ci_high": 0.33257331766683434
+       },
+       "accuracy": {
+        "point": 0.7934437277365938,
+        "ci_low": 0.7615900195694717,
+        "ci_high": 0.8235361407813777
+       },
+       "wake_sensitivity": {
+        "point": 0.325260250690461,
+        "ci_low": 0.2599569334243244,
+        "ci_high": 0.38709010746283473
+       },
+       "sleep_sensitivity": {
+        "point": 0.9306030995207568,
+        "ci_low": 0.9103348804300969,
+        "ci_high": 0.9496232008989923
+       },
+       "tst_bias_min": {
+        "point": 41.22,
+        "ci_low": 25.636000000000006,
+        "ci_high": 57.441999999999986
+       },
+       "tst_mae_min": {
+        "point": 45.14,
+        "ci_low": 31.758500000000005,
+        "ci_high": 59.2405
+       },
+       "se_bias_pctpt": {
+        "point": 10.166245521991714,
+        "ci_low": 6.396823692151588,
+        "ci_high": 14.099232302419944
+       },
+       "se_mae_pctpt": {
+        "point": 11.052999217888932,
+        "ci_low": 7.777229738595895,
+        "ci_high": 14.539006197298487
+       },
+       "awakenings_bias": {
+        "point": -1.76,
+        "ci_low": -4.8809999999999985,
+        "ci_high": 1.04
+       },
+       "awakenings_mae": {
+        "point": 5.28,
+        "ci_low": 3.28,
+        "ci_high": 7.68
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": 41.22,
+        "mae": 45.14,
+        "sd": 41.742534262627935,
+        "loa_low": -40.59536715475075,
+        "loa_high": 123.03536715475074
+       },
+       "se_pct": {
+        "bias": 10.166245521991714,
+        "mae": 11.052999217888932,
+        "sd": 10.114943111403958,
+        "loa_low": -9.659042976360043,
+        "loa_high": 29.991534020343472
+       },
+       "awakenings": {
+        "bias": -1.76,
+        "mae": 5.28,
+        "sd": 7.671809869037857,
+        "loa_low": -16.796747343314202,
+        "loa_high": 13.2767473433142
+       }
+      }
+     },
+     "threshold": null
+    }
+   },
+   "baselines": {
+    "asleep_from_lights_off": {
+     "n_records": 25,
+     "n_epochs": 20774,
+     "labels": [
+      "wake",
+      "nrem",
+      "rem"
+     ],
+     "confusion_matrix_rows_ref_cols_pred": [
+      [
+       0,
+       4707,
+       0
+      ],
+      [
+       0,
+       13051,
+       0
+      ],
+      [
+       0,
+       3016,
+       0
+      ]
+     ],
+     "metrics": {
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.6282372196014249,
+       "ci_low": 0.6014204097317019,
+       "ci_high": 0.6536237958802413
+      },
+      "recall_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_wake": {
+       "point": -94.14,
+       "ci_low": -111.74199999999999,
+       "ci_high": -78.19850000000001
+      },
+      "minutes_mae_wake": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "recall_nrem": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      },
+      "precision_nrem": {
+       "point": 0.6282372196014249,
+       "ci_low": 0.6014204097317019,
+       "ci_high": 0.6536237958802413
+      },
+      "minutes_bias_nrem": {
+       "point": 154.46,
+       "ci_low": 144.79950000000002,
+       "ci_high": 164.6805
+      },
+      "minutes_mae_nrem": {
+       "point": 154.46,
+       "ci_low": 144.79950000000002,
+       "ci_high": 164.6805
+      },
+      "recall_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_rem": {
+       "point": -60.32,
+       "ci_low": -72.363,
+       "ci_high": -48.099000000000004
+      },
+      "minutes_mae_rem": {
+       "point": 60.32,
+       "ci_low": 48.099000000000004,
+       "ci_high": 72.36299999999999
+      }
+     },
+     "predicted_class": "nrem",
+     "note": "Every epoch predicted as 'nrem', the most common sleep stage."
+    },
+    "majority_class": {
+     "n_records": 25,
+     "n_epochs": 20774,
+     "labels": [
+      "wake",
+      "nrem",
+      "rem"
+     ],
+     "confusion_matrix_rows_ref_cols_pred": [
+      [
+       0,
+       4707,
+       0
+      ],
+      [
+       0,
+       13051,
+       0
+      ],
+      [
+       0,
+       3016,
+       0
+      ]
+     ],
+     "metrics": {
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.6282372196014249,
+       "ci_low": 0.6014204097317019,
+       "ci_high": 0.6536237958802413
+      },
+      "recall_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_wake": {
+       "point": -94.14,
+       "ci_low": -111.74199999999999,
+       "ci_high": -78.19850000000001
+      },
+      "minutes_mae_wake": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "recall_nrem": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      },
+      "precision_nrem": {
+       "point": 0.6282372196014249,
+       "ci_low": 0.6014204097317019,
+       "ci_high": 0.6536237958802413
+      },
+      "minutes_bias_nrem": {
+       "point": 154.46,
+       "ci_low": 144.79950000000002,
+       "ci_high": 164.6805
+      },
+      "minutes_mae_nrem": {
+       "point": 154.46,
+       "ci_low": 144.79950000000002,
+       "ci_high": 164.6805
+      },
+      "recall_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_rem": {
+       "point": -60.32,
+       "ci_low": -72.363,
+       "ci_high": -48.099000000000004
+      },
+      "minutes_mae_rem": {
+       "point": 60.32,
+       "ci_low": 48.099000000000004,
+       "ci_high": 72.36299999999999
+      }
+     },
+     "predicted_class": "nrem",
+     "note": "Identical to the lights-off baseline: the training majority class is the same class."
+    }
+   },
+   "data": {
+    "train": {
+     "cap": {
+      "records": 49,
+      "subjects": 49,
+      "epochs_labeled": 49451,
+      "epochs_used_for_fitting": 47385
+     },
+     "slpdb": {
+      "records": 18,
+      "subjects": 16,
+      "epochs_labeled": 10181,
+      "epochs_used_for_fitting": 10145
+     }
+    },
+    "test": {
+     "ucddb": {
+      "records": 25,
+      "subjects": 25,
+      "epochs_labeled": 20774,
+      "epochs_low_quality": 169
+     }
+    },
+    "class_counts_train": {
+     "wake": 13826,
+     "nrem": 36537,
+     "rem": 9269
+    },
+    "class_counts_test": {
+     "wake": 4707,
+     "nrem": 13051,
+     "rem": 3016
+    }
+   }
+  },
+  "four_class": {
+   "labels": [
+    "wake",
+    "light",
+    "deep",
+    "rem"
+   ],
+   "unit": "epoch",
+   "models": {
+    "gradient_boosting": {
+     "n_features": 119,
+     "internal_cv": {
+      "n_records": 67,
+      "n_epochs": 59632,
+      "labels": [
+       "wake",
+       "light",
+       "deep",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        8047,
+        4268,
+        506,
+        1005
+       ],
+       [
+        3516,
+        17790,
+        2230,
+        1704
+       ],
+       [
+        754,
+        5752,
+        4496,
+        295
+       ],
+       [
+        1128,
+        4425,
+        249,
+        3467
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.36134907814680384,
+        "ci_low": 0.31347093722753056,
+        "ci_high": 0.4080061494865826
+       },
+       "accuracy": {
+        "point": 0.5668097665682855,
+        "ci_low": 0.5344072998789025,
+        "ci_high": 0.5975741048424882
+       },
+       "recall_wake": {
+        "point": 0.5820193837697093,
+        "ci_low": 0.5141138330553864,
+        "ci_high": 0.6514160414307054
+       },
+       "precision_wake": {
+        "point": 0.5985124581628858,
+        "ci_low": 0.5094355690798857,
+        "ci_high": 0.6837757251410782
+       },
+       "minutes_bias_wake": {
+        "point": -2.843283582089552,
+        "ci_low": -20.66406387181738,
+        "ci_high": 14.27950767263425
+       },
+       "minutes_mae_wake": {
+        "point": 50.24626865671642,
+        "ci_low": 37.69372455902307,
+        "ci_high": 64.52262675592624
+       },
+       "recall_light": {
+        "point": 0.7048335974643423,
+        "ci_low": 0.6614685046756075,
+        "ci_high": 0.7433324027957305
+       },
+       "precision_light": {
+        "point": 0.5518845974872033,
+        "ci_low": 0.5110599727498807,
+        "ci_high": 0.5922560732267859
+       },
+       "minutes_bias_light": {
+        "point": 52.201492537313435,
+        "ci_low": 33.417238805970165,
+        "ci_high": 70.6206439393939
+       },
+       "minutes_mae_light": {
+        "point": 71.76865671641791,
+        "ci_low": 56.65125418060201,
+        "ci_high": 87.29184557979335
+       },
+       "recall_deep": {
+        "point": 0.39798176507037264,
+        "ci_low": 0.336025178679344,
+        "ci_high": 0.4599635813025158
+       },
+       "precision_deep": {
+        "point": 0.600989172570512,
+        "ci_low": 0.5437709583456652,
+        "ci_high": 0.6570741115685961
+       },
+       "minutes_bias_deep": {
+        "point": -28.47761194029851,
+        "ci_low": -38.61806409130816,
+        "ci_high": -18.698345588235295
+       },
+       "minutes_mae_deep": {
+        "point": 37.985074626865675,
+        "ci_low": 30.058582089552242,
+        "ci_high": 46.15965909090909
+       },
+       "recall_rem": {
+        "point": 0.37404250728233895,
+        "ci_low": 0.2950478182382143,
+        "ci_high": 0.4475794821653579
+       },
+       "precision_rem": {
+        "point": 0.5357749961366095,
+        "ci_low": 0.45517590646070305,
+        "ci_high": 0.609578986336414
+       },
+       "minutes_bias_rem": {
+        "point": -20.880597014925375,
+        "ci_low": -29.599147727272726,
+        "ci_high": -11.655450022614207
+       },
+       "minutes_mae_rem": {
+        "point": 32.35820895522388,
+        "ci_low": 25.595915309814565,
+        "ci_high": 39.568136589778376
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "labels": [
+       "wake",
+       "light",
+       "deep",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        2171,
+        1855,
+        141,
+        540
+       ],
+       [
+        1452,
+        6745,
+        1184,
+        1007
+       ],
+       [
+        107,
+        1080,
+        1324,
+        152
+       ],
+       [
+        562,
+        1299,
+        185,
+        970
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.29472705444100206,
+        "ci_low": 0.24136478166888045,
+        "ci_high": 0.3465785770802755
+       },
+       "accuracy": {
+        "point": 0.5396168287282179,
+        "ci_low": 0.5029474294549672,
+        "ci_high": 0.5743591773807861
+       },
+       "recall_wake": {
+        "point": 0.4612279583598895,
+        "ci_low": 0.3639840814180872,
+        "ci_high": 0.5473088379284122
+       },
+       "precision_wake": {
+        "point": 0.5058247903075489,
+        "ci_low": 0.4183529344566615,
+        "ci_high": 0.6098757762612782
+       },
+       "minutes_bias_wake": {
+        "point": -8.3,
+        "ci_low": -32.5015,
+        "ci_high": 16.681499999999993
+       },
+       "minutes_mae_wake": {
+        "point": 50.62,
+        "ci_low": 35.5375,
+        "ci_high": 67.401
+       },
+       "recall_light": {
+        "point": 0.6493068925683481,
+        "ci_low": 0.5972253924222388,
+        "ci_high": 0.6993396611930695
+       },
+       "precision_light": {
+        "point": 0.614354677110848,
+        "ci_low": 0.5546641213872864,
+        "ci_high": 0.6701034106500886
+       },
+       "minutes_bias_light": {
+        "point": 11.82,
+        "ci_low": -13.400999999999998,
+        "ci_high": 39.140499999999996
+       },
+       "minutes_mae_light": {
+        "point": 55.02,
+        "ci_low": 41.14,
+        "ci_high": 71.002
+       },
+       "recall_deep": {
+        "point": 0.4971836274877957,
+        "ci_low": 0.37992777107828357,
+        "ci_high": 0.6092680063609609
+       },
+       "precision_deep": {
+        "point": 0.4671841919548342,
+        "ci_low": 0.39882149746698636,
+        "ci_high": 0.5329408395686536
+       },
+       "minutes_bias_deep": {
+        "point": 3.42,
+        "ci_low": -10.160999999999998,
+        "ci_high": 17.1405
+       },
+       "minutes_mae_deep": {
+        "point": 25.86,
+        "ci_low": 17.3795,
+        "ci_high": 34.580499999999994
+       },
+       "recall_rem": {
+        "point": 0.32161803713527853,
+        "ci_low": 0.22167247718813557,
+        "ci_high": 0.42290914141879454
+       },
+       "precision_rem": {
+        "point": 0.3634319970026227,
+        "ci_low": 0.27445262040172996,
+        "ci_high": 0.4528462515350131
+       },
+       "minutes_bias_rem": {
+        "point": -6.94,
+        "ci_low": -22.822999999999993,
+        "ci_high": 8.284499999999975
+       },
+       "minutes_mae_rem": {
+        "point": 32.38,
+        "ci_low": 22.3595,
+        "ci_high": 43.46199999999999
+       }
+      }
+     },
+     "external_ucddb_sleep_wake": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.3398096434034429,
+        "ci_low": 0.2567025159036799,
+        "ci_high": 0.41397757033029575
+       },
+       "kappa_mean_per_record": {
+        "point": 0.332664810792282,
+        "ci_low": 0.2703863781900953,
+        "ci_high": 0.3911840572307795
+       },
+       "accuracy": {
+        "point": 0.7758255511697314,
+        "ci_low": 0.7377993120035865,
+        "ci_high": 0.8104265344324535
+       },
+       "wake_sensitivity": {
+        "point": 0.4612279583598895,
+        "ci_low": 0.3639840814180872,
+        "ci_high": 0.5473088379284122
+       },
+       "sleep_sensitivity": {
+        "point": 0.8679902906578701,
+        "ci_low": 0.8174161916106526,
+        "ci_high": 0.9141714290319121
+       },
+       "tst_bias_min": {
+        "point": 8.3,
+        "ci_low": -16.681499999999996,
+        "ci_high": 32.50149999999999
+       },
+       "tst_mae_min": {
+        "point": 50.62,
+        "ci_low": 35.5375,
+        "ci_high": 67.401
+       },
+       "se_bias_pctpt": {
+        "point": 1.9509728388770793,
+        "ci_low": -3.9304438473220467,
+        "ci_high": 7.7033125532700994
+       },
+       "se_mae_pctpt": {
+        "point": 12.076038081161387,
+        "ci_low": 8.572317698105053,
+        "ci_high": 15.95828260496218
+       },
+       "awakenings_bias": {
+        "point": 2.76,
+        "ci_low": -0.4,
+        "ci_high": 6.161999999999989
+       },
+       "awakenings_mae": {
+        "point": 6.76,
+        "ci_low": 4.68,
+        "ci_high": 9.280999999999993
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": 8.3,
+        "mae": 50.62,
+        "sd": 66.02335445380925,
+        "loa_low": -121.10577472946612,
+        "loa_high": 137.70577472946613
+       },
+       "se_pct": {
+        "bias": 1.9509728388770793,
+        "mae": 12.076038081161387,
+        "sd": 15.596585386774455,
+        "loa_low": -28.618334519200854,
+        "loa_high": 32.520280196955014
+       },
+       "awakenings": {
+        "bias": 2.76,
+        "mae": 6.76,
+        "sd": 8.728688332160795,
+        "loa_low": -14.34822913103516,
+        "loa_high": 19.868229131035157
+       }
+      }
+     },
+     "threshold": null
+    },
+    "logistic_regression": {
+     "n_features": 98,
+     "internal_cv": {
+      "n_records": 67,
+      "n_epochs": 59632,
+      "labels": [
+       "wake",
+       "light",
+       "deep",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        5893,
+        5773,
+        1141,
+        1019
+       ],
+       [
+        3007,
+        18681,
+        2367,
+        1185
+       ],
+       [
+        847,
+        6048,
+        4018,
+        384
+       ],
+       [
+        1586,
+        5175,
+        255,
+        2253
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.2744681050878295,
+        "ci_low": 0.23022213506257136,
+        "ci_high": 0.3176723207174995
+       },
+       "accuracy": {
+        "point": 0.5172558357928629,
+        "ci_low": 0.4857701935566722,
+        "ci_high": 0.5483628543250388
+       },
+       "recall_wake": {
+        "point": 0.4262259511066107,
+        "ci_low": 0.3748134485912539,
+        "ci_high": 0.48083094628878803
+       },
+       "precision_wake": {
+        "point": 0.519985881937704,
+        "ci_low": 0.4289553941393024,
+        "ci_high": 0.618667291231929
+       },
+       "minutes_bias_wake": {
+        "point": -18.604477611940297,
+        "ci_low": -40.87212686567164,
+        "ci_high": 0.8403563348416174
+       },
+       "minutes_mae_wake": {
+        "point": 65.82835820895522,
+        "ci_low": 50.726281108597284,
+        "ci_high": 83.27135746606331
+       },
+       "recall_light": {
+        "point": 0.74013470681458,
+        "ci_low": 0.6997459272190419,
+        "ci_high": 0.7759655808326426
+       },
+       "precision_light": {
+        "point": 0.5236146536984612,
+        "ci_low": 0.4841386651080313,
+        "ci_high": 0.5638564900419885
+       },
+       "minutes_bias_light": {
+        "point": 77.88805970149254,
+        "ci_low": 60.26452762923351,
+        "ci_high": 96.86194852941175
+       },
+       "minutes_mae_light": {
+        "point": 88.55970149253731,
+        "ci_low": 73.25298507462686,
+        "ci_high": 104.54897624434386
+       },
+       "recall_deep": {
+        "point": 0.3556696468088873,
+        "ci_low": 0.2892757682439886,
+        "ci_high": 0.4264729760113798
+       },
+       "precision_deep": {
+        "point": 0.516386068628711,
+        "ci_low": 0.43407156759926196,
+        "ci_high": 0.5969185189051892
+       },
+       "minutes_bias_deep": {
+        "point": -26.238805970149254,
+        "ci_low": -40.73096153846154,
+        "ci_high": -11.872328697421985
+       },
+       "minutes_mae_deep": {
+        "point": 50.223880597014926,
+        "ci_low": 40.85067326411421,
+        "ci_high": 60.32023987206819
+       },
+       "recall_rem": {
+        "point": 0.2430682921566512,
+        "ci_low": 0.18688861267711554,
+        "ci_high": 0.29629834297104085
+       },
+       "precision_rem": {
+        "point": 0.46539971080355297,
+        "ci_low": 0.3920512876084488,
+        "ci_high": 0.5379434799390683
+       },
+       "minutes_bias_rem": {
+        "point": -33.04477611940298,
+        "ci_low": -42.44147727272727,
+        "ci_high": -23.71136363636364
+       },
+       "minutes_mae_rem": {
+        "point": 40.791044776119406,
+        "ci_low": 32.933612269534684,
+        "ci_high": 48.792352941176475
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "labels": [
+       "wake",
+       "light",
+       "deep",
+       "rem"
+      ],
+      "confusion_matrix_rows_ref_cols_pred": [
+       [
+        1886,
+        2213,
+        264,
+        344
+       ],
+       [
+        1112,
+        7861,
+        998,
+        417
+       ],
+       [
+        175,
+        1268,
+        1156,
+        64
+       ],
+       [
+        457,
+        1826,
+        152,
+        581
+       ]
+      ],
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.2761022922675096,
+        "ci_low": 0.22147034566717827,
+        "ci_high": 0.3257119754457599
+       },
+       "accuracy": {
+        "point": 0.5528063926061423,
+        "ci_low": 0.5162380155331764,
+        "ci_high": 0.5859267683599675
+       },
+       "recall_wake": {
+        "point": 0.40067983853834716,
+        "ci_low": 0.3222287372820667,
+        "ci_high": 0.4714866340437578
+       },
+       "precision_wake": {
+        "point": 0.5195592286501377,
+        "ci_low": 0.4378953937258578,
+        "ci_high": 0.6011966402680444
+       },
+       "minutes_bias_wake": {
+        "point": -21.54,
+        "ci_low": -37.541,
+        "ci_high": -5.796500000000019
+       },
+       "minutes_mae_wake": {
+        "point": 36.5,
+        "ci_low": 26.317500000000006,
+        "ci_high": 48.18
+       },
+       "recall_light": {
+        "point": 0.7567385444743935,
+        "ci_low": 0.7158020661459522,
+        "ci_high": 0.7950551931746138
+       },
+       "precision_light": {
+        "point": 0.5969775212636695,
+        "ci_low": 0.5414388133731455,
+        "ci_high": 0.6502837472031127
+       },
+       "minutes_bias_light": {
+        "point": 55.6,
+        "ci_low": 32.73800000000001,
+        "ci_high": 77.66149999999999
+       },
+       "minutes_mae_light": {
+        "point": 69.64,
+        "ci_low": 54.7185,
+        "ci_high": 85.4
+       },
+       "recall_deep": {
+        "point": 0.4340968832144198,
+        "ci_low": 0.307968375321661,
+        "ci_high": 0.5613481155925097
+       },
+       "precision_deep": {
+        "point": 0.44980544747081713,
+        "ci_low": 0.3343240599739493,
+        "ci_high": 0.562112756567805
+       },
+       "minutes_bias_deep": {
+        "point": -1.86,
+        "ci_low": -18.642499999999995,
+        "ci_high": 14.400499999999997
+       },
+       "minutes_mae_deep": {
+        "point": 33.54,
+        "ci_low": 24.558500000000002,
+        "ci_high": 43.041
+       },
+       "recall_rem": {
+        "point": 0.1926392572944297,
+        "ci_low": 0.12359880263517624,
+        "ci_high": 0.27068458302944887
+       },
+       "precision_rem": {
+        "point": 0.4132290184921764,
+        "ci_low": 0.2862264956831651,
+        "ci_high": 0.5365714589251847
+       },
+       "minutes_bias_rem": {
+        "point": -32.2,
+        "ci_low": -45.34,
+        "ci_high": -19.895000000000024
+       },
+       "minutes_mae_rem": {
+        "point": 36.2,
+        "ci_low": 25.619000000000003,
+        "ci_high": 47.64
+       }
+      }
+     },
+     "external_ucddb_sleep_wake": {
+      "n_records": 25,
+      "n_epochs": 20774,
+      "metrics": {
+       "kappa_pooled": {
+        "point": 0.31784421147176084,
+        "ci_low": 0.24102644723179395,
+        "ci_high": 0.388196227094738
+       },
+       "kappa_mean_per_record": {
+        "point": 0.2932387908212314,
+        "ci_low": 0.22813517672494832,
+        "ci_high": 0.35992898353812214
+       },
+       "accuracy": {
+        "point": 0.7802541638586695,
+        "ci_low": 0.7484598490145312,
+        "ci_high": 0.8093586335237973
+       },
+       "wake_sensitivity": {
+        "point": 0.40067983853834716,
+        "ci_low": 0.3222287372820667,
+        "ci_high": 0.4714866340437578
+       },
+       "sleep_sensitivity": {
+        "point": 0.8914545341382959,
+        "ci_low": 0.8711356765188318,
+        "ci_high": 0.9125965442107615
+       },
+       "tst_bias_min": {
+        "point": 21.54,
+        "ci_low": 5.796500000000006,
+        "ci_high": 37.541
+       },
+       "tst_mae_min": {
+        "point": 36.5,
+        "ci_low": 26.317500000000006,
+        "ci_high": 48.18
+       },
+       "se_bias_pctpt": {
+        "point": 5.4247044583925526,
+        "ci_low": 1.661362975730296,
+        "ci_high": 9.282685946436382
+       },
+       "se_mae_pctpt": {
+        "point": 8.818345573504146,
+        "ci_low": 6.324410735815446,
+        "ci_high": 11.709543864524678
+       },
+       "awakenings_bias": {
+        "point": 1.08,
+        "ci_low": -1.9609999999999983,
+        "ci_high": 3.68
+       },
+       "awakenings_mae": {
+        "point": 6.2,
+        "ci_low": 4.8,
+        "ci_high": 7.84
+       }
+      },
+      "bland_altman": {
+       "tst_min": {
+        "bias": 21.54,
+        "mae": 36.5,
+        "sd": 42.81474629143562,
+        "loa_low": -62.37690273121381,
+        "loa_high": 105.4569027312138
+       },
+       "se_pct": {
+        "bias": 5.4247044583925526,
+        "mae": 8.818345573504146,
+        "sd": 10.231453854406782,
+        "loa_low": -14.62894509624474,
+        "loa_high": 25.478354013029843
+       },
+       "awakenings": {
+        "bias": 1.08,
+        "mae": 6.2,
+        "sd": 7.336665909435066,
+        "loa_low": -13.299865182492729,
+        "loa_high": 15.45986518249273
+       }
+      }
+     },
+     "threshold": null
+    }
+   },
+   "baselines": {
+    "asleep_from_lights_off": {
+     "n_records": 25,
+     "n_epochs": 20774,
+     "labels": [
+      "wake",
+      "light",
+      "deep",
+      "rem"
+     ],
+     "confusion_matrix_rows_ref_cols_pred": [
+      [
+       0,
+       4707,
+       0,
+       0
+      ],
+      [
+       0,
+       10388,
+       0,
+       0
+      ],
+      [
+       0,
+       2663,
+       0,
+       0
+      ],
+      [
+       0,
+       3016,
+       0,
+       0
+      ]
+     ],
+     "metrics": {
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.500048137094445,
+       "ci_low": 0.46500487217304987,
+       "ci_high": 0.5355552695255357
+      },
+      "recall_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_wake": {
+       "point": -94.14,
+       "ci_low": -111.74199999999999,
+       "ci_high": -78.19850000000001
+      },
+      "minutes_mae_wake": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "recall_light": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      },
+      "precision_light": {
+       "point": 0.500048137094445,
+       "ci_low": 0.46500487217304987,
+       "ci_high": 0.5355552695255357
+      },
+      "minutes_bias_light": {
+       "point": 207.72,
+       "ci_low": 191.4185,
+       "ci_high": 223.66049999999998
+      },
+      "minutes_mae_light": {
+       "point": 207.72,
+       "ci_low": 191.4185,
+       "ci_high": 223.66049999999998
+      },
+      "recall_deep": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_deep": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_deep": {
+       "point": -53.26,
+       "ci_low": -64.60249999999999,
+       "ci_high": -42.099500000000006
+      },
+      "minutes_mae_deep": {
+       "point": 53.26,
+       "ci_low": 42.0995,
+       "ci_high": 64.60249999999998
+      },
+      "recall_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_rem": {
+       "point": -60.32,
+       "ci_low": -72.363,
+       "ci_high": -48.099000000000004
+      },
+      "minutes_mae_rem": {
+       "point": 60.32,
+       "ci_low": 48.099000000000004,
+       "ci_high": 72.36299999999999
+      }
+     },
+     "predicted_class": "light",
+     "note": "Every epoch predicted as 'light', the most common sleep stage."
+    },
+    "majority_class": {
+     "n_records": 25,
+     "n_epochs": 20774,
+     "labels": [
+      "wake",
+      "light",
+      "deep",
+      "rem"
+     ],
+     "confusion_matrix_rows_ref_cols_pred": [
+      [
+       0,
+       4707,
+       0,
+       0
+      ],
+      [
+       0,
+       10388,
+       0,
+       0
+      ],
+      [
+       0,
+       2663,
+       0,
+       0
+      ],
+      [
+       0,
+       3016,
+       0,
+       0
+      ]
+     ],
+     "metrics": {
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.500048137094445,
+       "ci_low": 0.46500487217304987,
+       "ci_high": 0.5355552695255357
+      },
+      "recall_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_wake": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_wake": {
+       "point": -94.14,
+       "ci_low": -111.74199999999999,
+       "ci_high": -78.19850000000001
+      },
+      "minutes_mae_wake": {
+       "point": 94.14,
+       "ci_low": 78.19850000000001,
+       "ci_high": 111.74199999999999
+      },
+      "recall_light": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      },
+      "precision_light": {
+       "point": 0.500048137094445,
+       "ci_low": 0.46500487217304987,
+       "ci_high": 0.5355552695255357
+      },
+      "minutes_bias_light": {
+       "point": 207.72,
+       "ci_low": 191.4185,
+       "ci_high": 223.66049999999998
+      },
+      "minutes_mae_light": {
+       "point": 207.72,
+       "ci_low": 191.4185,
+       "ci_high": 223.66049999999998
+      },
+      "recall_deep": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_deep": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_deep": {
+       "point": -53.26,
+       "ci_low": -64.60249999999999,
+       "ci_high": -42.099500000000006
+      },
+      "minutes_mae_deep": {
+       "point": 53.26,
+       "ci_low": 42.0995,
+       "ci_high": 64.60249999999998
+      },
+      "recall_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "precision_rem": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "minutes_bias_rem": {
+       "point": -60.32,
+       "ci_low": -72.363,
+       "ci_high": -48.099000000000004
+      },
+      "minutes_mae_rem": {
+       "point": 60.32,
+       "ci_low": 48.099000000000004,
+       "ci_high": 72.36299999999999
+      }
+     },
+     "predicted_class": "light",
+     "note": "Identical to the lights-off baseline: the training majority class is the same class."
+    }
+   },
+   "data": {
+    "train": {
+     "cap": {
+      "records": 49,
+      "subjects": 49,
+      "epochs_labeled": 49451,
+      "epochs_used_for_fitting": 47385
+     },
+     "slpdb": {
+      "records": 18,
+      "subjects": 16,
+      "epochs_labeled": 10181,
+      "epochs_used_for_fitting": 10145
+     }
+    },
+    "test": {
+     "ucddb": {
+      "records": 25,
+      "subjects": 25,
+      "epochs_labeled": 20774,
+      "epochs_low_quality": 169
+     }
+    },
+    "class_counts_train": {
+     "wake": 13826,
+     "light": 25240,
+     "deep": 11297,
+     "rem": 9269
+    },
+    "class_counts_test": {
+     "wake": 4707,
+     "light": 10388,
+     "deep": 2663,
+     "rem": 3016
+    }
+   }
+  },
+  "apnea": {
+   "labels": [
+    "normal",
+    "apnea"
+   ],
+   "unit": "minute",
+   "models": {
+    "gradient_boosting": {
+     "n_features": 119,
+     "threshold_p_apnea": 0.36,
+     "internal_cv": {
+      "n_records": 35,
+      "n_minutes": 17023,
+      "metrics": {
+       "apnea_min_bias": {
+        "point": -16.885714285714286,
+        "ci_low": -52.23999999999998,
+        "ci_high": 15.914705882352925
+       },
+       "apnea_min_mae": {
+        "point": 74.14285714285714,
+        "ci_low": 52.12686090225564,
+        "ci_high": 97.83529411764704
+       },
+       "kappa_pooled": {
+        "point": 0.6010076383183375,
+        "ci_low": 0.48219311913616336,
+        "ci_high": 0.6945038413712356
+       },
+       "accuracy": {
+        "point": 0.8147800035246431,
+        "ci_low": 0.7663700083331142,
+        "ci_high": 0.8613579104910104
+       },
+       "sensitivity": {
+        "point": 0.7124865612041161,
+        "ci_low": 0.5790880554273228,
+        "ci_high": 0.8185963681910945
+       },
+       "specificity": {
+        "point": 0.8781392694063926,
+        "ci_low": 0.8257237812749044,
+        "ci_high": 0.9240369348742666
+       }
+      },
+      "bland_altman": {
+       "apnea_min": {
+        "bias": -16.885714285714286,
+        "mae": 74.14285714285714,
+        "sd": 101.05757573505007,
+        "loa_low": -214.95856272641242,
+        "loa_high": 181.18713415498382
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_minutes": 10391,
+      "metrics": {
+       "apnea_min_bias": {
+        "point": 0.56,
+        "ci_low": -39.68,
+        "ci_high": 38.20499999999998
+       },
+       "apnea_min_mae": {
+        "point": 78.24,
+        "ci_low": 54.99700000000001,
+        "ci_high": 104.56
+       },
+       "kappa_pooled": {
+        "point": 0.24900447997574027,
+        "ci_low": 0.1486826505624739,
+        "ci_high": 0.33684069537796485
+       },
+       "accuracy": {
+        "point": 0.7051294389375421,
+        "ci_low": 0.65994130039956,
+        "ci_high": 0.750610536637767
+       },
+       "sensitivity": {
+        "point": 0.45163610212153904,
+        "ci_low": 0.30443137229383704,
+        "ci_high": 0.593178364666019
+       },
+       "specificity": {
+        "point": 0.7977660972404731,
+        "ci_low": 0.7268608634050165,
+        "ci_high": 0.8639516774529786
+       }
+      },
+      "bland_altman": {
+       "apnea_min": {
+        "bias": 0.56,
+        "mae": 78.24,
+        "sd": 103.08656556506284,
+        "loa_low": -201.48966850752316,
+        "loa_high": 202.60966850752317
+       }
+      }
+     },
+     "threshold": 0.36
+    },
+    "logistic_regression": {
+     "n_features": 98,
+     "threshold_p_apnea": 0.46,
+     "internal_cv": {
+      "n_records": 35,
+      "n_minutes": 17023,
+      "metrics": {
+       "apnea_min_bias": {
+        "point": 6.542857142857143,
+        "ci_low": -40.24338235294116,
+        "ci_high": 53.8770833333333
+       },
+       "apnea_min_mae": {
+        "point": 116.2,
+        "ci_low": 93.93897058823529,
+        "ci_high": 139.1220588235294
+       },
+       "kappa_pooled": {
+        "point": 0.38815107538674654,
+        "ci_low": 0.3050268153500508,
+        "ci_high": 0.46567743968841846
+       },
+       "accuracy": {
+        "point": 0.7090407096281501,
+        "ci_low": 0.6694676505380472,
+        "ci_high": 0.7493767818378974
+       },
+       "sensitivity": {
+        "point": 0.6372293042543388,
+        "ci_low": 0.5777958678253059,
+        "ci_high": 0.7066331276731038
+       },
+       "specificity": {
+        "point": 0.7535197869101978,
+        "ci_low": 0.6910202426198575,
+        "ci_high": 0.8134019732544603
+       }
+      },
+      "bland_altman": {
+       "apnea_min": {
+        "bias": 6.542857142857143,
+        "mae": 116.2,
+        "sd": 136.38059695899105,
+        "loa_low": -260.7631128967653,
+        "loa_high": 273.84882718247957
+       }
+      }
+     },
+     "external_ucddb": {
+      "n_records": 25,
+      "n_minutes": 10391,
+      "metrics": {
+       "apnea_min_bias": {
+        "point": 35.08,
+        "ci_low": -2.8829999999999947,
+        "ci_high": 71.68699999999997
+       },
+       "apnea_min_mae": {
+        "point": 83.4,
+        "ci_low": 61.35600000000001,
+        "ci_high": 105.08
+       },
+       "kappa_pooled": {
+        "point": 0.16915477998695624,
+        "ci_low": 0.11475376283684047,
+        "ci_high": 0.2220520337160068
+       },
+       "accuracy": {
+        "point": 0.6417091713983255,
+        "ci_low": 0.5998415221864882,
+        "ci_high": 0.6807822902334996
+       },
+       "sensitivity": {
+        "point": 0.48831355627472134,
+        "ci_low": 0.40836681762774607,
+        "ci_high": 0.5873016844859076
+       },
+       "specificity": {
+        "point": 0.6977660972404731,
+        "ci_low": 0.6318055738009386,
+        "ci_high": 0.7625630932319313
+       }
+      },
+      "bland_altman": {
+       "apnea_min": {
+        "bias": 35.08,
+        "mae": 83.4,
+        "sd": 96.69234716356823,
+        "loa_low": -154.43700044059375,
+        "loa_high": 224.59700044059372
+       }
+      }
+     },
+     "threshold": 0.46
+    }
+   },
+   "baselines": {
+    "no_apnea": {
+     "n_records": 25,
+     "n_minutes": 10391,
+     "metrics": {
+      "apnea_min_bias": {
+       "point": -111.24,
+       "ci_low": -139.72,
+       "ci_high": -86.358
+      },
+      "apnea_min_mae": {
+       "point": 111.24,
+       "ci_low": 86.358,
+       "ci_high": 139.72
+      },
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.7323645462419401,
+       "ci_low": 0.6603060345170338,
+       "ci_high": 0.7933055151974525
+      },
+      "sensitivity": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "specificity": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      }
+     },
+     "bland_altman": {
+      "apnea_min": {
+       "bias": -111.24,
+       "mae": 111.24,
+       "sd": 71.97295788465739,
+       "loa_low": -252.3069974539285,
+       "loa_high": 29.826997453928485
+      }
+     },
+     "predicted_class": "normal"
+    },
+    "majority_class": {
+     "n_records": 25,
+     "n_minutes": 10391,
+     "metrics": {
+      "apnea_min_bias": {
+       "point": -111.24,
+       "ci_low": -139.72,
+       "ci_high": -86.358
+      },
+      "apnea_min_mae": {
+       "point": 111.24,
+       "ci_low": 86.358,
+       "ci_high": 139.72
+      },
+      "kappa_pooled": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "accuracy": {
+       "point": 0.7323645462419401,
+       "ci_low": 0.6603060345170338,
+       "ci_high": 0.7933055151974525
+      },
+      "sensitivity": {
+       "point": 0.0,
+       "ci_low": 0.0,
+       "ci_high": 0.0
+      },
+      "specificity": {
+       "point": 1.0,
+       "ci_low": 1.0,
+       "ci_high": 1.0
+      }
+     },
+     "bland_altman": {
+      "apnea_min": {
+       "bias": -111.24,
+       "mae": 111.24,
+       "sd": 71.97295788465739,
+       "loa_low": -252.3069974539285,
+       "loa_high": 29.826997453928485
+      }
+     },
+     "predicted_class": "normal"
+    }
+   },
+   "data": {
+    "train": {
+     "apnea-ecg": {
+      "records": 35,
+      "subjects": 34,
+      "minutes_labeled": 17023,
+      "minutes_used_for_fitting": 16740
+     }
+    },
+    "test": {
+     "ucddb": {
+      "records": 25,
+      "subjects": 25,
+      "minutes_labeled": 10391,
+      "minutes_low_quality": 86
+     }
+    },
+    "class_counts_train": {
+     "normal": 10512,
+     "apnea": 6511
+    },
+    "class_counts_test": {
+     "normal": 7610,
+     "apnea": 2781
+    }
+   }
+  }
+ },
+ "per_record": {
+  "sleep_wake": [
+   {
+    "record": "ucddb002",
+    "ref_tib_min": 374.0,
+    "ref_tst_min": 313.5,
+    "pred_tst_min": 313.0,
+    "ref_se_pct": 83.82352941176471,
+    "pred_se_pct": 83.68983957219251,
+    "ref_awakenings": 15,
+    "pred_awakenings": 16,
+    "kappa": 0.4447976878612715
+   },
+   {
+    "record": "ucddb003",
+    "ref_tib_min": 441.0,
+    "ref_tst_min": 357.0,
+    "pred_tst_min": 269.0,
+    "ref_se_pct": 80.95238095238095,
+    "pred_se_pct": 60.997732426303855,
+    "ref_awakenings": 9,
+    "pred_awakenings": 10,
+    "kappa": 0.3700000000000001
+   },
+   {
+    "record": "ucddb005",
+    "ref_tib_min": 413.0,
+    "ref_tst_min": 258.5,
+    "pred_tst_min": 376.5,
+    "ref_se_pct": 62.590799031477,
+    "pred_se_pct": 91.16222760290557,
+    "ref_awakenings": 20,
+    "pred_awakenings": 13,
+    "kappa": 0.0836408818939566
+   },
+   {
+    "record": "ucddb006",
+    "ref_tib_min": 404.0,
+    "ref_tst_min": 358.0,
+    "pred_tst_min": 387.5,
+    "ref_se_pct": 88.61386138613861,
+    "pred_se_pct": 95.91584158415841,
+    "ref_awakenings": 6,
+    "pred_awakenings": 2,
+    "kappa": 0.41269172425417205
+   },
+   {
+    "record": "ucddb007",
+    "ref_tib_min": 406.5,
+    "ref_tst_min": 364.5,
+    "pred_tst_min": 380.0,
+    "ref_se_pct": 89.66789667896678,
+    "pred_se_pct": 93.4809348093481,
+    "ref_awakenings": 7,
+    "pred_awakenings": 6,
+    "kappa": 0.3415205363154661
+   },
+   {
+    "record": "ucddb008",
+    "ref_tib_min": 378.5,
+    "ref_tst_min": 247.0,
+    "pred_tst_min": 234.5,
+    "ref_se_pct": 65.25759577278731,
+    "pred_se_pct": 61.955085865257594,
+    "ref_awakenings": 11,
+    "pred_awakenings": 8,
+    "kappa": 0.4841596421942707
+   },
+   {
+    "record": "ucddb009",
+    "ref_tib_min": 462.5,
+    "ref_tst_min": 367.5,
+    "pred_tst_min": 425.0,
+    "ref_se_pct": 79.45945945945945,
+    "pred_se_pct": 91.89189189189189,
+    "ref_awakenings": 27,
+    "pred_awakenings": 12,
+    "kappa": 0.3808424697057129
+   },
+   {
+    "record": "ucddb010",
+    "ref_tib_min": 453.5,
+    "ref_tst_min": 416.5,
+    "pred_tst_min": 303.5,
+    "ref_se_pct": 91.8412348401323,
+    "pred_se_pct": 66.9239250275634,
+    "ref_awakenings": 9,
+    "pred_awakenings": 27,
+    "kappa": 0.2308814251504318
+   },
+   {
+    "record": "ucddb011",
+    "ref_tib_min": 450.0,
+    "ref_tst_min": 272.0,
+    "pred_tst_min": 370.5,
+    "ref_se_pct": 60.44444444444444,
+    "pred_se_pct": 82.33333333333333,
+    "ref_awakenings": 18,
+    "pred_awakenings": 11,
+    "kappa": 0.41677229282998174
+   },
+   {
+    "record": "ucddb012",
+    "ref_tib_min": 432.0,
+    "ref_tst_min": 367.5,
+    "pred_tst_min": 403.5,
+    "ref_se_pct": 85.06944444444444,
+    "pred_se_pct": 93.40277777777777,
+    "ref_awakenings": 4,
+    "pred_awakenings": 6,
+    "kappa": 0.4910615213907037
+   },
+   {
+    "record": "ucddb013",
+    "ref_tib_min": 405.5,
+    "ref_tst_min": 247.0,
+    "pred_tst_min": 309.5,
+    "ref_se_pct": 60.91245376078915,
+    "pred_se_pct": 76.32552404438964,
+    "ref_awakenings": 16,
+    "pred_awakenings": 24,
+    "kappa": 0.4845415723311494
+   },
+   {
+    "record": "ucddb014",
+    "ref_tib_min": 387.0,
+    "ref_tst_min": 304.5,
+    "pred_tst_min": 280.5,
+    "ref_se_pct": 78.68217054263566,
+    "pred_se_pct": 72.48062015503876,
+    "ref_awakenings": 12,
+    "pred_awakenings": 18,
+    "kappa": 0.22001781520770908
+   },
+   {
+    "record": "ucddb015",
+    "ref_tib_min": 458.0,
+    "ref_tst_min": 354.0,
+    "pred_tst_min": 362.5,
+    "ref_se_pct": 77.29257641921397,
+    "pred_se_pct": 79.14847161572052,
+    "ref_awakenings": 17,
+    "pred_awakenings": 18,
+    "kappa": 0.45878025927531585
+   },
+   {
+    "record": "ucddb017",
+    "ref_tib_min": 394.5,
+    "ref_tst_min": 343.0,
+    "pred_tst_min": 373.0,
+    "ref_se_pct": 86.94550063371356,
+    "pred_se_pct": 94.55006337135615,
+    "ref_awakenings": 8,
+    "pred_awakenings": 6,
+    "kappa": 0.2431725850135422
+   },
+   {
+    "record": "ucddb018",
+    "ref_tib_min": 411.0,
+    "ref_tst_min": 247.0,
+    "pred_tst_min": 402.5,
+    "ref_se_pct": 60.09732360097323,
+    "pred_se_pct": 97.93187347931874,
+    "ref_awakenings": 13,
+    "pred_awakenings": 2,
+    "kappa": 0.055616323714019186
+   },
+   {
+    "record": "ucddb019",
+    "ref_tib_min": 426.0,
+    "ref_tst_min": 390.5,
+    "pred_tst_min": 399.0,
+    "ref_se_pct": 91.66666666666667,
+    "pred_se_pct": 93.66197183098592,
+    "ref_awakenings": 13,
+    "pred_awakenings": 11,
+    "kappa": 0.3879310344827582
+   },
+   {
+    "record": "ucddb020",
+    "ref_tib_min": 376.0,
+    "ref_tst_min": 291.5,
+    "pred_tst_min": 312.5,
+    "ref_se_pct": 77.52659574468085,
+    "pred_se_pct": 83.11170212765957,
+    "ref_awakenings": 12,
+    "pred_awakenings": 16,
+    "kappa": 0.33031291396257517
+   },
+   {
+    "record": "ucddb021",
+    "ref_tib_min": 456.5,
+    "ref_tst_min": 373.5,
+    "pred_tst_min": 399.0,
+    "ref_se_pct": 81.81818181818181,
+    "pred_se_pct": 87.40416210295729,
+    "ref_awakenings": 7,
+    "pred_awakenings": 12,
+    "kappa": 0.41049030786773083
+   },
+   {
+    "record": "ucddb022",
+    "ref_tib_min": 393.5,
+    "ref_tst_min": 230.0,
+    "pred_tst_min": 298.5,
+    "ref_se_pct": 58.449809402795424,
+    "pred_se_pct": 75.8576874205845,
+    "ref_awakenings": 17,
+    "pred_awakenings": 10,
+    "kappa": 0.5460991653073574
+   },
+   {
+    "record": "ucddb023",
+    "ref_tib_min": 430.5,
+    "ref_tst_min": 289.5,
+    "pred_tst_min": 289.5,
+    "ref_se_pct": 67.24738675958189,
+    "pred_se_pct": 67.24738675958189,
+    "ref_awakenings": 24,
+    "pred_awakenings": 23,
+    "kappa": 0.4041267041487525
+   },
+   {
+    "record": "ucddb024",
+    "ref_tib_min": 452.0,
+    "ref_tst_min": 374.5,
+    "pred_tst_min": 429.5,
+    "ref_se_pct": 82.85398230088495,
+    "pred_se_pct": 95.02212389380531,
+    "ref_awakenings": 16,
+    "pred_awakenings": 8,
+    "kappa": 0.23063829787234044
+   },
+   {
+    "record": "ucddb025",
+    "ref_tib_min": 355.5,
+    "ref_tst_min": 274.0,
+    "pred_tst_min": 237.0,
+    "ref_se_pct": 77.0745428973277,
+    "pred_se_pct": 66.66666666666667,
+    "ref_awakenings": 25,
+    "pred_awakenings": 28,
+    "kappa": 0.2723112128146455
+   },
+   {
+    "record": "ucddb026",
+    "ref_tib_min": 419.0,
+    "ref_tst_min": 363.0,
+    "pred_tst_min": 343.0,
+    "ref_se_pct": 86.63484486873509,
+    "pred_se_pct": 81.86157517899761,
+    "ref_awakenings": 6,
+    "pred_awakenings": 15,
+    "kappa": 0.4090520557312589
+   },
+   {
+    "record": "ucddb027",
+    "ref_tib_min": 446.5,
+    "ref_tst_min": 383.0,
+    "pred_tst_min": 243.5,
+    "ref_se_pct": 85.77827547592385,
+    "pred_se_pct": 54.535274356103024,
+    "ref_awakenings": 11,
+    "pred_awakenings": 11,
+    "kappa": 0.1736914803738819
+   },
+   {
+    "record": "ucddb028",
+    "ref_tib_min": 360.5,
+    "ref_tst_min": 246.5,
+    "pred_tst_min": 197.5,
+    "ref_se_pct": 68.37725381414702,
+    "pred_se_pct": 54.78502080443828,
+    "ref_awakenings": 31,
+    "pred_awakenings": 35,
+    "kappa": 0.11448372664268792
+   }
+  ],
+  "apnea": [
+   {
+    "record": "ucddb002",
+    "ref_apnea_min": 110.0,
+    "pred_apnea_min": 203.0,
+    "total_min": 374.0,
+    "kappa": 0.23032512914007894
+   },
+   {
+    "record": "ucddb003",
+    "ref_apnea_min": 216.0,
+    "pred_apnea_min": 46.0,
+    "total_min": 441.0,
+    "kappa": 0.20714957666980244
+   },
+   {
+    "record": "ucddb005",
+    "ref_apnea_min": 63.0,
+    "pred_apnea_min": 30.0,
+    "total_min": 413.0,
+    "kappa": 0.05781281584798873
+   },
+   {
+    "record": "ucddb006",
+    "ref_apnea_min": 125.0,
+    "pred_apnea_min": 7.0,
+    "total_min": 404.0,
+    "kappa": -0.03392919461786019
+   },
+   {
+    "record": "ucddb007",
+    "ref_apnea_min": 81.0,
+    "pred_apnea_min": 82.0,
+    "total_min": 406.0,
+    "kappa": 0.20939993193935041
+   },
+   {
+    "record": "ucddb008",
+    "ref_apnea_min": 21.0,
+    "pred_apnea_min": 16.0,
+    "total_min": 384.0,
+    "kappa": 0.06382978723404255
+   },
+   {
+    "record": "ucddb009",
+    "ref_apnea_min": 77.0,
+    "pred_apnea_min": 85.0,
+    "total_min": 462.0,
+    "kappa": 0.17705735660847863
+   },
+   {
+    "record": "ucddb010",
+    "ref_apnea_min": 153.0,
+    "pred_apnea_min": 226.0,
+    "total_min": 453.0,
+    "kappa": 0.34169178102232495
+   },
+   {
+    "record": "ucddb011",
+    "ref_apnea_min": 40.0,
+    "pred_apnea_min": 67.0,
+    "total_min": 450.0,
+    "kappa": 0.2322972657162886
+   },
+   {
+    "record": "ucddb012",
+    "ref_apnea_min": 151.0,
+    "pred_apnea_min": 191.0,
+    "total_min": 432.0,
+    "kappa": 0.5491106126890365
+   },
+   {
+    "record": "ucddb013",
+    "ref_apnea_min": 70.0,
+    "pred_apnea_min": 163.0,
+    "total_min": 405.0,
+    "kappa": 0.3942972954084842
+   },
+   {
+    "record": "ucddb014",
+    "ref_apnea_min": 187.0,
+    "pred_apnea_min": 15.0,
+    "total_min": 387.0,
+    "kappa": 0.008020506036050916
+   },
+   {
+    "record": "ucddb015",
+    "ref_apnea_min": 43.0,
+    "pred_apnea_min": 83.0,
+    "total_min": 458.0,
+    "kappa": 0.14866521653154033
+   },
+   {
+    "record": "ucddb017",
+    "ref_apnea_min": 65.0,
+    "pred_apnea_min": 206.0,
+    "total_min": 394.0,
+    "kappa": 0.28582143660774545
+   },
+   {
+    "record": "ucddb018",
+    "ref_apnea_min": 9.0,
+    "pred_apnea_min": 5.0,
+    "total_min": 411.0,
+    "kappa": -0.0158898305084719
+   },
+   {
+    "record": "ucddb019",
+    "ref_apnea_min": 92.0,
+    "pred_apnea_min": 281.0,
+    "total_min": 426.0,
+    "kappa": 0.24094632162247884
+   },
+   {
+    "record": "ucddb020",
+    "ref_apnea_min": 68.0,
+    "pred_apnea_min": 206.0,
+    "total_min": 376.0,
+    "kappa": 0.1277730375426622
+   },
+   {
+    "record": "ucddb021",
+    "ref_apnea_min": 87.0,
+    "pred_apnea_min": 136.0,
+    "total_min": 456.0,
+    "kappa": 0.1291910181482623
+   },
+   {
+    "record": "ucddb022",
+    "ref_apnea_min": 33.0,
+    "pred_apnea_min": 19.0,
+    "total_min": 394.0,
+    "kappa": -0.06519704689612098
+   },
+   {
+    "record": "ucddb023",
+    "ref_apnea_min": 151.0,
+    "pred_apnea_min": 28.0,
+    "total_min": 430.0,
+    "kappa": 0.08996701404092573
+   },
+   {
+    "record": "ucddb024",
+    "ref_apnea_min": 152.0,
+    "pred_apnea_min": 202.0,
+    "total_min": 454.0,
+    "kappa": 0.27768155637008096
+   },
+   {
+    "record": "ucddb025",
+    "ref_apnea_min": 312.0,
+    "pred_apnea_min": 190.0,
+    "total_min": 355.0,
+    "kappa": 0.1906119027661357
+   },
+   {
+    "record": "ucddb026",
+    "ref_apnea_min": 89.0,
+    "pred_apnea_min": 103.0,
+    "total_min": 419.0,
+    "kappa": 0.2984512348262871
+   },
+   {
+    "record": "ucddb027",
+    "ref_apnea_min": 217.0,
+    "pred_apnea_min": 7.0,
+    "total_min": 446.0,
+    "kappa": 0.023888670947494417
+   },
+   {
+    "record": "ucddb028",
+    "ref_apnea_min": 169.0,
+    "pred_apnea_min": 198.0,
+    "total_min": 361.0,
+    "kappa": 0.43286609825663847
+   }
+  ]
+ },
+ "rpeak_validation": {
+  "tolerance_ms": 150.0,
+  "datasets": {
+   "slpdb": {
+    "reference": "beat annotations (.ecg)",
+    "records": 18,
+    "pooled_sensitivity": 0.9992643106509358,
+    "pooled_ppv": 0.9978042889555735,
+    "min_record_sensitivity": 0.9976453967506476,
+    "min_record_ppv": 0.9934876353075772
+   },
+   "apnea-ecg": {
+    "reference": "machine QRS annotations (.qrs)",
+    "records": 35,
+    "pooled_sensitivity": 0.9927579279357124,
+    "pooled_ppv": 0.9923711650011112,
+    "min_record_sensitivity": 0.9184174248690378,
+    "min_record_ppv": 0.9268820610284025
+   }
+  }
+ },
+ "data_check": {
+  "all_pass": true,
+  "n_checks": 587,
+  "n_failed": 0,
+  "generated_utc": "2026-11-19T19:24:49+00:00"
+ },
+ "datasets": [
+  {
+   "id": "ucddb",
+   "name": "St. Vincent's University Hospital / University College Dublin Sleep Apnea Database (UCDDB)",
+   "short": "UCDDB",
+   "role": "External test set (sleep staging and apnea); never used for training",
+   "records": 25,
+   "subjects": 25,
+   "population": "25 adults (21 male, 4 female) referred with suspected sleep-disordered breathing.",
+   "license": "Open Data Commons Attribution License v1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "citation": "No original publication is listed on the PhysioNet page; cite the dataset DOI (doi:10.13026/C26C7D) and the PhysioNet platform paper.",
+   "doi": "10.13026/C26C7D",
+   "url": "https://physionet.org/content/ucddb/1.0.0/"
+  },
+  {
+   "id": "cap",
+   "name": "CAP Sleep Database (capslpdb)",
+   "short": "CAP",
+   "role": "Training (sleep staging)",
+   "records": 49,
+   "subjects": 49,
+   "population": "A subset of patient recordings (insomnia, narcolepsy, periodic leg movements, REM sleep behavior disorder, sleep-disordered breathing, bruxism) and 15 healthy controls; epilepsy (NFLE) records are not used.",
+   "license": "Open Data Commons Attribution License v1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "citation": "Terzano MG, et al. \"Atlas, rules, and recording techniques for the scoring of cyclic alternating pattern (CAP) in human sleep.\" Sleep Medicine 2:537-553 (2001).",
+   "doi": null,
+   "url": "https://physionet.org/content/capslpdb/1.0.0/"
+  },
+  {
+   "id": "slpdb",
+   "name": "MIT-BIH Polysomnographic Database (slpdb)",
+   "short": "MIT-BIH slpdb",
+   "role": "Training (sleep staging)",
+   "records": 18,
+   "subjects": 16,
+   "population": "18 records from 16 male subjects (mean age 40) recorded in a sleep laboratory.",
+   "license": "Open Data Commons Attribution License v1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "citation": "Ichimaru Y, Moody GB. \"Development of the polysomnographic database on CD-ROM.\" Psychiatry and Clinical Neurosciences 53:175-177 (1999).",
+   "doi": "10.13026/C23K5S",
+   "url": "https://physionet.org/content/slpdb/1.0.0/"
+  },
+  {
+   "id": "apnea-ecg",
+   "name": "Apnea-ECG Database (apnea-ecg)",
+   "short": "Apnea-ECG",
+   "role": "Training (apnea minutes)",
+   "records": 35,
+   "subjects": 34,
+   "population": "35 learning-set records (a01-a20, b01-b05, c01-c10) with per-minute apnea labels.",
+   "license": "Open Data Commons Attribution License v1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "citation": "Penzel T, Moody GB, Mark RG, Goldberger AL, Peter JH. \"The Apnea-ECG Database.\" Computers in Cardiology 27:255-258 (2000).",
+   "doi": null,
+   "url": "https://physionet.org/content/apnea-ecg/1.0.0/"
+  }
+ ],
+ "physionet_citation": "Pollard T, Moody BE, et al. \"PhysioNet as a global platform for biomedical research.\" Nature Health (2026). https://doi.org/10.1038/s44360-026-00096-z",
+ "limitations": [
+  "Most recordings come from sleep clinics: people referred for suspected sleep disorders, not the general population.",
+  "The external test set (UCDDB) has only 25 nights, so every number has a wide confidence interval.",
+  "The MIT-BIH training data come from 16 subjects, all male.",
+  "Accuracy on home wearables (watches, chest straps, rings) has not been validated; all heartbeats here were detected from clinical ECG.",
+  "The 3-stage (wake / NREM / REM) and 4-stage (wake / light / deep / REM) results are experimental and agree with the reference less well than sleep/wake.",
+  "Apnea definitions differ: Apnea-ECG comes with its own expert per-minute apnea labels, while UCDDB minutes are derived here from scored apnea and hypopnea events, so external apnea numbers mix model error with definition mismatch.",
+  "The apnea output is a screening hint, not a diagnosis. Only a sleep study read by a clinician can diagnose sleep apnea."
+ ]
+}
