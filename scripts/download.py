@@ -24,7 +24,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import sys
+import time
 import tomllib
+import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -40,13 +42,26 @@ def project_url(project: str) -> str:
     return f"{BASE}/{SLUGS.get(project, project)}/{VERSIONS[project]}"
 
 
+RETRIES = 6  # transient server errors (PhysioNet occasionally answers 502/503) and timeouts
+
+
 def fetch(url: str, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".part")
     req = urllib.request.Request(url, headers={"User-Agent": "somnibeat-research-downloader"})
-    with urllib.request.urlopen(req, timeout=120) as r, open(tmp, "wb") as f:
-        while chunk := r.read(1 << 20):
-            f.write(chunk)
+    for attempt in range(RETRIES):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r, open(tmp, "wb") as f:
+                while chunk := r.read(1 << 20):
+                    f.write(chunk)
+            break
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ConnectionError) as e:
+            transient = not isinstance(e, urllib.error.HTTPError) or e.code >= 500 or e.code == 429
+            if not transient or attempt == RETRIES - 1:
+                raise
+            wait = 5 * 2 ** attempt
+            print(f"  retry {attempt + 1}/{RETRIES - 1} in {wait}s after {e}: {url}", flush=True)
+            time.sleep(wait)
     tmp.rename(dest)
 
 
