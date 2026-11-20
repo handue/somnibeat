@@ -309,8 +309,7 @@
           "thresholds": {
             "A": 0.41,
             "B": 0.47
-          },
-          "seconds": 421.6
+          }
         }
       }
     },
@@ -463,13 +462,10 @@
           "thresholds": {
             "A": null,
             "B": null
-          },
-          "seconds": 144.7
+          }
         }
       }
     }
   ],
-  "n_model_fits": 14,
-  "fit_seconds": 562.2,
-  "total_seconds": 567.3
+  "n_model_fits": 14
 }

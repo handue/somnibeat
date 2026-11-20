@@ -27,6 +27,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from somnibeat import v2_models as vm  # noqa: E402
+from somnibeat.provenance import drop_timing  # noqa: E402
 
 RES = ROOT / "results" / "v2"
 PARTS = RES / "parts"
@@ -295,7 +296,7 @@ def main() -> int:
         write_doc(json.loads(SELECTION_OUT.read_text()))
         return 0
     st = merge_staging()
-    STAGING_OUT.write_text(json.dumps(st, indent=2))
+    STAGING_OUT.write_text(json.dumps(drop_timing(st), indent=2))
     apn = json.loads(APNEA_IN.read_text())
     sel = {
         "protocol": "docs/v2_protocol.md",
@@ -311,7 +312,7 @@ def main() -> int:
         "apnea": select_apnea(apn),
         "skipped": skipped_list(st),
     }
-    SELECTION_OUT.write_text(json.dumps(sel, indent=2))
+    SELECTION_OUT.write_text(json.dumps(drop_timing(sel), indent=2))
     write_doc(sel)
     s, p = sel["staging"], sel["apnea"]
     print(f"staging pick {s['chosen']['name']}: xds kappa {s['chosen']['xds_sw_kappa']:.3f} "

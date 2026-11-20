@@ -50,6 +50,7 @@ from somnibeat import datasets, features, features_v2  # noqa: E402
 from somnibeat import evaluate as ev  # noqa: E402
 from somnibeat import rr as rrm  # noqa: E402
 from somnibeat import v2_models as vm  # noqa: E402
+from somnibeat.provenance import drop_timing  # noqa: E402
 
 GZIP = {"method": "gzip", "mtime": 0}
 RAW_SLPDB = ROOT / "data" / "raw" / "slpdb"
@@ -399,7 +400,7 @@ def cmd_select(bootstrap: int, v1_config: str) -> None:
         "total_seconds": round(time.time() - t0, 1),
     }
     SELECT_OUT.parent.mkdir(parents=True, exist_ok=True)
-    SELECT_OUT.write_text(json.dumps(out, indent=2))
+    SELECT_OUT.write_text(json.dumps(drop_timing(out), indent=2))
     print(f"wrote {SELECT_OUT} ({out['total_seconds']}s); pick: {out['ranking']['pick_by_cross_dataset_rule']}")
 
 

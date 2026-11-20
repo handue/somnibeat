@@ -20,6 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from somnibeat import v2_models as vm  # noqa: E402
+from somnibeat.provenance import drop_timing  # noqa: E402
 
 
 def main() -> int:
@@ -84,7 +85,7 @@ def main() -> int:
     result["fit_seconds"] = round(h.fit_seconds, 1)
     result["total_seconds"] = round(time.time() - t_start, 1)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(result, indent=2))
+    out.write_text(json.dumps(drop_timing(result), indent=2))
     print(f"wrote {out} ({result['total_seconds']}s)")
     return 0
 

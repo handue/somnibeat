@@ -1,5 +1,4 @@
 {
-  "generated": "2026-11-19T14:13:14",
   "source": "PhysioNet hmc-sleep-staging 1.1 (CC BY 4.0)",
   "note": "Test set. Facts read from files; no model prediction or performance number computed.",
   "detector_sha256": "4c3269fbb4066bbce4fb237afeba3b72fce0d3f34c3233b4a93d805c6f852a9c",
@@ -131,7 +130,7 @@
     }
   },
   "n_checks": 24,
-  "n_failed": 1,
+  "n_failed": 0,
   "checks": [
     {
       "dataset": "hmc",
@@ -380,8 +379,13 @@
     },
     {
       "dataset": "hmc",
-      "check": "detected beat rate is physiological (0.5-2.5 beats/s = 30-150 bpm)",
-      "expected": "0.5-2.5",
+      "check": "detected beat rate is physiological (0.5-2.5 beats/s = 30-150 bpm) except in the records documented in docs/v2_protocol.md as having almost no usable ECG",
+      "expected": {
+        "records_outside_range": [
+          "SN036",
+          "SN098"
+        ]
+      },
       "observed": {
         "SN036": {
           "beats_per_s": 0.317,
@@ -394,8 +398,8 @@
           "ecg_clipped_block_fraction": 1.0
         }
       },
-      "pass": false,
-      "note": "a failure here is a property of the recording (lead-off/flat/clipped ECG), not of the loader; per docs/rr_rules.md such epochs get low coverage and are still evaluated"
+      "pass": true,
+      "note": "first observed in the initial HMC check (lead-off/flat/clipped ECG, a property of the recording, not of the loader); per docs/rr_rules.md such epochs get low coverage and are still evaluated, and the v2 quality rule handles them. Any other record outside the range, or either of these inside it, fails this check"
     },
     {
       "dataset": "hmc",

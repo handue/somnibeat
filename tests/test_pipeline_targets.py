@@ -115,16 +115,12 @@ def tev2():
     return load("train_eval_v2")
 
 
-def head_sha() -> str:
-    return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-
-
 @needs_git
 def test_check_frozen_accepts_current_head(tev2):
     r = tev2.check_frozen()
     tag = subprocess.run(["git", "rev-parse", "v2-frozen^{commit}"], cwd=ROOT, capture_output=True,
                          text=True).stdout.strip()
-    assert r == {"commit": head_sha(), "frozen_tag_commit": tag}
+    assert r == tag  # HEAD is not recorded: it differs between checkouts
 
 
 def fake_git(monkeypatch, tev2, handler):
@@ -186,7 +182,9 @@ def test_check_frozen_ignores_only_its_own_function(monkeypatch, tev2):
     # A change inside check_frozen (whatever version HEAD holds) is allowed ...
     sig = b"def check_frozen()"
     fake_git(monkeypatch, tev2, edit(sig, b"def check_frozen(*, reworded=True)"))
-    assert tev2.check_frozen()["commit"] == head_sha()
+    tag = subprocess.run(["git", "rev-parse", "v2-frozen^{commit}"], cwd=ROOT, capture_output=True,
+                         text=True).stdout.strip()
+    assert tev2.check_frozen() == tag
     monkeypatch.undo()
     # ... a change anywhere else in the script is not.
     fake_git(monkeypatch, tev2, edit(b"MIN_GOOD_FRACTION = 0.5", b"MIN_GOOD_FRACTION = 0.4"))

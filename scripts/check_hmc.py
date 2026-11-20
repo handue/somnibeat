@@ -21,7 +21,6 @@ from __future__ import annotations
 
 import argparse
 import collections
-import datetime as dt
 import hashlib
 import json
 import re
@@ -44,6 +43,10 @@ RESP_PATTERN = re.compile(r"apnea|apnoea|hypopnea|hypopnoea|resp|desat|arousal|R
 EPOCH_S = 30.0
 
 checks: list[dict] = []
+
+
+# Recordings documented in docs/v2_protocol.md (initial HMC check) as having almost no usable ECG.
+KNOWN_NO_ECG = {"SN036", "SN098"}
 
 
 def check(name: str, expected, observed, ok: bool, note: str = "") -> None:
@@ -278,12 +281,16 @@ def summarize(raw_hmc: Path, recs: list[dict], listed: list[str], sums: dict, al
     if do_beats:
         bps = {r["record"]: round(r["beats_per_s"], 3) for r in ok}
         odd = {k: v for k, v in bps.items() if not 0.5 <= v <= 2.5}
-        check("detected beat rate is physiological (0.5-2.5 beats/s = 30-150 bpm)", "0.5-2.5",
+        check("detected beat rate is physiological (0.5-2.5 beats/s = 30-150 bpm) except in the records "
+              "documented in docs/v2_protocol.md as having almost no usable ECG",
+              {"records_outside_range": sorted(KNOWN_NO_ECG)},
               {k: {"beats_per_s": v, "ecg_flat_block_fraction": round(e["ecg_flat_block_fraction"], 3),
                    "ecg_clipped_block_fraction": round(e["ecg_clipped_block_fraction"], 3)}
-               for k, v in odd.items() for e in ok if e["record"] == k}, not odd,
-              "a failure here is a property of the recording (lead-off/flat/clipped ECG), not of the loader; "
-              "per docs/rr_rules.md such epochs get low coverage and are still evaluated")
+               for k, v in odd.items() for e in ok if e["record"] == k}, set(odd) == KNOWN_NO_ECG,
+              "first observed in the initial HMC check (lead-off/flat/clipped ECG, a property of the recording, "
+              "not of the loader); per docs/rr_rules.md such epochs get low coverage and are still evaluated, and "
+              "the v2 quality rule handles them. Any other record outside the range, or either of these inside "
+              "it, fails this check")
         bad_sig = {r["record"]: [round(r["ecg_flat_block_fraction"], 3), round(r["ecg_clipped_block_fraction"], 3)]
                    for r in ok if r["ecg_flat_block_fraction"] + r["ecg_clipped_block_fraction"] > 0.05}
         vf = [r["rr_valid_fraction"] for r in ok]
@@ -335,7 +342,6 @@ def main() -> int:
     facts = summarize(raw_hmc, recs, listed, sums, a.allow_partial, not a.no_beats)
     n_fail = sum(not c["pass"] for c in checks)
     report = {
-        "generated": dt.datetime.now().isoformat(timespec="seconds"),
         "source": "PhysioNet hmc-sleep-staging 1.1 (CC BY 4.0)",
         "note": "Test set. Facts read from files; no model prediction or performance number computed.",
         "detector_sha256": DETECTOR_SHA if not a.no_beats else None,

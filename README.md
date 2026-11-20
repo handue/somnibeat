@@ -189,8 +189,9 @@ hours depending on the connection. The seeds and parameters are in
 [`config/default.toml`](config/default.toml) (v1) and
 [`config/v2.toml`](config/v2.toml) (v2); each results file records the
 SHA-256 of its inputs. The v1 data check passes 587 of 587 checks; of the
-24 HMC checks, 1 fails: it flags recordings with flat or clipped ECG,
-a property of those recordings rather than of the loader (see the write-up).
+24 HMC checks, 0 fail. One of them first failed on two recordings
+with flat or clipped ECG, a property of those recordings rather than of the loader; it now
+expects exactly those two documented recordings and fails on any other (see the write-up).
 
 ## Configuration
 

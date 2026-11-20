@@ -180,7 +180,7 @@ def apnea_model(train: pd.DataFrame, v1_cols, extra_cols, spec, hp) -> dict:
 
 # ----------------------------------------------------------------------------- main
 
-def check_frozen() -> dict:
+def check_frozen() -> str:
     """Freeze gate for --final. Raises SystemExit unless the frozen v2 is what would run.
 
     Required:
@@ -196,7 +196,9 @@ def check_frozen() -> dict:
     Other files (e.g. untracked outputs, Makefile, web/) do not block the run.
     Everything this gate needs lives inside it, so the rest of the file stays byte-identical.
 
-    Returns {"commit": HEAD sha, "frozen_tag_commit": sha of the commit tagged v2-frozen}.
+    Returns the sha of the commit tagged v2-frozen. The checks above make every frozen file at HEAD
+    identical to that commit, so it names the code that ran; HEAD itself is not recorded because it
+    differs between checkouts (e.g. a clean clone made for reproduction) and would break byte-identical results.
     """
     import ast
 
@@ -238,7 +240,7 @@ def check_frozen() -> dict:
                            f"from {tag})")
     if changed:
         raise SystemExit("--final refused: frozen files changed since v2-frozen:\n  " + "\n  ".join(changed))
-    return {"commit": head, "frozen_tag_commit": tag_sha.stdout.decode().strip()}
+    return tag_sha.stdout.decode().strip()
 
 
 def good_fraction(test: pd.DataFrame) -> dict[str, float]:

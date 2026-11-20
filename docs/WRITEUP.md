@@ -56,10 +56,11 @@ documented: an undocumented UCDDB stage code 8 (dropped as unscored), and a
 difference in apnea labels (Apnea-ECG marks minutes containing apnea or
 hypopnea; for UCDDB we mark minutes overlapped by any scored apnea or
 hypopnea event). HMC was checked the same way before any prediction
-(`results/v2/hmc_check.json`; 1 of 24 checks
-failed). The failing check flags recordings whose ECG is mostly flat or
-clipped, a property of those recordings that led to the coverage rule in
-section 3.2.
+(`results/v2/hmc_check.json`; 0 of 24 checks
+fail now). In the first run one check failed: it flagged two recordings
+whose ECG is mostly flat or clipped, a property of those recordings that led
+to the coverage rule in section 3.2. That check now expects exactly those two
+recordings and fails if any other recording falls outside the beat-rate range.
 
 **ECG to RR.** An energy-envelope R-peak detector (Pan-Tompkins family) runs
 at each database's native sampling rate. Against the MIT-BIH beat

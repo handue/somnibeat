@@ -681,8 +681,7 @@
                 3467
               ]
             ]
-          },
-          "seconds": 790.1
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -895,8 +894,7 @@
             "threshold_p_wake": 0.39,
             "kappa_pooled": 0.4673528688335014,
             "tst_mae_min": 51.365671641791046
-          },
-          "seconds": 1030.1
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -1375,8 +1373,7 @@
                 3317
               ]
             ]
-          },
-          "seconds": 635.8
+          }
         }
       }
     },
@@ -1953,8 +1950,7 @@
                 3414
               ]
             ]
-          },
-          "seconds": 459.2
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -2162,8 +2158,7 @@
                 "ci_high": 6.73969696969697
               }
             }
-          },
-          "seconds": 594.2
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -2642,8 +2637,7 @@
                 3211
               ]
             ]
-          },
-          "seconds": 418.5
+          }
         }
       }
     },
@@ -3220,8 +3214,7 @@
                 5010
               ]
             ]
-          },
-          "seconds": 5.1
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -3429,8 +3422,7 @@
                 "ci_high": 6.230970149253731
               }
             }
-          },
-          "seconds": 2.1
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -3909,8 +3901,7 @@
                 5189
               ]
             ]
-          },
-          "seconds": 3.7
+          }
         }
       }
     },
@@ -4487,8 +4478,7 @@
                 5061
               ]
             ]
-          },
-          "seconds": 5.1
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -4696,8 +4686,7 @@
                 "ci_high": 6.2265364916773365
               }
             }
-          },
-          "seconds": 1.7
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -5176,8 +5165,7 @@
                 5107
               ]
             ]
-          },
-          "seconds": 3.9
+          }
         }
       }
     },
@@ -5754,8 +5742,7 @@
                 5063
               ]
             ]
-          },
-          "seconds": 6.5
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -5963,8 +5950,7 @@
                 "ci_high": 6.093113975576663
               }
             }
-          },
-          "seconds": 8.0
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -6443,8 +6429,7 @@
                 5232
               ]
             ]
-          },
-          "seconds": 4.8
+          }
         }
       }
     },
@@ -7021,8 +7006,7 @@
                 5059
               ]
             ]
-          },
-          "seconds": 6.4
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -7230,8 +7214,7 @@
                 "ci_high": 5.714840569877884
               }
             }
-          },
-          "seconds": 6.9
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -7710,8 +7693,7 @@
                 5143
               ]
             ]
-          },
-          "seconds": 4.9
+          }
         }
       }
     },
@@ -8288,8 +8270,7 @@
                 4519
               ]
             ]
-          },
-          "seconds": 506.3
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -8497,8 +8478,7 @@
                 "ci_high": 11.062449118046134
               }
             }
-          },
-          "seconds": 1026.0
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -8977,8 +8957,7 @@
                 4537
               ]
             ]
-          },
-          "seconds": 411.3
+          }
         }
       }
     },
@@ -9555,8 +9534,7 @@
                 4385
               ]
             ]
-          },
-          "seconds": 436.2
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -9764,8 +9742,7 @@
                 "ci_high": 7.388059701492537
               }
             }
-          },
-          "seconds": 1621.7
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -10244,8 +10221,7 @@
                 4410
               ]
             ]
-          },
-          "seconds": 445.8
+          }
         }
       }
     },
@@ -10822,8 +10798,7 @@
                 4550
               ]
             ]
-          },
-          "seconds": 5.0
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -11031,8 +11006,7 @@
                 "ci_high": 6.38013907734057
               }
             }
-          },
-          "seconds": 1.2
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -11511,8 +11485,7 @@
                 4516
               ]
             ]
-          },
-          "seconds": 3.9
+          }
         }
       }
     },
@@ -12089,8 +12062,7 @@
                 4344
               ]
             ]
-          },
-          "seconds": 4.5
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -12298,8 +12270,7 @@
                 "ci_high": 6.463432835820896
               }
             }
-          },
-          "seconds": 1.1
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -12778,8 +12749,7 @@
                 4364
               ]
             ]
-          },
-          "seconds": 3.9
+          }
         }
       }
     },
@@ -13356,8 +13326,7 @@
                 4618
               ]
             ]
-          },
-          "seconds": 5.9
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -13565,8 +13534,7 @@
                 "ci_high": 5.972410673903212
               }
             }
-          },
-          "seconds": 5.3
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -14045,8 +14013,7 @@
                 4554
               ]
             ]
-          },
-          "seconds": 5.0
+          }
         }
       }
     },
@@ -14623,8 +14590,7 @@
                 4387
               ]
             ]
-          },
-          "seconds": 5.8
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -14832,8 +14798,7 @@
                 "ci_high": 5.805262237762238
               }
             }
-          },
-          "seconds": 5.8
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -15312,8 +15277,7 @@
                 4379
               ]
             ]
-          },
-          "seconds": 5.0
+          }
         }
       }
     },
@@ -15890,8 +15854,7 @@
                 2253
               ]
             ]
-          },
-          "seconds": 23.5
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -16099,8 +16062,7 @@
                 "ci_high": 14.16780303030303
               }
             }
-          },
-          "seconds": 48.3
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -16579,8 +16541,7 @@
                 1876
               ]
             ]
-          },
-          "seconds": 19.8
+          }
         }
       }
     },
@@ -17157,8 +17118,7 @@
                 2696
               ]
             ]
-          },
-          "seconds": 27.7
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -17366,8 +17326,7 @@
                 "ci_high": 12.225101763907734
               }
             }
-          },
-          "seconds": 66.4
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -17846,8 +17805,7 @@
                 2335
               ]
             ]
-          },
-          "seconds": 23.1
+          }
         }
       }
     },
@@ -18424,8 +18382,7 @@
                 4652
               ]
             ]
-          },
-          "seconds": 4.3
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -18633,8 +18590,7 @@
                 "ci_high": 6.657242198100408
               }
             }
-          },
-          "seconds": 1.6
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -19113,8 +19069,7 @@
                 4781
               ]
             ]
-          },
-          "seconds": 3.8
+          }
         }
       }
     },
@@ -19691,8 +19646,7 @@
                 4867
               ]
             ]
-          },
-          "seconds": 4.9
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -19900,8 +19854,7 @@
                 "ci_high": 6.776492537313432
               }
             }
-          },
-          "seconds": 1.4
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -20380,8 +20333,7 @@
                 5164
               ]
             ]
-          },
-          "seconds": 3.8
+          }
         }
       }
     },
@@ -20958,8 +20910,7 @@
                 4769
               ]
             ]
-          },
-          "seconds": 5.8
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -21167,8 +21118,7 @@
                 "ci_high": 6.628358208955224
               }
             }
-          },
-          "seconds": 9.2
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -21647,8 +21597,7 @@
                 4951
               ]
             ]
-          },
-          "seconds": 4.9
+          }
         }
       }
     },
@@ -22225,8 +22174,7 @@
                 4883
               ]
             ]
-          },
-          "seconds": 6.1
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -22434,8 +22382,7 @@
                 "ci_high": 6.538432835820895
               }
             }
-          },
-          "seconds": 9.5
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -22914,8 +22861,7 @@
                 5205
               ]
             ]
-          },
-          "seconds": 4.8
+          }
         }
       }
     },
@@ -23492,8 +23438,7 @@
                 4683
               ]
             ]
-          },
-          "seconds": 22.5
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -23701,8 +23646,7 @@
                 "ci_high": 13.88036231884058
               }
             }
-          },
-          "seconds": 64.1
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -24181,8 +24125,7 @@
                 5037
               ]
             ]
-          },
-          "seconds": 21.9
+          }
         }
       }
     },
@@ -24759,8 +24702,7 @@
                 4733
               ]
             ]
-          },
-          "seconds": 27.3
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -24968,8 +24910,7 @@
                 "ci_high": 13.4925
               }
             }
-          },
-          "seconds": 75.1
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -25448,8 +25389,7 @@
                 5132
               ]
             ]
-          },
-          "seconds": 24.8
+          }
         }
       }
     },
@@ -26026,8 +25966,7 @@
                 4613
               ]
             ]
-          },
-          "seconds": 4.4
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -26235,8 +26174,7 @@
                 "ci_high": 6.850407055630937
               }
             }
-          },
-          "seconds": 1.5
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -26715,8 +26653,7 @@
                 4869
               ]
             ]
-          },
-          "seconds": 3.9
+          }
         }
       }
     },
@@ -27293,8 +27230,7 @@
                 4860
               ]
             ]
-          },
-          "seconds": 4.3
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -27502,8 +27438,7 @@
                 "ci_high": 6.701758254183628
               }
             }
-          },
-          "seconds": 1.4
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -27982,8 +27917,7 @@
                 5077
               ]
             ]
-          },
-          "seconds": 3.7
+          }
         }
       }
     },
@@ -28560,8 +28494,7 @@
                 4818
               ]
             ]
-          },
-          "seconds": 6.4
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -28769,8 +28702,7 @@
                 "ci_high": 6.417910447761194
               }
             }
-          },
-          "seconds": 7.8
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -29249,8 +29181,7 @@
                 5013
               ]
             ]
-          },
-          "seconds": 4.8
+          }
         }
       }
     },
@@ -29827,8 +29758,7 @@
                 4742
               ]
             ]
-          },
-          "seconds": 5.7
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -30036,8 +29966,7 @@
                 "ci_high": 6.597388059701492
               }
             }
-          },
-          "seconds": 9.3
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -30516,8 +30445,7 @@
                 5158
               ]
             ]
-          },
-          "seconds": 4.8
+          }
         }
       }
     },
@@ -31094,8 +31022,7 @@
                 3075
               ]
             ]
-          },
-          "seconds": 4.1
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -31303,8 +31230,7 @@
                 "ci_high": 9.137878787878789
               }
             }
-          },
-          "seconds": 2.6
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -31783,8 +31709,7 @@
                 2827
               ]
             ]
-          },
-          "seconds": 3.3
+          }
         }
       }
     },
@@ -32361,8 +32286,7 @@
                 3229
               ]
             ]
-          },
-          "seconds": 3.9
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -32570,8 +32494,7 @@
                 "ci_high": 6.510151515151516
               }
             }
-          },
-          "seconds": 2.5
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -33050,8 +32973,7 @@
                 2923
               ]
             ]
-          },
-          "seconds": 3.4
+          }
         }
       }
     },
@@ -33628,8 +33550,7 @@
                 5235
               ]
             ]
-          },
-          "seconds": 4.4
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -33837,8 +33758,7 @@
                 "ci_high": 6.6982021709633655
               }
             }
-          },
-          "seconds": 3.5
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -34317,8 +34237,7 @@
                 5458
               ]
             ]
-          },
-          "seconds": 3.9
+          }
         }
       }
     },
@@ -34895,8 +34814,7 @@
                 5274
               ]
             ]
-          },
-          "seconds": 4.9
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -35104,8 +35022,7 @@
                 "ci_high": 6.5524479873360475
               }
             }
-          },
-          "seconds": 2.0
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -35584,8 +35501,7 @@
                 5413
               ]
             ]
-          },
-          "seconds": 3.8
+          }
         }
       }
     },
@@ -36162,8 +36078,7 @@
                 5314
               ]
             ]
-          },
-          "seconds": 6.1
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -36371,8 +36286,7 @@
                 "ci_high": 6.196376074174582
               }
             }
-          },
-          "seconds": 8.6
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -36851,8 +36765,7 @@
                 5472
               ]
             ]
-          },
-          "seconds": 4.8
+          }
         }
       }
     },
@@ -37429,8 +37342,7 @@
                 5299
               ]
             ]
-          },
-          "seconds": 6.0
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -37638,8 +37550,7 @@
                 "ci_high": 5.925723654454997
               }
             }
-          },
-          "seconds": 9.4
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -38118,8 +38029,7 @@
                 5489
               ]
             ]
-          },
-          "seconds": 4.7
+          }
         }
       }
     },
@@ -38696,8 +38606,7 @@
                 4792
               ]
             ]
-          },
-          "seconds": 3.8
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -38905,8 +38814,7 @@
                 "ci_high": 10.494239032112167
               }
             }
-          },
-          "seconds": 2.6
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -39385,8 +39293,7 @@
                 4894
               ]
             ]
-          },
-          "seconds": 3.4
+          }
         }
       }
     },
@@ -39963,8 +39870,7 @@
                 4805
               ]
             ]
-          },
-          "seconds": 3.9
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -40172,8 +40078,7 @@
                 "ci_high": 8.169038461538461
               }
             }
-          },
-          "seconds": 2.5
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -40652,8 +40557,7 @@
                 4853
               ]
             ]
-          },
-          "seconds": 3.8
+          }
         }
       }
     },
@@ -41230,8 +41134,7 @@
                 4974
               ]
             ]
-          },
-          "seconds": 4.7
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -41439,8 +41342,7 @@
                 "ci_high": 6.851068521031208
               }
             }
-          },
-          "seconds": 3.0
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -41919,8 +41821,7 @@
                 4862
               ]
             ]
-          },
-          "seconds": 3.8
+          }
         }
       }
     },
@@ -42497,8 +42398,7 @@
                 4746
               ]
             ]
-          },
-          "seconds": 4.5
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -42706,8 +42606,7 @@
                 "ci_high": 6.632424242424243
               }
             }
-          },
-          "seconds": 2.0
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -43186,8 +43085,7 @@
                 4805
               ]
             ]
-          },
-          "seconds": 3.8
+          }
         }
       }
     },
@@ -43764,8 +43662,7 @@
                 4971
               ]
             ]
-          },
-          "seconds": 6.0
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -43973,8 +43870,7 @@
                 "ci_high": 6.0159090909090915
               }
             }
-          },
-          "seconds": 7.8
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -44453,8 +44349,7 @@
                 4878
               ]
             ]
-          },
-          "seconds": 4.8
+          }
         }
       }
     },
@@ -45031,8 +44926,7 @@
                 4851
               ]
             ]
-          },
-          "seconds": 5.7
+          }
         },
         "sleep_wake": {
           "cross_dataset": {
@@ -45240,8 +45134,7 @@
                 "ci_high": 6.092611940298507
               }
             }
-          },
-          "seconds": 7.9
+          }
         },
         "wake_nrem_rem": {
           "cross_dataset": {
@@ -45720,8 +45613,7 @@
                 4815
               ]
             ]
-          },
-          "seconds": 4.7
+          }
         }
       }
     }
