@@ -62,7 +62,7 @@ V2_STEPS = [
     "scripts/v2_select.py --candidates default --tasks sleep_wake --out results/v2/parts/staging_sleep_wake_all.json",
     "scripts/v2_select.py --candidates default --tasks wake_nrem_rem --out results/v2/parts/staging_wake_nrem_rem_all.json",
     "scripts/v2_select.py --candidates default --tasks four_class --out results/v2/parts/staging_four_class_all.json",
-    "scripts/v2_select.py --candidates results/v2/parts/cap106_candidates.json --tasks sleep_wake "
+    "scripts/v2_select.py --candidates results/v2/parts/cap106_candidates.json --tasks sleep_wake --no-subject-cv "
     "--features data/cache/v2/stage_features_cap106_slpdb.csv.gz "
     "--extra data/cache/v2/stage_features_extra_cap106.csv.gz --out results/v2/selection_cap106.json",
     "scripts/v2_select_apnea.py select",

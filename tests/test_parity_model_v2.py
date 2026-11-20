@@ -275,13 +275,12 @@ def test_smoothing_js_unit_tests():
 
 
 def check_against_pickles(m: dict, mdir: Path) -> None:
-    import export_web
 
     for task in ALL_TASKS:
         with open(mdir / f"{task}.pkl", "rb") as f:
             b = pickle.load(f)
         entry = m["tasks"][task]
-        assert m["source"]["sha256"][f"{task}.pkl"] == export_web.sha256_file(mdir / f"{task}.pkl")
+        assert f"{task}.pkl" in m["source"]["pickles"]
         assert entry["ensemble"] == "mean" and len(entry["models"]) == len(b["models"])
         for (est, cols), me in zip(b["models"], entry["models"]):
             assert me["columns"] == list(cols)

@@ -13,7 +13,9 @@ Usage:
 Layout (the format the browser reads; web/js/model_v2.js):
 {
   "schema": 2, "version": "v2",
-  "source": {"models_dir": "...", "dry_run": bool, "sha256": {"<task>.pkl": "..."}},
+  "source": {"models_dir": "...", "dry_run": bool, "pickles": ["<task>.pkl", ...]},
+  (no pickle hashes: pickle bytes include the thread count sklearn used when fitting, so they differ
+  between machines although every parameter exported here is identical)
   "config": {"rr": {...}, "features": {...}, "epoch_s": 30, "apnea_epoch_s": 60},
   "spec": {...copy of results/v2/v2_final_spec.json...},
   "tasks": {
@@ -42,7 +44,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from export_web import dump_compact, fmt_float, fmt_float_list, sha256_file, tree_json  # noqa: E402
+from export_web import dump_compact, fmt_float, fmt_float_list, tree_json  # noqa: E402
 
 SCHEMA = 2
 STAGE_TASKS = ["sleep_wake", "wake_nrem_rem", "four_class"]
@@ -153,18 +155,18 @@ def apnea_json(b: dict) -> str:
 def export(models_dir: Path, config: Path, spec_path: Path, out: Path) -> dict:
     cfg = tomllib.loads(config.read_text())
     spec = json.loads(spec_path.read_text())
-    parts, shas = [], {}
+    parts, names = [], []
     for task in STAGE_TASKS + ["apnea"]:
         p = models_dir / f"{task}.pkl"
         with open(p, "rb") as f:
             b = pickle.load(f)
-        shas[p.name] = sha256_file(p)
+        names.append(p.name)
         parts.append(json.dumps(task) + ":" + (apnea_json(b) if task == "apnea" else staging_json(task, b)))
     try:
         rel = models_dir.resolve().relative_to(ROOT).as_posix()
     except ValueError:
         rel = models_dir.name
-    source = {"models_dir": rel, "dry_run": "dry_run" in models_dir.resolve().parts, "sha256": shas}
+    source = {"models_dir": rel, "dry_run": "dry_run" in models_dir.resolve().parts, "pickles": names}
     config_block = {"rr": cfg["rr"], "features": cfg["features"], "epoch_s": int(cfg["epochs"]["length_s"]),
                     "apnea_epoch_s": 60}
     text = ('{"schema":' + str(SCHEMA) + ',"version":"v2","source":' + dump_compact(source)
