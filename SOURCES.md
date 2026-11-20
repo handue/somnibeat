@@ -108,6 +108,7 @@ The demo video is built by the scripts in `tools/video/` (outputs are not commit
 - Screen recordings of the live demo (https://handue.github.io/somnibeat/) captured with Chrome's screencast through Playwright (Apache-2.0).
 - Narration: Kokoro-82M text to speech (hexgrad/Kokoro-82M, Apache-2.0), run offline; the script in `tools/video/narration.py` reads every spoken number from `web/data/results.json`.
 - Narration check: transcribed with Parakeet TDT 0.6B v2 (NVIDIA, CC BY 4.0) to measure word error rate; not part of the video.
-- Background music: generated algorithmically for this video with the ls-clad build-music engine (Apache-2.0; no samples or model weights).
+- Uploaded file shown in the video: `web/data/samples/ucddb015.csv`, derived from UCDDB record ucddb015 (PhysioNet, ODC-By 1.0).
+- No music.
 - Logos: `assets/somnibeat-lockup.svg` and `assets/somnibeat-mark.svg`, unmodified.
 - Editing: FFmpeg.

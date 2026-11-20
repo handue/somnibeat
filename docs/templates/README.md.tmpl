@@ -233,8 +233,9 @@ author's direction it wrote most of the code (data checks, R-peak detection, fea
 the browser port and its parity tests), the documentation and the demo-video tooling, and it ran the
 multi-agent reviews recorded in `docs/review_2026-11-19.md`. The author set the problem, datasets,
 evaluation protocol, design and decision gates, and reviewed the results. The demo video's narration uses
-Kokoro-82M text to speech and its music was generated algorithmically (details in [`SOURCES.md`](SOURCES.md)).
-No AI model is used at run time: the demo runs gradient boosting, logistic regression and an HMM in the browser.
+Kokoro-82M text to speech (details in [`SOURCES.md`](SOURCES.md)); the video has no music.
+No generative model or AI assistant is used at run time: the demo's own machine-learning models
+(gradient boosting, logistic regression and an HMM, trained as described above) run in the browser.
 
 ## Not a medical device
 

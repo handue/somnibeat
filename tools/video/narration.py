@@ -51,15 +51,26 @@ def main() -> None:
     lead_h = leading_wake_hours(ref)
     lead_txt = "almost two hours" if 1.5 <= lead_h < 2 else f"about {words(round(lead_h))} hours"
 
+    sel = json.loads((ROOT / "results/v2/selection_cap106.json").read_text())
+    n_train = sum(len(v) for v in sel["records"].values())  # recordings the frozen v2 staging model was trained on
+    n_beats = len((ROOT / "web/data/samples/ucddb015.csv").read_text().split()) - 1
+    beats_txt = f"about {words(round(n_beats / 1000))} thousand heartbeats"
+
     beats = [
         ("N0", "intro", "Somnibeat. An overnight sleep report, from heartbeat intervals alone."),
         ("N1", "start", "A night in a sleep lab is the gold standard, but it is costly, and hard to get. "
-                        "Many people already have a much simpler signal: the time between heartbeats."),
-        ("N2", "report", "Load one night, and Somnibeat estimates total sleep time, sleep efficiency, wake bouts, "
-                         "and minutes with suspected sleep apnea. Everything is computed in your browser. "
-                         "The file never leaves your device."),
-        ("N3", "compare", "For public test nights, the estimate sits right above what sleep experts scored "
-                          "from the full polysomnography, so you can compare them, minute by minute."),
+                        "Yet the heart keeps its own record of the night: the time between heartbeats "
+                        "shifts as we fall asleep, dream, and wake."),
+        ("NH", "how", "First, record your heart overnight with an ECG, and keep the time between beats. "
+                      "Save it as a simple table, with the time in seconds and the interval in milliseconds. "
+                      "Load that file into Somnibeat, and its AI reads the night thirty seconds at a time."),
+        ("N2", "report", f"Here is a real overnight recording from an open research dataset, {beats_txt}. "
+                         "We upload the file on the page, and in seconds the report appears: total sleep time, "
+                         "sleep efficiency, wake bouts, and minutes with suspected sleep apnea. "
+                         "The file is read right here in the browser, and never sent to a server."),
+        ("N3", "compare", f"Behind it is a machine-learning model, trained on {words(n_train)} overnight recordings "
+                          "scored by sleep experts. It labels every thirty seconds as wake, light, deep, or REM sleep. "
+                          "For public test nights, the experts' own scoring sits right below, minute by minute."),
         ("N4", "apnea", "On a night with many breathing pauses, suspected apnea minutes appear as red marks "
                         "under the chart, right next to the experts' own scoring."),
         ("N5", "noisy", "Somnibeat checks every single beat. When a recording is noisy, the report tells you, "
@@ -69,11 +80,13 @@ def main() -> None:
                         "with the sleep experts than version one, and the page shows exactly how much."),
         ("N7", "method", "We fixed the evaluation before training, chose models on training data only, "
                          "froze them, and tested once. One command rebuilds every number, byte for byte."),
-        ("N8", "outro", "No install, no account, no upload. Try Somnibeat today."),
+        ("N8", "outro", "Somnibeat is open source, and you can try it with your own file, or a sample night, "
+                        "at the address on screen."),
     ]
     OUT.mkdir(parents=True, exist_ok=True)
     data = {"source": {"results_json": "web/data/results.json", "hmc_primary_records": n_primary,
-                       "ucddb018_leading_wake_hours": round(lead_h, 3)},
+                       "ucddb018_leading_wake_hours": round(lead_h, 3),
+                       "v2_training_recordings": n_train, "ucddb015_beats": n_beats},
             "beats": [{"id": i, "scene": s, "text": t} for i, s, t in beats]}
     (OUT / "narration.json").write_text(json.dumps(data, indent=2))
     for b in data["beats"]:

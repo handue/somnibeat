@@ -121,24 +121,78 @@ def scene_start(page, rec, need):
     rec.stop(need)
 
 
+SAMPLE_FILE = ROOT / "web/data/samples/ucddb015.csv"
+
+# A plain view of the file being uploaded (its real first rows), in the site's colours.
+FILE_VIEW = """<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{{margin:0;background:#000;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:#F2F4F7}}
+.wrap{{height:100%;display:flex;align-items:flex-start;justify-content:center;padding-top:70px;box-sizing:border-box}}
+.win{{width:760px;background:#0A0C10;border:1px solid #1A1F27;border-radius:14px;overflow:hidden}}
+.bar{{display:flex;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #1A1F27;font-size:17px}}
+.bar span{{color:#969FAC}}
+pre{{margin:0;padding:20px 22px;font:17px/1.65 ui-monospace,Menlo,monospace;color:#C9CED6}}
+pre b{{color:#4FD1C5;font-weight:600}}
+.note{{padding:0 22px 18px;font-size:15px;color:#969FAC}}
+</style></head><body><div class="wrap"><div class="win">
+<div class="bar"><strong>{name}</strong><span>{rows:,} rows · {kb} KB</span></div>
+<pre>{lines}</pre>
+<div class="note">time_s: time of each beat in seconds · rr_ms: time since the previous beat in milliseconds<br>
+Recording from the open UCDDB research dataset (PhysioNet)</div>
+</div></div></body></html>"""
+
+CURSOR = """async ([sel, ms]) => {
+  let c = document.getElementById('demo-cursor');
+  if (!c) {
+    c = document.createElement('div'); c.id = 'demo-cursor';
+    c.style.cssText = 'position:fixed;left:0;top:0;width:22px;height:22px;border-radius:50%;z-index:99999;' +
+      'background:rgba(242,244,247,.9);box-shadow:0 0 0 3px rgba(0,0,0,.6);pointer-events:none;' +
+      'transform:translate(1100px,700px);transition:transform ' + ms + 'ms cubic-bezier(.4,0,.2,1)';
+    document.body.appendChild(c);
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  }
+  const r = document.querySelector(sel).getBoundingClientRect();
+  c.style.transform = `translate(${r.left + r.width / 2 - 11}px, ${r.top + r.height / 2 - 11}px)`;
+  await new Promise(res => setTimeout(res, ms + 50));
+  c.animate([{transform: c.style.transform + ' scale(1)'}, {transform: c.style.transform + ' scale(.7)'},
+             {transform: c.style.transform + ' scale(1)'}], {duration: 260});
+}"""
+
+
 def scene_report(page, rec, need):
-    page.goto(SITE + "#/", wait_until="networkidle")
-    page.wait_for_timeout(800)
+    """Show the file, then upload it on the start page and wait for the report."""
+    text = SAMPLE_FILE.read_text()
+    rows = text.split()
+    lines = "<b>" + rows[0] + "</b>\n" + "\n".join(rows[1:13]) + "\n…"
+    page.goto("about:blank")  # set_content keeps the URL; leave the site so the later goto reloads it
+    page.set_content(FILE_VIEW.format(name=SAMPLE_FILE.name, rows=len(rows) - 1,
+                                      kb=round(SAMPLE_FILE.stat().st_size / 1000), lines=lines))
+    page.wait_for_timeout(300)
     rec.start()
-    rec.hold(1.0)
-    click_sample(page, "A typical night")
+    rec.hold(5.0)
+    page.goto(SITE + "#/", wait_until="networkidle")
+    page.wait_for_timeout(600)
+    rec.hold(1.2)
+    page.evaluate(CURSOR, ["#btn-upload", 1100])
+    with page.expect_file_chooser() as fc:
+        page.click("#btn-upload")
+    fc.value.set_files(str(SAMPLE_FILE))
+    page.evaluate("document.getElementById('demo-cursor')?.remove()")
     rec.mark("processing")
     wait_report(page)
     rec.mark("report")
-    rec.hold(2.0)
+    rec.hold(2.5)
     scroll_to(page, ".metric, [class*=tile]", None, offset=140, ms=900)
     rec.hold(3.0)
     rec.stop(need)
 
 
 def scene_compare(page, rec, need):
-    # continues on the report of the typical night
+    open_report_quietly(page, "A typical night")
+    y = page.evaluate(TOP_OF, ["h2", "Night report", 30])
+    page.evaluate("y => window.scrollTo(0, y)", y or 0)
+    page.wait_for_timeout(300)
     rec.start()
+    rec.hold(1.0)
     scroll_to(page, "h2", "Sleep stages across the night", offset=40, ms=1600)
     rec.hold(1.5)
     page.get_by_role("button", name="4 stages (experimental)").click()
@@ -259,8 +313,8 @@ def main(names: list[str]) -> None:
         for name in ORDER:
             beat, fn = SCENES[name]
             need = LEAD_IN + timings[beat]["duration"] + TAIL
-            if names and name not in names and not (name == "report" and "compare" in names):
-                continue  # 'compare' continues the report scene's page state
+            if names and name not in names:
+                continue
             rec = Recorder(page, name)
             fn(page, rec, need)
         browser.close()

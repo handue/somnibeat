@@ -1,7 +1,7 @@
-"""Assemble the Somnibeat demo video: title cards, recorded scenes, narration, captions, music.
+"""Assemble the Somnibeat demo video: title cards, recorded scenes, narration, captions.
 
 Inputs (tools/video/out): narration.json, narr/*.wav + narr/timings.json (tts.py),
-scenes/<name>/frames.json + JPEGs (record.py), music_bed.wav (gen_music_bed.js).
+scenes/<name>/frames.json + JPEGs (record.py).
 Outputs: out/somnibeat_demo.mp4 (1920x1080, 30 fps, H.264 + AAC) and
 out/somnibeat_demo.srt (the same captions as a separate file).
 
@@ -24,10 +24,8 @@ OUT = ROOT / "tools/video/out"
 TMP = OUT / "build"
 W, H, FPS = 1920, 1080, 30
 LEAD_IN, TAIL = 0.6, 1.0
-ORDER = [("intro", "N0"), ("start", "N1"), ("report", "N2"), ("compare", "N3"), ("apnea", "N4"),
+ORDER = [("intro", "N0"), ("start", "N1"), ("how", "NH"), ("report", "N2"), ("compare", "N3"), ("apnea", "N4"),
          ("noisy", "N5"), ("trust", "N6"), ("method", "N7"), ("outro", "N8")]
-MUSIC_GAIN = 0.03          # quiet bed: music-only stretches sit about 18 dB under the voice
-MUSIC_DUCK = "threshold=0.015:ratio=12:attack=30:release=900:makeup=1"
 CARD_LEN = {"intro": 7.0, "outro": 8.0}
 FAST_TARGET_S = 2.5  # the in-browser computation is shown in this many seconds
 FONT = "/System/Library/Fonts/Helvetica.ttc"
@@ -49,7 +47,7 @@ font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;c
 .small{{font-size:28px;color:#969FAC}}
 .pill{{border:1px solid #1A1F27;border-radius:999px;padding:12px 26px;font-size:26px;color:#969FAC}}
 .url{{font-size:44px;color:#4FD1C5;font-weight:600;font-variant-numeric:tabular-nums}}
-.credits{{position:absolute;bottom:190px;width:100%;text-align:center;font-size:22px;color:#969FAC;line-height:1.6}}
+.credits{{position:absolute;bottom:250px;width:100%;text-align:center;font-size:22px;color:#969FAC;line-height:1.6}}
 </style></head><body><div class="wrap">{body}</div>{credits}</body></html>"""
 
 
@@ -60,21 +58,86 @@ def render_cards() -> dict[str, Path]:
                                   '<div class="pill">Research prototype · not a diagnostic tool</div>', credits="")
     credits = ('<div class="credits">Data: UCDDB, CAP, MIT-BIH Polysomnographic, Apnea-ECG (PhysioNet, ODC-By 1.0) · '
                'HMC Sleep Staging (PhysioNet, CC BY 4.0)<br>Narration: Kokoro-82M text to speech · '
-               'Music: generated algorithmically for this video · No real patient files were uploaded</div>')
+               'The file uploaded in this video is a public UCDDB research recording</div>')
     outro = CARD_HTML.format(body=f'<div style="width:880px">{lockup.replace("width=\"640\" height=\"160\"", "width=\"880\" height=\"220\"")}</div>'
                                   f'<div class="url">{SITE_URL}</div><div class="small">{REPO_URL}</div>'
                                   '<div class="pill">Research prototype · not a diagnostic tool</div>', credits=credits)
     paths = {}
+    hows = [how_card(k) for k in range(4)]  # 0: steps dimmed, k: steps 1..k lit
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=1)
-        for name, html in (("intro", intro), ("outro", outro)):
+        for name, html in (("intro", intro), ("outro", outro), *((f"how{k}", h) for k, h in enumerate(hows))):
             pg.set_content(html)
             pg.wait_for_timeout(200)
             paths[name] = TMP / f"card_{name}.png"
             pg.screenshot(path=str(paths[name]))
         b.close()
     return paths
+
+
+HOW_CSS = """<style>
+.title{font-size:30px;color:#969FAC;letter-spacing:.08em;text-transform:uppercase}
+.steps{display:flex;gap:28px;align-items:stretch}
+.step{width:500px;background:#0A0C10;border:1px solid #1A1F27;border-radius:18px;padding:34px 34px 30px;box-sizing:border-box}
+.step.dim{opacity:.22}
+.n{font-size:22px;color:#4FD1C5;font-weight:600}
+.h{font-size:38px;font-weight:600;margin:10px 0 18px}
+.t{font-size:24px;line-height:1.5;color:#C9CED6}
+pre{margin:18px 0 0;padding:16px 18px;background:#000;border:1px solid #1A1F27;border-radius:10px;
+font:22px/1.55 ui-monospace,Menlo,monospace;color:#C9CED6}
+pre b{color:#4FD1C5}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 18px}
+.chip{padding:6px 14px;border-radius:999px;font-size:21px;color:#000;font-weight:600}
+ul{margin:0;padding-left:26px;font-size:24px;line-height:1.6;color:#C9CED6}
+.arrow{align-self:center;font-size:40px;color:#4FD1C5}
+</style>"""
+
+
+def how_card(lit: int) -> str:
+    rows = (ROOT / "web/data/samples/ucddb015.csv").read_text().split()[:4]
+    csv = "<b>" + rows[0] + "</b>\n" + "\n".join(rows[1:]) + "\n…"
+    ecg = ('<svg width="300" height="70" viewBox="0 0 300 70"><polyline fill="none" stroke="#4FD1C5" stroke-width="3" '
+           'points="0,40 40,40 50,34 58,40 70,40 78,8 86,62 94,40 130,40 140,34 148,40 160,40 168,8 176,62 184,40 '
+           '220,40 230,34 238,40 250,40 258,8 266,62 274,40 300,40"/></svg>')
+    steps = [
+        ("1", "Record overnight", f'{ecg}<div class="t">An ECG recording through the night. '
+                                  'Keep the time between heartbeats (RR intervals).</div>'),
+        ("2", "Load one CSV file", '<div class="t">Two columns: time in seconds, interval in milliseconds.</div>'
+                                   f'<pre>{csv}</pre>'),
+        ("3", "AI report", '<div class="t">Every 30 seconds is labelled:</div><div class="chips">'
+                           '<span class="chip" style="background:#F5A524">Wake</span>'
+                           '<span class="chip" style="background:#A78BFA">REM</span>'
+                           '<span class="chip" style="background:#5B7FA6">Light</span>'
+                           '<span class="chip" style="background:#3B5BDB;color:#F2F4F7">Deep</span></div>'
+                           '<ul><li>Total sleep time</li><li>Sleep efficiency</li><li>Wake bouts</li>'
+                           '<li>Suspected sleep-apnea minutes</li></ul>'),
+    ]
+    cards = []
+    for i, (n, h, body) in enumerate(steps):
+        if i:
+            cards.append('<div class="arrow">&rarr;</div>')
+        cards.append(f'<div class="step{"" if i < lit else " dim"}"><div class="n">STEP {n}</div><div class="h">{h}</div>{body}</div>')
+    html = CARD_HTML.format(body='<div class="title">How it works</div><div class="steps">' + "".join(cards) + "</div>"
+                            '<div class="pill">The file is read in your browser and never sent to a server</div>',
+                            credits="")
+    return html.replace("</head>", HOW_CSS + "</head>")
+
+
+def steps_clip(name: str, pngs: list[Path], switches: list[float], length: float) -> Path:
+    """A card whose image changes at the given times (seconds from the clip start)."""
+    lst = TMP / f"{name}.txt"
+    times = [0.0, *switches, length]
+    lines = []
+    for png, a, b in zip(pngs, times[:-1], times[1:]):
+        lines += [f"file '{png}'", f"duration {b - a:.4f}"]
+    lines.append(f"file '{pngs[-1]}'")
+    lst.write_text("\n".join(lines) + "\n")
+    clip = TMP / f"{name}.mp4"
+    run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-t", f"{length:.3f}",
+         "-vf", f"fps={FPS},format=yuv420p,fade=t=in:st=0:d=0.5,fade=t=out:st={length - 0.5:.2f}:d=0.5",
+         "-c:v", "libx264", "-preset", "slow", "-crf", "16", str(clip)])
+    return clip
 
 
 # ----------------------------------------------------------------------------- scenes
@@ -193,7 +256,12 @@ def main() -> None:
     t = 0.0
     for name, beat in ORDER:
         need = LEAD_IN + timings[beat]["duration"] + TAIL
-        if name in cards:
+        if name == "how":
+            length = need
+            sw = [LEAD_IN + c["start"] for c in timings[beat]["cues"]]
+            # step 1 lights as the voice starts, steps 2 and 3 with their sentences
+            clip = steps_clip(name, [cards[f"how{k}"] for k in range(4)], [LEAD_IN * 0.5, *sw[1:3]], length)
+        elif name in cards:
             length = max(CARD_LEN[name], need)
             clip = card_clip(name, cards[name], length)
         else:
@@ -251,21 +319,16 @@ def main() -> None:
     filt.append(f"{last}[1:v]overlay=0:0:format=auto[vcap]")
     last = "[vcap]"
 
-    # audio: narration placed at its start times, music ducked under it
+    # audio: narration placed at its start times (no music)
     n0 = inputs.count("-i")
     beats = [b for _, b in ORDER]
     for b in beats:
         inputs += ["-i", str(OUT / "narr" / f"{b}.wav")]
-    inputs += ["-i", str(OUT / "music_bed.wav")]
-    music_idx = n0 + len(beats)
     for j, b in enumerate(beats):
         filt.append(f"[{n0 + j}:a]aresample=48000,aformat=channel_layouts=stereo,adelay={int(starts[b] * 1000)}:all=1[n{j}]")
     filt.append("".join(f"[n{j}]" for j in range(len(beats))) +
-                f"amix=inputs={len(beats)}:normalize=0,apad=whole_dur={total:.3f},asplit=2[voice][sc]")
-    filt.append(f"[{music_idx}:a]aresample=48000,atrim=0:{total:.3f},volume={MUSIC_GAIN},"
-                f"afade=t=in:st=0:d=2.5,afade=t=out:st={total - 4:.3f}:d=4[mus]")
-    filt.append(f"[mus][sc]sidechaincompress={MUSIC_DUCK}[duck]")
-    filt.append("[voice][duck]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[aout]")
+                f"amix=inputs={len(beats)}:normalize=0,apad=whole_dur={total:.3f},"
+                "loudnorm=I=-16:TP=-1.5:LRA=11[aout]")
 
     # Render picture and sound separately, then mux. Encoding both from one filter graph
     # left gaps in the audio timestamps (narration drifted by ~8 s); a WAV render is exact.
@@ -278,9 +341,9 @@ def main() -> None:
     audio_inputs = inputs[n0 * 2:]
     afilt_rebased = []
     for x in afilt:
-        for j in range(len(beats) + 1):
+        for j in range(len(beats)):
             x = x.replace(f"[{n0 + j}:a]", f"[A{j}:a]")
-        for j in range(len(beats) + 1):
+        for j in range(len(beats)):
             x = x.replace(f"[A{j}:a]", f"[{j}:a]")
         afilt_rebased.append(x)
     audio_wav = TMP / "audio.wav"
