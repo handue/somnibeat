@@ -100,3 +100,14 @@ listed record.
 - `c04` is an Apnea-ECG training record and has no sleep-stage reference.
 - License: Open Data Commons Attribution License v1.0,
   https://opendatacommons.org/licenses/by/1-0/
+
+## Demo video
+
+The demo video is built by the scripts in `tools/video/` (outputs are not committed):
+
+- Screen recordings of the live demo (https://handue.github.io/somnibeat/) captured with Chrome's screencast through Playwright (Apache-2.0).
+- Narration: Kokoro-82M text to speech (hexgrad/Kokoro-82M, Apache-2.0), run offline; the script in `tools/video/narration.py` reads every spoken number from `web/data/results.json`.
+- Narration check: transcribed with Parakeet TDT 0.6B v2 (NVIDIA, CC BY 4.0) to measure word error rate; not part of the video.
+- Background music: generated algorithmically for this video with the ls-clad build-music engine (Apache-2.0; no samples or model weights).
+- Logos: `assets/somnibeat-lockup.svg` and `assets/somnibeat-mark.svg`, unmodified.
+- Editing: FFmpeg.

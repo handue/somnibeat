@@ -1,0 +1,208 @@
+"""Record demo scenes from the live site with Chrome's screencast (CDP), frame by frame.
+
+Each scene is a scripted interaction on https://handue.github.io/somnibeat/.
+Frames are saved as JPEG with their capture timestamps so the editor can build
+a constant-frame-rate clip. Scene minimum lengths come from the narration
+timings (out/narr/timings.json) so the picture always covers the voice.
+
+Usage: tools/video/.venv/bin/python tools/video/record.py [scene ...]
+"""
+
+from __future__ import annotations
+
+import base64
+import json
+import shutil
+import sys
+import time
+from pathlib import Path
+
+from playwright.sync_api import sync_playwright
+
+ROOT = Path(__file__).resolve().parents[2]
+OUT = ROOT / "tools/video/out"
+SITE = "https://handue.github.io/somnibeat/"
+VIEW = {"width": 1440, "height": 810}
+LEAD_IN, TAIL = 0.6, 1.0  # seconds of picture before and after the narration of a scene
+
+SMOOTH = """
+async ([y, ms]) => {
+  const y0 = window.scrollY, dy = y - y0, t0 = performance.now();
+  await new Promise(res => {
+    const step = now => {
+      const k = Math.min(1, (now - t0) / ms);
+      const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      window.scrollTo(0, y0 + dy * e);
+      k < 1 ? requestAnimationFrame(step) : res();
+    };
+    requestAnimationFrame(step);
+  });
+}
+"""
+TOP_OF = """([sel, text, offset]) => {
+  const els = [...document.querySelectorAll(sel)].filter(e => !text || e.textContent.includes(text));
+  const e = els.find(x => x.offsetParent !== null) || els[0];
+  return e ? Math.max(0, e.getBoundingClientRect().top + window.scrollY - offset) : null;
+}"""
+
+
+class Recorder:
+    def __init__(self, page, name: str):
+        self.page, self.name = page, name
+        self.dir = OUT / "scenes" / name
+        shutil.rmtree(self.dir, ignore_errors=True)
+        self.dir.mkdir(parents=True)
+        self.frames: list[tuple[float, str]] = []
+        self.marks: dict[str, float] = {}
+        self.cdp = page.context.new_cdp_session(page)
+        self.cdp.on("Page.screencastFrame", self._frame)
+
+    def _frame(self, ev):
+        i = len(self.frames)
+        fn = f"{i:05d}.jpg"
+        (self.dir / fn).write_bytes(base64.b64decode(ev["data"]))
+        self.frames.append((time.monotonic(), fn))
+        try:
+            self.cdp.send("Page.screencastFrameAck", {"sessionId": ev["sessionId"]})
+        except Exception:
+            pass
+
+    def start(self):
+        self.t0 = time.monotonic()
+        self.cdp.send("Page.startScreencast", {"format": "jpeg", "quality": 92, "maxWidth": 2880,
+                                               "maxHeight": 1620, "everyNthFrame": 1})
+
+    def mark(self, name: str):
+        self.marks[name] = time.monotonic() - self.t0
+
+    def hold(self, seconds: float):
+        end = time.monotonic() + seconds
+        while time.monotonic() < end:
+            self.page.wait_for_timeout(50)
+
+    def stop(self, min_len: float):
+        elapsed = time.monotonic() - self.t0
+        if elapsed < min_len:
+            self.hold(min_len - elapsed)
+        t_end = time.monotonic()
+        self.cdp.send("Page.stopScreencast")
+        meta = {"t0": self.t0, "t_end": t_end, "length": t_end - self.t0, "marks": self.marks,
+                "frames": [{"t": t - self.t0, "file": f} for t, f in self.frames]}
+        (self.dir / "frames.json").write_text(json.dumps(meta))
+        print(self.name, f"{meta['length']:.1f}s", len(self.frames), "frames")
+
+
+def scroll_to(page, sel, text=None, offset=90, ms=1400):
+    y = page.evaluate(TOP_OF, [sel, text, offset])
+    if y is not None:
+        page.evaluate(SMOOTH, [y, ms])
+
+
+def click_sample(page, title):
+    page.get_by_role("button", name=f"Open sample: {title}").click()
+
+
+def wait_report(page, timeout=120000):
+    page.wait_for_function("location.hash.startsWith('#/report')", timeout=timeout)
+    page.wait_for_timeout(400)
+
+
+def scene_start(page, rec, need):
+    page.goto(SITE + "#/", wait_until="networkidle")
+    page.wait_for_timeout(800)
+    rec.start()
+    rec.hold(2.5)
+    scroll_to(page, "h2", "Sample nights", offset=60, ms=2200)
+    rec.hold(2.5)
+    page.evaluate(SMOOTH, [0, 1800])
+    rec.stop(need)
+
+
+def scene_report(page, rec, need):
+    page.goto(SITE + "#/", wait_until="networkidle")
+    page.wait_for_timeout(800)
+    rec.start()
+    rec.hold(1.0)
+    click_sample(page, "A typical night")
+    rec.mark("processing")
+    wait_report(page)
+    rec.mark("report")
+    rec.hold(2.0)
+    scroll_to(page, ".metric, [class*=tile]", None, offset=140, ms=900)
+    rec.hold(3.0)
+    rec.stop(need)
+
+
+def scene_compare(page, rec, need):
+    # continues on the report of the typical night
+    rec.start()
+    scroll_to(page, "h2", "Sleep stages across the night", offset=40, ms=1600)
+    rec.hold(1.5)
+    page.get_by_role("button", name="4 stages (experimental)").click()
+    rec.hold(3.0)
+    scroll_to(page, "h3, h2, p, div", "Sleep lab (polysomnography", offset=420, ms=1600)
+    rec.stop(need)
+
+
+def scene_failure(page, rec, need):
+    page.goto(SITE + "#/", wait_until="networkidle")
+    page.wait_for_timeout(500)
+    click_sample(page, "An ordinary night")
+    wait_report(page)
+    page.evaluate(TOP_OF, ["h2", "Sleep stages across the night", 40])
+    y = page.evaluate(TOP_OF, ["h2", "Sleep stages across the night", 40])
+    page.evaluate("y => window.scrollTo(0, y)", y)
+    page.wait_for_timeout(1500)
+    rec.start()
+    rec.hold(2.0)
+    scroll_to(page, "h3, h2, p, div", "Sleep lab (polysomnography", offset=330, ms=1800)
+    rec.hold(2.5)
+    scroll_to(page, "h3, h2", "Compare with the sleep lab", offset=380, ms=1400)
+    rec.stop(need)
+
+
+def scene_trust(page, rec, need):
+    # continues on the same report
+    rec.start()
+    scroll_to(page, "h2", "How far can you trust this?", offset=30, ms=1600)
+    rec.hold(4.0)
+    scroll_to(page, "p, div, strong", "Better with v2", offset=260, ms=2600)
+    rec.hold(3.5)
+    rec.stop(need)
+
+
+def scene_method(page, rec, need):
+    page.goto(SITE + "#/method", wait_until="networkidle")
+    page.wait_for_timeout(800)
+    rec.start()
+    rec.hold(1.5)
+    scroll_to(page, "h2", "v2: chosen on training data", offset=30, ms=2200)
+    rec.hold(4.0)
+    scroll_to(page, "h2", "Reproduce", offset=200, ms=2400)
+    rec.stop(need)
+
+
+SCENES = {"start": ("N1", scene_start), "report": ("N2", scene_report), "compare": ("N3", scene_compare),
+          "failure": ("N4", scene_failure), "trust": ("N5", scene_trust), "method": ("N6", scene_method)}
+ORDER = ["start", "report", "compare", "failure", "trust", "method"]
+
+
+def main(names: list[str]) -> None:
+    timings = json.loads((OUT / "narr/timings.json").read_text())
+    with sync_playwright() as p:
+        browser = p.chromium.launch(channel="chrome", headless=True)
+        ctx = browser.new_context(viewport=VIEW, device_scale_factor=2, color_scheme="dark")
+        page = ctx.new_page()
+        for name in ORDER:
+            beat, fn = SCENES[name]
+            need = LEAD_IN + timings[beat]["duration"] + TAIL
+            if names and name not in names and name not in ("report",):
+                # 'compare' and 'trust' continue the previous page state; run their parents too
+                continue
+            rec = Recorder(page, name)
+            fn(page, rec, need)
+        browser.close()
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

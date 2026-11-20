@@ -9,3 +9,5 @@ data/*.log
 node_modules/
 results/v2/**/models/
 results/v2/models/
+tools/video/.venv/
+tools/video/out/
