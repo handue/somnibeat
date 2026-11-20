@@ -1,0 +1,17 @@
+{
+  "note": "External facts spoken or shown in the demo video. Checked 2026-11-20 against the sources below; US prices, which vary by insurance, state and seller.",
+  "sleep_lab_night_usd_average": 3000,
+  "sleep_lab_wait_months_example": "2 to 4",
+  "holter_cash_price_usd": [120, 378],
+  "ecg_chest_strap_usd_about": 90,
+  "sources": {
+    "ecg_definition": "NHLBI, Heart Tests: https://www.nhlbi.nih.gov/health/heart-tests",
+    "holter_definition": "MedlinePlus, Holter heart monitor: https://medlineplus.gov/ency/article/003877.htm",
+    "sleep_lab_cost": "Sleep Foundation, How Much Does a Sleep Study Cost (updated 2026-05-01): https://www.sleepfoundation.org/sleep-studies/how-much-does-a-sleep-study-cost",
+    "sleep_lab_wait": "ColumbiaDoctors, Sleep Study (Polysomnography), pediatric sleep center: https://www.columbiadoctors.org/childrens-health/pediatric-specialties/lungs-breathing-disorders/our-services/sleep-disorders-center/sleep-study-test-polysomnography",
+    "holter_price": "MDsave, Holter Monitoring (up to 48 h, physician's order required): https://www.mdsave.com/procedures/holter-monitoring/d783f8cc",
+    "chest_strap_price": "Polar H10 list price on polar.com (US), $89.21 on 2026-11-20: https://www.polar.com/us-en/sensors/h10-heart-rate-sensor",
+    "chest_strap_rr_export": "Polar support, RR data export: https://support.polar.com/en/rr-data-export",
+    "chest_strap_rr_validation": "Gilgen-Ammann et al., Eur J Appl Physiol 2019;119:1525-1532 (PMID 31004219); Schaffarczyk et al., Sensors 2022 (PMC9459793)"
+  }
+}

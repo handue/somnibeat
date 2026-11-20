@@ -138,6 +138,29 @@ time_s,rr_ms
 needed. Optional clock inputs (recording start, lights off, lights on) limit
 the analysis to time in bed.
 
+### From an ECG recording to the RR file
+
+Most sleep-lab and Holter software exports the raw ECG, not RR intervals.
+`scripts/ecg_to_rr.py` finds the heartbeats with the same R-peak detector the
+evaluation used and writes the file above (after `make setup`):
+
+```bash
+.venv/bin/python scripts/ecg_to_rr.py night.edf          # writes night_rr.csv
+```
+
+It reads EDF (`.edf`, `.rec`), WFDB (`.hea`) and raw samples in CSV
+(`--fs <Hz>`, and `--column <name>` when the CSV has several columns); the ECG
+channel is found by label (`--channel`, default `ECG|EKG`). It prints the
+number of beats, the share of intervals that pass the RR quality rules and the
+recording start time to enter in the demo. The conversion runs locally. For the
+public recordings it reproduces the evaluated RR series byte for byte
+(`tests/test_ecg_to_rr.py`).
+
+It also accepts an RR-interval export, such as the CSV that ECG chest-strap
+apps write (one column named like `RR`, e.g. `RR-interval [ms]`), and rewrites
+it as `time_s, rr_ms`. Somnibeat's accuracy was measured on clinical ECG
+recordings (the test sets above), not on chest straps.
+
 ## Reproduce every number
 
 Requirements (tested versions): Python 3.14, Node.js 24 (for the
@@ -208,7 +231,7 @@ such.
 ```
 config/       pipeline configuration (v1: default.toml, v2: v2.toml)
 somnibeat/    Python package: EDF reading, dataset loaders, R-peaks, RR rules, features, smoothing, evaluation, report
-scripts/      download, data checks, feature builds, v1 training/evaluation, v2 selection and evaluation, web export, doc rendering
+scripts/      ECG-to-RR conversion, download, data checks, feature builds, v1 training/evaluation, v2 selection and evaluation, web export, doc rendering
 web/          static demo (index.html, css/, js/, data/, assets/)
 tests/        unit tests and Python/JavaScript parity tests
 results/      v1 evaluation outputs (JSON and figures); results/v2/ holds v2 selection and test outputs

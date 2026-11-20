@@ -24,7 +24,7 @@ OUT = ROOT / "tools/video/out"
 TMP = OUT / "build"
 W, H, FPS = 1920, 1080, 30
 LEAD_IN, TAIL = 0.6, 1.0
-ORDER = [("intro", "N0"), ("start", "N1"), ("how", "NH"), ("report", "N2"), ("compare", "N3"), ("apnea", "N4"),
+ORDER = [("intro", "N0"), ("start", "N1"), ("ecg", "NE"), ("how", "NH"), ("report", "N2"), ("compare", "N3"), ("apnea", "N4"),
          ("noisy", "N5"), ("trust", "N6"), ("method", "N7"), ("outro", "N8")]
 CARD_LEN = {"intro": 7.0, "outro": 8.0}
 FAST_TARGET_S = 2.5  # the in-browser computation is shown in this many seconds
@@ -64,10 +64,12 @@ def render_cards() -> dict[str, Path]:
                                   '<div class="pill">Research prototype · not a diagnostic tool</div>', credits=credits)
     paths = {}
     hows = [how_card(k) for k in range(4)]  # 0: steps dimmed, k: steps 1..k lit
+    ecgs = [ecg_card(k) for k in range(3)]  # 0: trace, 1: + prices, 2: + Somnibeat
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=1)
-        for name, html in (("intro", intro), ("outro", outro), *((f"how{k}", h) for k, h in enumerate(hows))):
+        for name, html in (("intro", intro), ("outro", outro), *((f"how{k}", h) for k, h in enumerate(hows)),
+                           *((f"ecg{k}", h) for k, h in enumerate(ecgs))):
             pg.set_content(html)
             pg.wait_for_timeout(200)
             paths[name] = TMP / f"card_{name}.png"
@@ -101,10 +103,11 @@ def how_card(lit: int) -> str:
            'points="0,40 40,40 50,34 58,40 70,40 78,8 86,62 94,40 130,40 140,34 148,40 160,40 168,8 176,62 184,40 '
            '220,40 230,34 238,40 250,40 258,8 266,62 274,40 300,40"/></svg>')
     steps = [
-        ("1", "Record overnight", f'{ecg}<div class="t">An ECG recording through the night. '
-                                  'Keep the time between heartbeats (RR intervals).</div>'),
-        ("2", "Load one CSV file", '<div class="t">Two columns: time in seconds, interval in milliseconds.</div>'
-                                   f'<pre>{csv}</pre>'),
+        ("1", "Record overnight", f'{ecg}<div class="t">An ECG through the night: a Holter monitor '
+                                  'or an ECG chest strap.</div>'),
+        ("2", "Convert to one CSV", '<div class="t"><code>ecg_to_rr.py</code> turns an ECG file (EDF) or an RR export '
+                                    'into two columns:</div>'
+                                    f'<pre>{csv}</pre>'),
         ("3", "AI report", '<div class="t">Every 30 seconds is labelled:</div><div class="chips">'
                            '<span class="chip" style="background:#F5A524">Wake</span>'
                            '<span class="chip" style="background:#A78BFA">REM</span>'
@@ -122,6 +125,60 @@ def how_card(lit: int) -> str:
                             '<div class="pill">The file is read in your browser and never sent to a server</div>',
                             credits="")
     return html.replace("</head>", HOW_CSS + "</head>")
+
+
+ECG_CSS = """<style>
+.grid{display:flex;gap:40px;align-items:stretch}
+.panel{background:#0A0C10;border:1px solid #1A1F27;border-radius:18px;padding:34px 38px;box-sizing:border-box}
+.k{font-size:22px;color:#4FD1C5;font-weight:600;letter-spacing:.06em}
+.h{font-size:36px;font-weight:600;margin:8px 0 14px}
+.t{font-size:23px;line-height:1.5;color:#C9CED6}
+.row{display:grid;grid-template-columns:300px 260px 1fr;align-items:center;gap:18px;margin:16px 0}
+.row .name{font-size:23px;color:#F2F4F7;line-height:1.3}.row .name span{display:block;font-size:18px;color:#969FAC}
+.bar{height:22px;border-radius:6px;background:#5B7FA6}
+.price{font-size:26px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.hide{visibility:hidden}
+.foot{font-size:17px;color:#969FAC;margin-top:18px}
+</style>"""
+
+
+def ecg_card(stage: int) -> str:
+    facts = json.loads((ROOT / "tools/video/facts.json").read_text())
+    lab, (h_lo, h_hi), strap = (facts["sleep_lab_night_usd_average"], facts["holter_cash_price_usd"],
+                                facts["ecg_chest_strap_usd_about"])
+    # ECG trace with R peaks and one marked interval
+    beats = [70, 270, 465, 665]
+    pts = []
+    for b in beats:
+        pts += [(b - 70, 120), (b - 40, 112), (b - 30, 120), (b - 10, 120), (b, 30), (b + 9, 160), (b + 18, 120),
+                (b + 55, 120), (b + 75, 106), (b + 95, 120)]
+    poly = " ".join(f"{x},{y}" for x, y in pts) + " 760,120"
+    svg = (f'<svg width="760" height="230" viewBox="0 0 760 230"><polyline fill="none" stroke="#4FD1C5" stroke-width="3.5" '
+           f'stroke-linejoin="round" points="{poly}"/>'
+           + "".join(f'<circle cx="{b}" cy="30" r="7" fill="#F2F4F7"/>' for b in beats)
+           + '<line x1="270" y1="196" x2="465" y2="196" stroke="#F2F4F7" stroke-width="2.5"/>'
+           '<line x1="270" y1="184" x2="270" y2="208" stroke="#F2F4F7" stroke-width="2.5"/>'
+           '<line x1="465" y1="184" x2="465" y2="208" stroke="#F2F4F7" stroke-width="2.5"/>'
+           '<text x="367" y="226" fill="#F2F4F7" font-size="21" text-anchor="middle" '
+           'font-family="-apple-system,Helvetica">heartbeat interval (RR), e.g. 850 ms</text></svg>')
+    left = (f'<div class="panel" style="width:820px"><div class="k">WHAT IS AN ECG?</div><div class="h">The heart\'s electrical signal</div>'
+            f'<div class="t">Pads on the skin record each beat as a sharp spike (white dots).</div>{svg}</div>')
+    full = 260
+
+    def row(name, sub, usd, label, color="#5B7FA6", hidden=False):
+        w = max(4, round(full * usd / lab)) if usd else 0
+        bar = f'<div class="bar" style="width:{w}px;background:{color}"></div>' if w else '<div></div>'
+        return (f'<div class="row{" hide" if hidden else ""}"><div class="name">{name}<span>{sub}</span></div>{bar}'
+                f'<div class="price" style="color:{color}">{label}</div></div>')
+    rows = (row("Sleep lab night", "US average; waits can take months", lab, f"${lab:,}", "#969FAC", stage < 1)
+            + row("Holter monitor", "portable ECG worn at home, doctor's order", h_hi, f"${h_lo}–{h_hi}", "#5B7FA6", stage < 1)
+            + row("ECG chest strap", "sold for sport", strap, f"about ${strap}", "#5B7FA6", stage < 1)
+            + row("Somnibeat", "runs in your browser", 0, "free", "#4FD1C5", stage < 2))
+    right = (f'<div class="panel" style="width:860px"><div class="k">WHAT IT COSTS TO RECORD A NIGHT</div>{rows}'
+             '<div class="foot">US prices, 2026; they vary by insurance, state and seller. Sources: Sleep Foundation, MDsave, '
+             'Polar (see SOURCES.md). Somnibeat\'s accuracy was measured on clinical ECG recordings.</div></div>')
+    html = CARD_HTML.format(body=f'<div class="grid">{left}{right}</div>', credits="")
+    return html.replace("</head>", ECG_CSS + "</head>")
 
 
 def steps_clip(name: str, pngs: list[Path], switches: list[float], length: float) -> Path:
@@ -256,7 +313,12 @@ def main() -> None:
     t = 0.0
     for name, beat in ORDER:
         need = LEAD_IN + timings[beat]["duration"] + TAIL
-        if name == "how":
+        if name == "ecg":
+            length = need
+            sw = [LEAD_IN + c["start"] for c in timings[beat]["cues"]]
+            # prices with the third sentence, the free Somnibeat row with the fourth
+            clip = steps_clip(name, [cards[f"ecg{k}"] for k in range(3)], [sw[2], sw[3]], length)
+        elif name == "how":
             length = need
             sw = [LEAD_IN + c["start"] for c in timings[beat]["cues"]]
             # step 1 lights as the voice starts, steps 2 and 3 with their sentences

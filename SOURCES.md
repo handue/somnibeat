@@ -110,5 +110,10 @@ The demo video is built by the scripts in `tools/video/` (outputs are not commit
 - Narration check: transcribed with Parakeet TDT 0.6B v2 (NVIDIA, CC BY 4.0) to measure word error rate; not part of the video.
 - Uploaded file shown in the video: `web/data/samples/ucddb015.csv`, derived from UCDDB record ucddb015 (PhysioNet, ODC-By 1.0).
 - No music.
+- Facts about ECG, sleep-study cost and home recording shown in the video, checked 2026-11-20 (US prices; they vary by insurance, state and seller). The values and URLs are in `tools/video/facts.json`:
+  - What an ECG is: NHLBI, Heart Tests (https://www.nhlbi.nih.gov/health/heart-tests); Holter monitor: MedlinePlus (https://medlineplus.gov/ency/article/003877.htm).
+  - In-lab sleep study, about $3,000 on average: Sleep Foundation (https://www.sleepfoundation.org/sleep-studies/how-much-does-a-sleep-study-cost). Waits of 2 to 4 months at one New York pediatric sleep center: ColumbiaDoctors.
+  - Holter monitoring up to 48 h, $120 to $378 cash price with a physician's order: MDsave (https://www.mdsave.com/procedures/holter-monitoring/d783f8cc).
+  - ECG chest strap about $90 (Polar H10 list price, polar.com US); RR export: Polar support (https://support.polar.com/en/rr-data-export); RR agreement with ECG: Gilgen-Ammann et al. 2019 (Eur J Appl Physiol), Schaffarczyk et al. 2022 (Sensors). Somnibeat itself was evaluated on clinical ECG recordings only.
 - Logos: `assets/somnibeat-lockup.svg` and `assets/somnibeat-mark.svg`, unmodified.
 - Editing: FFmpeg.

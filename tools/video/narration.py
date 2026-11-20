@@ -55,14 +55,26 @@ def main() -> None:
     n_train = sum(len(v) for v in sel["records"].values())  # recordings the frozen v2 staging model was trained on
     n_beats = len((ROOT / "web/data/samples/ucddb015.csv").read_text().split()) - 1
     beats_txt = f"about {words(round(n_beats / 1000))} thousand heartbeats"
+    facts = json.loads((ROOT / "tools/video/facts.json").read_text())  # external facts with sources
+    lab = facts["sleep_lab_night_usd_average"]
+    lab_txt = f"{words(lab // 1000)} thousand dollars" if lab % 1000 == 0 else f"{lab} dollars"
+    holter_txt = f"{words(facts['holter_cash_price_usd'][0])} dollars"
+    strap_txt = words(facts["ecg_chest_strap_usd_about"])
 
     beats = [
         ("N0", "intro", "Somnibeat. An overnight sleep report, from heartbeat intervals alone."),
-        ("N1", "start", "A night in a sleep lab is the gold standard, but it is costly, and hard to get. "
+        ("N1", "start", "A night in a sleep lab is the gold standard, but in the United States it costs about "
+                        f"{lab_txt} on average, and the wait can take months. "
                         "Yet the heart keeps its own record of the night: the time between heartbeats "
                         "shifts as we fall asleep, dream, and wake."),
-        ("NH", "how", "First, record your heart overnight with an ECG, and keep the time between beats. "
-                      "Save it as a simple table, with the time in seconds and the interval in milliseconds. "
+        ("NE", "ecg", "That record is an ECG: small pads on the skin pick up the heart's electrical signal, "
+                      "and every beat makes a sharp spike. The time from one spike to the next is the heartbeat interval. "
+                      "You can record it at home: a Holter monitor, a portable ECG your doctor can order, "
+                      f"costs from about {holter_txt}, and an ECG chest strap sold for sport costs about {strap_txt}. "
+                      "Somnibeat itself is free, and runs in any web browser."),
+        ("NH", "how", "First, record your heart overnight with an ECG. "
+                      "Our converter turns the recording into a simple table, with the time in seconds "
+                      "and the interval in milliseconds. "
                       "Load that file into Somnibeat, and its AI reads the night thirty seconds at a time."),
         ("N2", "report", f"Here is a real overnight recording from an open research dataset, {beats_txt}. "
                          "We upload the file on the page, and in seconds the report appears: total sleep time, "
