@@ -30,11 +30,12 @@ GZIP = {"method": "gzip", "mtime": 0}
 
 DETECTOR_SHA = hashlib.sha256(Path(rpeak.__file__).read_bytes()).hexdigest()
 
-REQUIRED = {"ucddb": ("{r}.rec", "{r}_stage.txt", "{r}_respevt.txt"),
+REQUIRED = {"hmc": ("{r}.edf", "{r}_sleepscoring.txt"),  # v2 external test set only
+            "ucddb": ("{r}.rec", "{r}_stage.txt", "{r}_respevt.txt"),
             "cap": ("{r}.edf", "{r}.txt"),
             "slpdb": ("{r}.hea", "{r}.dat", "{r}.st"),
             "apnea-ecg": ("{r}.hea", "{r}.dat", "{r}.apn")}
-RAW_DIR = {"ucddb": "ucddb", "cap": "capslpdb", "slpdb": "slpdb", "apnea-ecg": "apnea-ecg"}
+RAW_DIR = {"ucddb": "ucddb", "cap": "capslpdb", "slpdb": "slpdb", "apnea-ecg": "apnea-ecg", "hmc": "hmc/recordings"}
 
 
 def missing_files(raw: Path, recs: dict[str, list[str]], names: list[str]) -> list[str]:
@@ -106,9 +107,10 @@ def main() -> int:
     ap.add_argument("--config", default="config/default.toml")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--datasets", nargs="*", default=["ucddb", "cap", "slpdb", "apnea-ecg"])
+    ap.add_argument("--prefix", default="", help="output file prefix, e.g. 'hmc_' (v2 test-set build)")
     a = ap.parse_args()
     cfg = tomllib.loads(Path(a.config).read_text())
-    recs = datasets.list_records(cfg["paths"]["raw"], cfg)
+    recs = datasets.list_records(cfg["paths"]["raw"], cfg, include_hmc="hmc" in a.datasets)
     missing = missing_files(Path(cfg["paths"]["raw"]), recs, a.datasets)
     if missing:
         print("Missing raw files (run `make download`, or remove the record from the config):",
@@ -127,10 +129,10 @@ def main() -> int:
             summary.append(res)
     cache = Path(cfg["paths"]["cache"])
     if stage:
-        pd.concat(stage).to_csv(cache / "stage_features.csv.gz", index=False, compression=GZIP)
+        pd.concat(stage).to_csv(cache / f"{a.prefix}stage_features.csv.gz", index=False, compression=GZIP)
     if apnea:
-        pd.concat(apnea).to_csv(cache / "apnea_features.csv.gz", index=False, compression=GZIP)
-    (cache / "record_summary.json").write_text(json.dumps(
+        pd.concat(apnea).to_csv(cache / f"{a.prefix}apnea_features.csv.gz", index=False, compression=GZIP)
+    (cache / f"{a.prefix}record_summary.json").write_text(json.dumps(
         {"detector_sha256": DETECTOR_SHA, "datasets": a.datasets, "records": summary}, indent=2))
     return 0
 

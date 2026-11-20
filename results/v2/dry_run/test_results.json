@@ -1,0 +1,5096 @@
+{
+  "commit": "dry-run",
+  "spec": {
+    "protocol": "docs/v2_protocol.md (candidate-1 clarification)",
+    "rule": {
+      "fold": "train CAP -> evaluate slpdb (fold A)",
+      "tie_margin": 0.01,
+      "tst_guard": 1.1
+    },
+    "candidate_1": {
+      "v1_reference": {
+        "cap49": {
+          "kappa": 0.12865407295333808,
+          "tst_mae_min": 62.80555555555556,
+          "kappa_ci": [
+            0.04630938819160213,
+            0.22727205952608678
+          ]
+        },
+        "cap106": {
+          "kappa": 0.1432520050114428,
+          "tst_mae_min": 60.861111111111114,
+          "kappa_ci": [
+            0.07755539161134258,
+            0.2202610901258038
+          ]
+        },
+        "decision": {
+          "kappa_gain": 0.014597932058104723,
+          "guard_ok": true,
+          "accepted": true
+        }
+      },
+      "gb|cw=balanced|hmm_viterbi|v1+extra": {
+        "cap49": {
+          "kappa": 0.21221416949570568,
+          "tst_mae_min": 57.833333333333336,
+          "kappa_ci": [
+            0.13016850910345676,
+            0.3171443613468326
+          ]
+        },
+        "cap106": {
+          "kappa": 0.22342260318840318,
+          "tst_mae_min": 58.22222222222222,
+          "kappa_ci": [
+            0.13679232117616189,
+            0.3163560139715787
+          ]
+        },
+        "decision": {
+          "kappa_gain": 0.0112084336926975,
+          "guard_ok": true,
+          "accepted": true
+        }
+      }
+    },
+    "staging": {
+      "model": "gb",
+      "class_weight": "balanced",
+      "smoothing": "hmm_viterbi",
+      "feature_set": "v1+extra",
+      "cap_records": "all usable (config/v2.toml)"
+    },
+    "apnea": {
+      "name": "ensemble_mean|cw=None|v1+extra|train=apnea-ecg",
+      "model": "ensemble_mean",
+      "class_weight": null,
+      "feature_set": "v1+extra"
+    },
+    "hyperparameters": {
+      "seed": 20261204,
+      "gb": {
+        "max_iter": 300,
+        "learning_rate": 0.05,
+        "max_leaf_nodes": 31,
+        "l2_regularization": 1.0,
+        "early_stopping": false
+      },
+      "lr": {
+        "C": 1.0,
+        "max_iter": 2000
+      },
+      "inner_folds": 5
+    }
+  },
+  "test_sets": {
+    "slpdb_as_test": {
+      "records_all": 18,
+      "records_primary": 18,
+      "excluded_low_coverage": {},
+      "tasks": {
+        "sleep_wake": {
+          "primary": {
+            "v2": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.2197968429866676,
+                  "ci_low": 0.12583309486632677,
+                  "ci_high": 0.29412343877779706
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.23394665090895453,
+                  "ci_low": 0.1674310237931232,
+                  "ci_high": 0.2914063293381889
+                },
+                "accuracy": {
+                  "point": 0.6899125822610745,
+                  "ci_low": 0.6382893136943336,
+                  "ci_high": 0.7315876581271699
+                },
+                "wake_sensitivity": {
+                  "point": 0.37849117174959873,
+                  "ci_low": 0.2734879174346194,
+                  "ci_high": 0.4771314481061448
+                },
+                "sleep_sensitivity": {
+                  "point": 0.8272006793093688,
+                  "ci_low": 0.7409016211847879,
+                  "ci_high": 0.8928618449567346
+                },
+                "tst_bias_min": {
+                  "point": 19.86111111111111,
+                  "ci_low": -6.008333333333332,
+                  "ci_high": 49.504861111111126
+                },
+                "tst_mae_min": {
+                  "point": 58.80555555555556,
+                  "ci_low": 44.2638888888889,
+                  "ci_high": 75.11458333333334
+                },
+                "se_bias_pctpt": {
+                  "point": 3.472758373253679,
+                  "ci_low": -8.19495959268103,
+                  "ci_high": 15.774044692365521
+                },
+                "se_mae_pctpt": {
+                  "point": 22.43962376583875,
+                  "ci_low": 16.348902603132693,
+                  "ci_high": 30.674847765365776
+                },
+                "awakenings_bias": {
+                  "point": -9.166666666666666,
+                  "ci_low": -12.447222222222221,
+                  "ci_high": -6.8777777777777755
+                },
+                "awakenings_mae": {
+                  "point": 9.166666666666666,
+                  "ci_low": 6.87777777777778,
+                  "ci_high": 12.447222222222223
+                }
+              },
+              "bland_altman": {
+                "tst_min": {
+                  "bias": 19.86111111111111,
+                  "mae": 58.80555555555556,
+                  "sd": 67.56996495040302,
+                  "loa_low": -112.5760201916788,
+                  "loa_high": 152.29824241390102,
+                  "per_record_error": [
+                    -17.5,
+                    75.5,
+                    -120.5,
+                    -61.0,
+                    36.0,
+                    -42.5,
+                    120.0,
+                    45.0,
+                    100.0,
+                    -58.5,
+                    85.5,
+                    -27.0,
+                    85.0,
+                    11.5,
+                    93.0,
+                    -23.5,
+                    54.0,
+                    2.5
+                  ]
+                },
+                "se_pct": {
+                  "bias": 3.472758373253679,
+                  "mae": 22.43962376583875,
+                  "sd": 28.390675433362322,
+                  "loa_low": -52.172965476136476,
+                  "loa_high": 59.11848222264383,
+                  "per_record_error": [
+                    -14.644351464435147,
+                    41.94444444444444,
+                    -68.4659090909091,
+                    -45.353159851301115,
+                    10.0,
+                    -11.805555555555557,
+                    33.66058906030855,
+                    12.968299711815561,
+                    31.25,
+                    -16.762177650429805,
+                    21.923076923076934,
+                    -7.142857142857139,
+                    22.39789196310936,
+                    5.02183406113538,
+                    26.19718309859155,
+                    -6.5277777777777715,
+                    24.601366742596817,
+                    3.2467532467532507
+                  ]
+                },
+                "awakenings": {
+                  "bias": -9.166666666666666,
+                  "mae": 9.166666666666666,
+                  "sd": 7.1063352017759485,
+                  "loa_low": -23.095083662147523,
+                  "loa_high": 4.761750328814193,
+                  "per_record_error": [
+                    -1.0,
+                    -8.0,
+                    -2.0,
+                    -5.0,
+                    -7.0,
+                    -8.0,
+                    -21.0,
+                    -16.0,
+                    -4.0,
+                    -2.0,
+                    -26.0,
+                    -1.0,
+                    -10.0,
+                    -12.0,
+                    -17.0,
+                    -11.0,
+                    -10.0,
+                    -4.0
+                  ]
+                }
+              },
+              "per_record": [
+                {
+                  "record": "slp01a",
+                  "ref_tib_min": 119.5,
+                  "ref_tst_min": 116.0,
+                  "ref_se_pct": 97.07112970711297,
+                  "ref_awakenings": 2,
+                  "pred_tib_min": 119.5,
+                  "pred_tst_min": 98.5,
+                  "pred_se_pct": 82.42677824267783,
+                  "pred_awakenings": 1,
+                  "kappa": 0.11903263508046409
+                },
+                {
+                  "record": "slp01b",
+                  "ref_tib_min": 180.0,
+                  "ref_tst_min": 90.0,
+                  "ref_se_pct": 50.0,
+                  "ref_awakenings": 8,
+                  "pred_tib_min": 180.0,
+                  "pred_tst_min": 165.5,
+                  "pred_se_pct": 91.94444444444444,
+                  "pred_awakenings": 0,
+                  "kappa": 0.061111111111111116
+                },
+                {
+                  "record": "slp02a",
+                  "ref_tib_min": 176.0,
+                  "ref_tst_min": 154.0,
+                  "ref_se_pct": 87.5,
+                  "ref_awakenings": 3,
+                  "pred_tib_min": 176.0,
+                  "pred_tst_min": 33.5,
+                  "pred_se_pct": 19.03409090909091,
+                  "pred_awakenings": 1,
+                  "kappa": 0.05722599418040734
+                },
+                {
+                  "record": "slp02b",
+                  "ref_tib_min": 134.5,
+                  "ref_tst_min": 81.0,
+                  "ref_se_pct": 60.22304832713755,
+                  "ref_awakenings": 6,
+                  "pred_tib_min": 134.5,
+                  "pred_tst_min": 20.0,
+                  "pred_se_pct": 14.869888475836431,
+                  "pred_awakenings": 1,
+                  "kappa": 0.024844120063801954
+                },
+                {
+                  "record": "slp03",
+                  "ref_tib_min": 360.0,
+                  "ref_tst_min": 284.5,
+                  "ref_se_pct": 79.02777777777777,
+                  "ref_awakenings": 9,
+                  "pred_tib_min": 360.0,
+                  "pred_tst_min": 320.5,
+                  "pred_se_pct": 89.02777777777777,
+                  "pred_awakenings": 2,
+                  "kappa": 0.5021941273581579
+                },
+                {
+                  "record": "slp04",
+                  "ref_tib_min": 360.0,
+                  "ref_tst_min": 279.0,
+                  "ref_se_pct": 77.5,
+                  "ref_awakenings": 14,
+                  "pred_tib_min": 360.0,
+                  "pred_tst_min": 236.5,
+                  "pred_se_pct": 65.69444444444444,
+                  "pred_awakenings": 6,
+                  "kappa": 0.1975826758435454
+                },
+                {
+                  "record": "slp14",
+                  "ref_tib_min": 356.5,
+                  "ref_tst_min": 196.0,
+                  "ref_se_pct": 54.97896213183731,
+                  "ref_awakenings": 26,
+                  "pred_tib_min": 356.5,
+                  "pred_tst_min": 316.0,
+                  "pred_se_pct": 88.63955119214586,
+                  "pred_awakenings": 5,
+                  "kappa": 0.16734008456082922
+                },
+                {
+                  "record": "slp16",
+                  "ref_tib_min": 347.0,
+                  "ref_tst_min": 189.0,
+                  "ref_se_pct": 54.46685878962536,
+                  "ref_awakenings": 19,
+                  "pred_tib_min": 347.0,
+                  "pred_tst_min": 234.0,
+                  "pred_se_pct": 67.43515850144092,
+                  "pred_awakenings": 3,
+                  "kappa": 0.18498517032693854
+                },
+                {
+                  "record": "slp32",
+                  "ref_tib_min": 320.0,
+                  "ref_tst_min": 123.0,
+                  "ref_se_pct": 38.4375,
+                  "ref_awakenings": 8,
+                  "pred_tib_min": 320.0,
+                  "pred_tst_min": 223.0,
+                  "pred_se_pct": 69.6875,
+                  "pred_awakenings": 4,
+                  "kappa": 0.40424617808170143
+                },
+                {
+                  "record": "slp37",
+                  "ref_tib_min": 349.0,
+                  "ref_tst_min": 311.5,
+                  "ref_se_pct": 89.25501432664757,
+                  "ref_awakenings": 7,
+                  "pred_tib_min": 349.0,
+                  "pred_tst_min": 253.0,
+                  "pred_se_pct": 72.49283667621776,
+                  "pred_awakenings": 5,
+                  "kappa": 0.2690681999923841
+                },
+                {
+                  "record": "slp41",
+                  "ref_tib_min": 390.0,
+                  "ref_tst_min": 275.5,
+                  "ref_se_pct": 70.64102564102564,
+                  "ref_awakenings": 27,
+                  "pred_tib_min": 390.0,
+                  "pred_tst_min": 361.0,
+                  "pred_se_pct": 92.56410256410257,
+                  "pred_awakenings": 1,
+                  "kappa": 0.3160530370610655
+                },
+                {
+                  "record": "slp45",
+                  "ref_tib_min": 378.0,
+                  "ref_tst_min": 318.5,
+                  "ref_se_pct": 84.25925925925925,
+                  "ref_awakenings": 6,
+                  "pred_tib_min": 378.0,
+                  "pred_tst_min": 291.5,
+                  "pred_se_pct": 77.11640211640211,
+                  "pred_awakenings": 5,
+                  "kappa": 0.4527169252358307
+                },
+                {
+                  "record": "slp48",
+                  "ref_tib_min": 379.5,
+                  "ref_tst_min": 273.0,
+                  "ref_se_pct": 71.93675889328063,
+                  "ref_awakenings": 12,
+                  "pred_tib_min": 379.5,
+                  "pred_tst_min": 358.0,
+                  "pred_se_pct": 94.33465085638998,
+                  "pred_awakenings": 2,
+                  "kappa": 0.2581909924653097
+                },
+                {
+                  "record": "slp59",
+                  "ref_tib_min": 229.0,
+                  "ref_tst_min": 159.0,
+                  "ref_se_pct": 69.43231441048034,
+                  "ref_awakenings": 13,
+                  "pred_tib_min": 229.0,
+                  "pred_tst_min": 170.5,
+                  "pred_se_pct": 74.45414847161572,
+                  "pred_awakenings": 1,
+                  "kappa": 0.29369246344736666
+                },
+                {
+                  "record": "slp60",
+                  "ref_tib_min": 355.0,
+                  "ref_tst_min": 212.0,
+                  "ref_se_pct": 59.71830985915493,
+                  "ref_awakenings": 19,
+                  "pred_tib_min": 355.0,
+                  "pred_tst_min": 305.0,
+                  "pred_se_pct": 85.91549295774648,
+                  "pred_awakenings": 2,
+                  "kappa": -0.0542285345384119
+                },
+                {
+                  "record": "slp61",
+                  "ref_tib_min": 360.0,
+                  "ref_tst_min": 298.0,
+                  "ref_se_pct": 82.77777777777777,
+                  "ref_awakenings": 11,
+                  "pred_tib_min": 360.0,
+                  "pred_tst_min": 274.5,
+                  "pred_se_pct": 76.25,
+                  "pred_awakenings": 0,
+                  "kappa": 0.1571368064379499
+                },
+                {
+                  "record": "slp66",
+                  "ref_tib_min": 219.5,
+                  "ref_tst_min": 132.0,
+                  "ref_se_pct": 60.136674259681094,
+                  "ref_awakenings": 11,
+                  "pred_tib_min": 219.5,
+                  "pred_tst_min": 186.0,
+                  "pred_se_pct": 84.73804100227791,
+                  "pred_awakenings": 1,
+                  "kappa": 0.31064888631202575
+                },
+                {
+                  "record": "slp67x",
+                  "ref_tib_min": 77.0,
+                  "ref_tst_min": 41.0,
+                  "ref_se_pct": 53.246753246753244,
+                  "ref_awakenings": 4,
+                  "pred_tib_min": 77.0,
+                  "pred_tst_min": 43.5,
+                  "pred_se_pct": 56.493506493506494,
+                  "pred_awakenings": 0,
+                  "kappa": 0.4891988433407041
+                }
+              ]
+            },
+            "v1": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.7681099273554371,
+                  "ci_low": 0.7334969275937662,
+                  "ci_high": 0.8011249896284217
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.7307071301212038,
+                  "ci_low": 0.6937450174548155,
+                  "ci_high": 0.771290427882418
+                },
+                "accuracy": {
+                  "point": 0.9021707101463511,
+                  "ci_low": 0.8852894367828288,
+                  "ci_high": 0.9186700939968827
+                },
+                "wake_sensitivity": {
+                  "point": 0.8282504012841091,
+                  "ci_low": 0.7849829791393363,
+                  "ci_high": 0.8669168089984387
+                },
+                "sleep_sensitivity": {
+                  "point": 0.934757996037362,
+                  "ci_low": 0.917681431291815,
+                  "ci_high": 0.9511958255215383
+                },
+                "tst_bias_min": {
+                  "point": 2.0555555555555554,
+                  "ci_low": -4.056944444444444,
+                  "ci_high": 8.12013888888889
+                },
+                "tst_mae_min": {
+                  "point": 12.444444444444445,
+                  "ci_low": 9.721527777777776,
+                  "ci_high": 15.223611111111111
+                },
+                "se_bias_pctpt": {
+                  "point": -0.059790883403144174,
+                  "ci_low": -2.41877366884176,
+                  "ci_high": 2.425630555663198
+                },
+                "se_mae_pctpt": {
+                  "point": 5.087014001734428,
+                  "ci_low": 3.750259574122433,
+                  "ci_high": 6.487180410388624
+                },
+                "awakenings_bias": {
+                  "point": -0.8888888888888888,
+                  "ci_low": -2.2791666666666663,
+                  "ci_high": 0.45138888888889045
+                },
+                "awakenings_mae": {
+                  "point": 2.3333333333333335,
+                  "ci_low": 1.3333333333333333,
+                  "ci_high": 3.5569444444444445
+                }
+              },
+              "bland_altman": {
+                "tst_min": {
+                  "bias": 2.0555555555555554,
+                  "mae": 12.444444444444445,
+                  "sd": 14.254915446227136,
+                  "loa_low": -25.884078719049633,
+                  "loa_high": 29.99518983016074,
+                  "per_record_error": [
+                    -7.5,
+                    8.5,
+                    -17.5,
+                    -14.0,
+                    11.0,
+                    -17.5,
+                    25.5,
+                    15.5,
+                    6.5,
+                    2.0,
+                    13.5,
+                    -8.5,
+                    8.5,
+                    24.0,
+                    -18.5,
+                    -5.5,
+                    15.5,
+                    -4.5
+                  ]
+                },
+                "se_pct": {
+                  "bias": -0.059790883403144174,
+                  "mae": 5.087014001734428,
+                  "sd": 6.052606888808561,
+                  "loa_low": -11.922900385467923,
+                  "loa_high": 11.803318618661635,
+                  "per_record_error": [
+                    -6.276150627615067,
+                    4.722222222222221,
+                    -9.943181818181813,
+                    -10.408921933085502,
+                    3.055555555555557,
+                    -4.861111111111114,
+                    7.152875175315572,
+                    4.4668587896253555,
+                    2.03125,
+                    0.5730659025787901,
+                    3.461538461538467,
+                    -2.2486772486772395,
+                    2.2397891963109373,
+                    10.480349344978166,
+                    -5.2112676056338,
+                    -1.5277777777777715,
+                    7.061503416856489,
+                    -5.844155844155843
+                  ]
+                },
+                "awakenings": {
+                  "bias": -0.8888888888888888,
+                  "mae": 2.3333333333333335,
+                  "sd": 3.122760635547993,
+                  "loa_low": -7.009499734562954,
+                  "loa_high": 5.231721956785178,
+                  "per_record_error": [
+                    0.0,
+                    3.0,
+                    2.0,
+                    -1.0,
+                    0.0,
+                    -1.0,
+                    0.0,
+                    -4.0,
+                    -1.0,
+                    -1.0,
+                    -7.0,
+                    6.0,
+                    -1.0,
+                    -4.0,
+                    -4.0,
+                    2.0,
+                    -5.0,
+                    0.0
+                  ]
+                }
+              }
+            },
+            "asleep_from_lights_off": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "accuracy": {
+                  "point": 0.6940379137609273,
+                  "ci_low": 0.6302420941851676,
+                  "ci_high": 0.748855655452189
+                },
+                "wake_sensitivity": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "sleep_sensitivity": {
+                  "point": 1.0,
+                  "ci_low": 1.0,
+                  "ci_high": 1.0
+                },
+                "tst_bias_min": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "tst_mae_min": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "se_bias_pctpt": {
+                  "point": 31.077268644024926,
+                  "ci_low": 25.235886578069298,
+                  "ci_high": 37.17270938160833
+                },
+                "se_mae_pctpt": {
+                  "point": 31.077268644024926,
+                  "ci_low": 25.235886578069298,
+                  "ci_high": 37.17270938160833
+                },
+                "awakenings_bias": {
+                  "point": -11.38888888888889,
+                  "ci_low": -15.113888888888887,
+                  "ci_high": -8.722222222222221
+                },
+                "awakenings_mae": {
+                  "point": 11.38888888888889,
+                  "ci_low": 8.722222222222221,
+                  "ci_high": 15.113888888888889
+                }
+              },
+              "bland_altman": {
+                "tst_min": {
+                  "bias": 86.52777777777777,
+                  "mae": 86.52777777777777,
+                  "sd": 52.03518951356302,
+                  "loa_low": -15.461193668805748,
+                  "loa_high": 188.5167492243613,
+                  "per_record_error": [
+                    3.5,
+                    90.0,
+                    22.0,
+                    53.5,
+                    75.5,
+                    81.0,
+                    160.5,
+                    158.0,
+                    197.0,
+                    37.5,
+                    114.5,
+                    59.5,
+                    106.5,
+                    70.0,
+                    143.0,
+                    62.0,
+                    87.5,
+                    36.0
+                  ]
+                },
+                "se_pct": {
+                  "bias": 31.077268644024926,
+                  "mae": 31.077268644024926,
+                  "sd": 15.978212070522597,
+                  "loa_low": -0.240027014199363,
+                  "loa_high": 62.394564302249215,
+                  "per_record_error": [
+                    2.9288702928870265,
+                    50.0,
+                    12.5,
+                    39.77695167286245,
+                    20.97222222222223,
+                    22.5,
+                    45.02103786816269,
+                    45.53314121037464,
+                    61.5625,
+                    10.744985673352431,
+                    29.358974358974365,
+                    15.740740740740748,
+                    28.063241106719374,
+                    30.567685589519655,
+                    40.28169014084507,
+                    17.22222222222223,
+                    39.863325740318906,
+                    46.753246753246756
+                  ]
+                },
+                "awakenings": {
+                  "bias": -11.38888888888889,
+                  "mae": 11.38888888888889,
+                  "sd": 7.285270303749396,
+                  "loa_low": -25.668018684237705,
+                  "loa_high": 2.890240906459926,
+                  "per_record_error": [
+                    -2.0,
+                    -8.0,
+                    -3.0,
+                    -6.0,
+                    -9.0,
+                    -14.0,
+                    -26.0,
+                    -19.0,
+                    -8.0,
+                    -7.0,
+                    -27.0,
+                    -6.0,
+                    -12.0,
+                    -13.0,
+                    -19.0,
+                    -11.0,
+                    -11.0,
+                    -4.0
+                  ]
+                }
+              }
+            }
+          },
+          "all_records": {
+            "v2": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.2197968429866676,
+                  "ci_low": 0.12583309486632677,
+                  "ci_high": 0.29412343877779706
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.23394665090895453,
+                  "ci_low": 0.1674310237931232,
+                  "ci_high": 0.2914063293381889
+                },
+                "accuracy": {
+                  "point": 0.6899125822610745,
+                  "ci_low": 0.6382893136943336,
+                  "ci_high": 0.7315876581271699
+                },
+                "wake_sensitivity": {
+                  "point": 0.37849117174959873,
+                  "ci_low": 0.2734879174346194,
+                  "ci_high": 0.4771314481061448
+                },
+                "sleep_sensitivity": {
+                  "point": 0.8272006793093688,
+                  "ci_low": 0.7409016211847879,
+                  "ci_high": 0.8928618449567346
+                },
+                "tst_bias_min": {
+                  "point": 19.86111111111111,
+                  "ci_low": -6.008333333333332,
+                  "ci_high": 49.504861111111126
+                },
+                "tst_mae_min": {
+                  "point": 58.80555555555556,
+                  "ci_low": 44.2638888888889,
+                  "ci_high": 75.11458333333334
+                },
+                "se_bias_pctpt": {
+                  "point": 3.472758373253679,
+                  "ci_low": -8.19495959268103,
+                  "ci_high": 15.774044692365521
+                },
+                "se_mae_pctpt": {
+                  "point": 22.43962376583875,
+                  "ci_low": 16.348902603132693,
+                  "ci_high": 30.674847765365776
+                },
+                "awakenings_bias": {
+                  "point": -9.166666666666666,
+                  "ci_low": -12.447222222222221,
+                  "ci_high": -6.8777777777777755
+                },
+                "awakenings_mae": {
+                  "point": 9.166666666666666,
+                  "ci_low": 6.87777777777778,
+                  "ci_high": 12.447222222222223
+                }
+              },
+              "bland_altman": {
+                "tst_min": {
+                  "bias": 19.86111111111111,
+                  "mae": 58.80555555555556,
+                  "sd": 67.56996495040302,
+                  "loa_low": -112.5760201916788,
+                  "loa_high": 152.29824241390102,
+                  "per_record_error": [
+                    -17.5,
+                    75.5,
+                    -120.5,
+                    -61.0,
+                    36.0,
+                    -42.5,
+                    120.0,
+                    45.0,
+                    100.0,
+                    -58.5,
+                    85.5,
+                    -27.0,
+                    85.0,
+                    11.5,
+                    93.0,
+                    -23.5,
+                    54.0,
+                    2.5
+                  ]
+                },
+                "se_pct": {
+                  "bias": 3.472758373253679,
+                  "mae": 22.43962376583875,
+                  "sd": 28.390675433362322,
+                  "loa_low": -52.172965476136476,
+                  "loa_high": 59.11848222264383,
+                  "per_record_error": [
+                    -14.644351464435147,
+                    41.94444444444444,
+                    -68.4659090909091,
+                    -45.353159851301115,
+                    10.0,
+                    -11.805555555555557,
+                    33.66058906030855,
+                    12.968299711815561,
+                    31.25,
+                    -16.762177650429805,
+                    21.923076923076934,
+                    -7.142857142857139,
+                    22.39789196310936,
+                    5.02183406113538,
+                    26.19718309859155,
+                    -6.5277777777777715,
+                    24.601366742596817,
+                    3.2467532467532507
+                  ]
+                },
+                "awakenings": {
+                  "bias": -9.166666666666666,
+                  "mae": 9.166666666666666,
+                  "sd": 7.1063352017759485,
+                  "loa_low": -23.095083662147523,
+                  "loa_high": 4.761750328814193,
+                  "per_record_error": [
+                    -1.0,
+                    -8.0,
+                    -2.0,
+                    -5.0,
+                    -7.0,
+                    -8.0,
+                    -21.0,
+                    -16.0,
+                    -4.0,
+                    -2.0,
+                    -26.0,
+                    -1.0,
+                    -10.0,
+                    -12.0,
+                    -17.0,
+                    -11.0,
+                    -10.0,
+                    -4.0
+                  ]
+                }
+              },
+              "per_record": [
+                {
+                  "record": "slp01a",
+                  "ref_tib_min": 119.5,
+                  "ref_tst_min": 116.0,
+                  "ref_se_pct": 97.07112970711297,
+                  "ref_awakenings": 2,
+                  "pred_tib_min": 119.5,
+                  "pred_tst_min": 98.5,
+                  "pred_se_pct": 82.42677824267783,
+                  "pred_awakenings": 1,
+                  "kappa": 0.11903263508046409
+                },
+                {
+                  "record": "slp01b",
+                  "ref_tib_min": 180.0,
+                  "ref_tst_min": 90.0,
+                  "ref_se_pct": 50.0,
+                  "ref_awakenings": 8,
+                  "pred_tib_min": 180.0,
+                  "pred_tst_min": 165.5,
+                  "pred_se_pct": 91.94444444444444,
+                  "pred_awakenings": 0,
+                  "kappa": 0.061111111111111116
+                },
+                {
+                  "record": "slp02a",
+                  "ref_tib_min": 176.0,
+                  "ref_tst_min": 154.0,
+                  "ref_se_pct": 87.5,
+                  "ref_awakenings": 3,
+                  "pred_tib_min": 176.0,
+                  "pred_tst_min": 33.5,
+                  "pred_se_pct": 19.03409090909091,
+                  "pred_awakenings": 1,
+                  "kappa": 0.05722599418040734
+                },
+                {
+                  "record": "slp02b",
+                  "ref_tib_min": 134.5,
+                  "ref_tst_min": 81.0,
+                  "ref_se_pct": 60.22304832713755,
+                  "ref_awakenings": 6,
+                  "pred_tib_min": 134.5,
+                  "pred_tst_min": 20.0,
+                  "pred_se_pct": 14.869888475836431,
+                  "pred_awakenings": 1,
+                  "kappa": 0.024844120063801954
+                },
+                {
+                  "record": "slp03",
+                  "ref_tib_min": 360.0,
+                  "ref_tst_min": 284.5,
+                  "ref_se_pct": 79.02777777777777,
+                  "ref_awakenings": 9,
+                  "pred_tib_min": 360.0,
+                  "pred_tst_min": 320.5,
+                  "pred_se_pct": 89.02777777777777,
+                  "pred_awakenings": 2,
+                  "kappa": 0.5021941273581579
+                },
+                {
+                  "record": "slp04",
+                  "ref_tib_min": 360.0,
+                  "ref_tst_min": 279.0,
+                  "ref_se_pct": 77.5,
+                  "ref_awakenings": 14,
+                  "pred_tib_min": 360.0,
+                  "pred_tst_min": 236.5,
+                  "pred_se_pct": 65.69444444444444,
+                  "pred_awakenings": 6,
+                  "kappa": 0.1975826758435454
+                },
+                {
+                  "record": "slp14",
+                  "ref_tib_min": 356.5,
+                  "ref_tst_min": 196.0,
+                  "ref_se_pct": 54.97896213183731,
+                  "ref_awakenings": 26,
+                  "pred_tib_min": 356.5,
+                  "pred_tst_min": 316.0,
+                  "pred_se_pct": 88.63955119214586,
+                  "pred_awakenings": 5,
+                  "kappa": 0.16734008456082922
+                },
+                {
+                  "record": "slp16",
+                  "ref_tib_min": 347.0,
+                  "ref_tst_min": 189.0,
+                  "ref_se_pct": 54.46685878962536,
+                  "ref_awakenings": 19,
+                  "pred_tib_min": 347.0,
+                  "pred_tst_min": 234.0,
+                  "pred_se_pct": 67.43515850144092,
+                  "pred_awakenings": 3,
+                  "kappa": 0.18498517032693854
+                },
+                {
+                  "record": "slp32",
+                  "ref_tib_min": 320.0,
+                  "ref_tst_min": 123.0,
+                  "ref_se_pct": 38.4375,
+                  "ref_awakenings": 8,
+                  "pred_tib_min": 320.0,
+                  "pred_tst_min": 223.0,
+                  "pred_se_pct": 69.6875,
+                  "pred_awakenings": 4,
+                  "kappa": 0.40424617808170143
+                },
+                {
+                  "record": "slp37",
+                  "ref_tib_min": 349.0,
+                  "ref_tst_min": 311.5,
+                  "ref_se_pct": 89.25501432664757,
+                  "ref_awakenings": 7,
+                  "pred_tib_min": 349.0,
+                  "pred_tst_min": 253.0,
+                  "pred_se_pct": 72.49283667621776,
+                  "pred_awakenings": 5,
+                  "kappa": 0.2690681999923841
+                },
+                {
+                  "record": "slp41",
+                  "ref_tib_min": 390.0,
+                  "ref_tst_min": 275.5,
+                  "ref_se_pct": 70.64102564102564,
+                  "ref_awakenings": 27,
+                  "pred_tib_min": 390.0,
+                  "pred_tst_min": 361.0,
+                  "pred_se_pct": 92.56410256410257,
+                  "pred_awakenings": 1,
+                  "kappa": 0.3160530370610655
+                },
+                {
+                  "record": "slp45",
+                  "ref_tib_min": 378.0,
+                  "ref_tst_min": 318.5,
+                  "ref_se_pct": 84.25925925925925,
+                  "ref_awakenings": 6,
+                  "pred_tib_min": 378.0,
+                  "pred_tst_min": 291.5,
+                  "pred_se_pct": 77.11640211640211,
+                  "pred_awakenings": 5,
+                  "kappa": 0.4527169252358307
+                },
+                {
+                  "record": "slp48",
+                  "ref_tib_min": 379.5,
+                  "ref_tst_min": 273.0,
+                  "ref_se_pct": 71.93675889328063,
+                  "ref_awakenings": 12,
+                  "pred_tib_min": 379.5,
+                  "pred_tst_min": 358.0,
+                  "pred_se_pct": 94.33465085638998,
+                  "pred_awakenings": 2,
+                  "kappa": 0.2581909924653097
+                },
+                {
+                  "record": "slp59",
+                  "ref_tib_min": 229.0,
+                  "ref_tst_min": 159.0,
+                  "ref_se_pct": 69.43231441048034,
+                  "ref_awakenings": 13,
+                  "pred_tib_min": 229.0,
+                  "pred_tst_min": 170.5,
+                  "pred_se_pct": 74.45414847161572,
+                  "pred_awakenings": 1,
+                  "kappa": 0.29369246344736666
+                },
+                {
+                  "record": "slp60",
+                  "ref_tib_min": 355.0,
+                  "ref_tst_min": 212.0,
+                  "ref_se_pct": 59.71830985915493,
+                  "ref_awakenings": 19,
+                  "pred_tib_min": 355.0,
+                  "pred_tst_min": 305.0,
+                  "pred_se_pct": 85.91549295774648,
+                  "pred_awakenings": 2,
+                  "kappa": -0.0542285345384119
+                },
+                {
+                  "record": "slp61",
+                  "ref_tib_min": 360.0,
+                  "ref_tst_min": 298.0,
+                  "ref_se_pct": 82.77777777777777,
+                  "ref_awakenings": 11,
+                  "pred_tib_min": 360.0,
+                  "pred_tst_min": 274.5,
+                  "pred_se_pct": 76.25,
+                  "pred_awakenings": 0,
+                  "kappa": 0.1571368064379499
+                },
+                {
+                  "record": "slp66",
+                  "ref_tib_min": 219.5,
+                  "ref_tst_min": 132.0,
+                  "ref_se_pct": 60.136674259681094,
+                  "ref_awakenings": 11,
+                  "pred_tib_min": 219.5,
+                  "pred_tst_min": 186.0,
+                  "pred_se_pct": 84.73804100227791,
+                  "pred_awakenings": 1,
+                  "kappa": 0.31064888631202575
+                },
+                {
+                  "record": "slp67x",
+                  "ref_tib_min": 77.0,
+                  "ref_tst_min": 41.0,
+                  "ref_se_pct": 53.246753246753244,
+                  "ref_awakenings": 4,
+                  "pred_tib_min": 77.0,
+                  "pred_tst_min": 43.5,
+                  "pred_se_pct": 56.493506493506494,
+                  "pred_awakenings": 0,
+                  "kappa": 0.4891988433407041
+                }
+              ]
+            },
+            "v1": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.7681099273554371,
+                  "ci_low": 0.7334969275937662,
+                  "ci_high": 0.8011249896284217
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.7307071301212038,
+                  "ci_low": 0.6937450174548155,
+                  "ci_high": 0.771290427882418
+                },
+                "accuracy": {
+                  "point": 0.9021707101463511,
+                  "ci_low": 0.8852894367828288,
+                  "ci_high": 0.9186700939968827
+                },
+                "wake_sensitivity": {
+                  "point": 0.8282504012841091,
+                  "ci_low": 0.7849829791393363,
+                  "ci_high": 0.8669168089984387
+                },
+                "sleep_sensitivity": {
+                  "point": 0.934757996037362,
+                  "ci_low": 0.917681431291815,
+                  "ci_high": 0.9511958255215383
+                },
+                "tst_bias_min": {
+                  "point": 2.0555555555555554,
+                  "ci_low": -4.056944444444444,
+                  "ci_high": 8.12013888888889
+                },
+                "tst_mae_min": {
+                  "point": 12.444444444444445,
+                  "ci_low": 9.721527777777776,
+                  "ci_high": 15.223611111111111
+                },
+                "se_bias_pctpt": {
+                  "point": -0.059790883403144174,
+                  "ci_low": -2.41877366884176,
+                  "ci_high": 2.425630555663198
+                },
+                "se_mae_pctpt": {
+                  "point": 5.087014001734428,
+                  "ci_low": 3.750259574122433,
+                  "ci_high": 6.487180410388624
+                },
+                "awakenings_bias": {
+                  "point": -0.8888888888888888,
+                  "ci_low": -2.2791666666666663,
+                  "ci_high": 0.45138888888889045
+                },
+                "awakenings_mae": {
+                  "point": 2.3333333333333335,
+                  "ci_low": 1.3333333333333333,
+                  "ci_high": 3.5569444444444445
+                }
+              },
+              "bland_altman": {
+                "tst_min": {
+                  "bias": 2.0555555555555554,
+                  "mae": 12.444444444444445,
+                  "sd": 14.254915446227136,
+                  "loa_low": -25.884078719049633,
+                  "loa_high": 29.99518983016074,
+                  "per_record_error": [
+                    -7.5,
+                    8.5,
+                    -17.5,
+                    -14.0,
+                    11.0,
+                    -17.5,
+                    25.5,
+                    15.5,
+                    6.5,
+                    2.0,
+                    13.5,
+                    -8.5,
+                    8.5,
+                    24.0,
+                    -18.5,
+                    -5.5,
+                    15.5,
+                    -4.5
+                  ]
+                },
+                "se_pct": {
+                  "bias": -0.059790883403144174,
+                  "mae": 5.087014001734428,
+                  "sd": 6.052606888808561,
+                  "loa_low": -11.922900385467923,
+                  "loa_high": 11.803318618661635,
+                  "per_record_error": [
+                    -6.276150627615067,
+                    4.722222222222221,
+                    -9.943181818181813,
+                    -10.408921933085502,
+                    3.055555555555557,
+                    -4.861111111111114,
+                    7.152875175315572,
+                    4.4668587896253555,
+                    2.03125,
+                    0.5730659025787901,
+                    3.461538461538467,
+                    -2.2486772486772395,
+                    2.2397891963109373,
+                    10.480349344978166,
+                    -5.2112676056338,
+                    -1.5277777777777715,
+                    7.061503416856489,
+                    -5.844155844155843
+                  ]
+                },
+                "awakenings": {
+                  "bias": -0.8888888888888888,
+                  "mae": 2.3333333333333335,
+                  "sd": 3.122760635547993,
+                  "loa_low": -7.009499734562954,
+                  "loa_high": 5.231721956785178,
+                  "per_record_error": [
+                    0.0,
+                    3.0,
+                    2.0,
+                    -1.0,
+                    0.0,
+                    -1.0,
+                    0.0,
+                    -4.0,
+                    -1.0,
+                    -1.0,
+                    -7.0,
+                    6.0,
+                    -1.0,
+                    -4.0,
+                    -4.0,
+                    2.0,
+                    -5.0,
+                    0.0
+                  ]
+                }
+              }
+            },
+            "asleep_from_lights_off": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "accuracy": {
+                  "point": 0.6940379137609273,
+                  "ci_low": 0.6302420941851676,
+                  "ci_high": 0.748855655452189
+                },
+                "wake_sensitivity": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "sleep_sensitivity": {
+                  "point": 1.0,
+                  "ci_low": 1.0,
+                  "ci_high": 1.0
+                },
+                "tst_bias_min": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "tst_mae_min": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "se_bias_pctpt": {
+                  "point": 31.077268644024926,
+                  "ci_low": 25.235886578069298,
+                  "ci_high": 37.17270938160833
+                },
+                "se_mae_pctpt": {
+                  "point": 31.077268644024926,
+                  "ci_low": 25.235886578069298,
+                  "ci_high": 37.17270938160833
+                },
+                "awakenings_bias": {
+                  "point": -11.38888888888889,
+                  "ci_low": -15.113888888888887,
+                  "ci_high": -8.722222222222221
+                },
+                "awakenings_mae": {
+                  "point": 11.38888888888889,
+                  "ci_low": 8.722222222222221,
+                  "ci_high": 15.113888888888889
+                }
+              },
+              "bland_altman": {
+                "tst_min": {
+                  "bias": 86.52777777777777,
+                  "mae": 86.52777777777777,
+                  "sd": 52.03518951356302,
+                  "loa_low": -15.461193668805748,
+                  "loa_high": 188.5167492243613,
+                  "per_record_error": [
+                    3.5,
+                    90.0,
+                    22.0,
+                    53.5,
+                    75.5,
+                    81.0,
+                    160.5,
+                    158.0,
+                    197.0,
+                    37.5,
+                    114.5,
+                    59.5,
+                    106.5,
+                    70.0,
+                    143.0,
+                    62.0,
+                    87.5,
+                    36.0
+                  ]
+                },
+                "se_pct": {
+                  "bias": 31.077268644024926,
+                  "mae": 31.077268644024926,
+                  "sd": 15.978212070522597,
+                  "loa_low": -0.240027014199363,
+                  "loa_high": 62.394564302249215,
+                  "per_record_error": [
+                    2.9288702928870265,
+                    50.0,
+                    12.5,
+                    39.77695167286245,
+                    20.97222222222223,
+                    22.5,
+                    45.02103786816269,
+                    45.53314121037464,
+                    61.5625,
+                    10.744985673352431,
+                    29.358974358974365,
+                    15.740740740740748,
+                    28.063241106719374,
+                    30.567685589519655,
+                    40.28169014084507,
+                    17.22222222222223,
+                    39.863325740318906,
+                    46.753246753246756
+                  ]
+                },
+                "awakenings": {
+                  "bias": -11.38888888888889,
+                  "mae": 11.38888888888889,
+                  "sd": 7.285270303749396,
+                  "loa_low": -25.668018684237705,
+                  "loa_high": 2.890240906459926,
+                  "per_record_error": [
+                    -2.0,
+                    -8.0,
+                    -3.0,
+                    -6.0,
+                    -9.0,
+                    -14.0,
+                    -26.0,
+                    -19.0,
+                    -8.0,
+                    -7.0,
+                    -27.0,
+                    -6.0,
+                    -12.0,
+                    -13.0,
+                    -19.0,
+                    -11.0,
+                    -11.0,
+                    -4.0
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "wake_nrem_rem": {
+          "primary": {
+            "v2": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "nrem",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  1393,
+                  1338,
+                  384
+                ],
+                [
+                  1098,
+                  4568,
+                  700
+                ],
+                [
+                  155,
+                  338,
+                  207
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.2538670022848208,
+                  "ci_low": 0.15359812034615367,
+                  "ci_high": 0.3367053606475347
+                },
+                "accuracy": {
+                  "point": 0.6058343974069345,
+                  "ci_low": 0.5501701497116565,
+                  "ci_high": 0.6574263799213186
+                },
+                "recall_wake": {
+                  "point": 0.44719101123595506,
+                  "ci_low": 0.3415748458271197,
+                  "ci_high": 0.5481606846616438
+                },
+                "precision_wake": {
+                  "point": 0.5264550264550265,
+                  "ci_low": 0.3967433708262854,
+                  "ci_high": 0.6568291307464983
+                },
+                "minutes_bias_wake": {
+                  "point": -13.027777777777779,
+                  "ci_low": -41.34930555555555,
+                  "ci_high": 9.979166666666668
+                },
+                "minutes_mae_wake": {
+                  "point": 52.52777777777778,
+                  "ci_low": 38.647222222222226,
+                  "ci_high": 68.9951388888889
+                },
+                "recall_nrem": {
+                  "point": 0.7175620483820295,
+                  "ci_low": 0.6482864382536042,
+                  "ci_high": 0.7846970531208315
+                },
+                "precision_nrem": {
+                  "point": 0.7315823190262652,
+                  "ci_low": 0.6623418464598189,
+                  "ci_high": 0.7933007749511388
+                },
+                "minutes_bias_nrem": {
+                  "point": -3.388888888888889,
+                  "ci_low": -29.336805555555554,
+                  "ci_high": 26.59791666666667
+                },
+                "minutes_mae_nrem": {
+                  "point": 53.22222222222222,
+                  "ci_low": 39.738194444444446,
+                  "ci_high": 70.31111111111112
+                },
+                "recall_rem": {
+                  "point": 0.2957142857142857,
+                  "ci_low": 0.13837607369600397,
+                  "ci_high": 0.45678243728106876
+                },
+                "precision_rem": {
+                  "point": 0.1603408210689388,
+                  "ci_low": 0.07243654656518474,
+                  "ci_high": 0.2815110385610094
+                },
+                "minutes_bias_rem": {
+                  "point": 16.416666666666668,
+                  "ci_low": 0.9652777777777789,
+                  "ci_high": 32.06666666666667
+                },
+                "minutes_mae_rem": {
+                  "point": 26.52777777777778,
+                  "ci_low": 13.888194444444444,
+                  "ci_high": 40.027777777777786
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.28172169993374846,
+                    "ci_low": 0.16825956738774667,
+                    "ci_high": 0.36322536508012104
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.2740651077407719,
+                    "ci_low": 0.1936876844733715,
+                    "ci_high": 0.3366258776658339
+                  },
+                  "accuracy": {
+                    "point": 0.7077890187604361,
+                    "ci_low": 0.6531743427773659,
+                    "ci_high": 0.749648141465175
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.44719101123595506,
+                    "ci_low": 0.3415748458271197,
+                    "ci_high": 0.5481606846616438
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.8226719501839797,
+                    "ci_low": 0.7447306535807631,
+                    "ci_high": 0.8891247362910853
+                  },
+                  "tst_bias_min": {
+                    "point": 13.027777777777779,
+                    "ci_low": -9.979166666666664,
+                    "ci_high": 41.34930555555557
+                  },
+                  "tst_mae_min": {
+                    "point": 52.52777777777778,
+                    "ci_low": 38.647222222222226,
+                    "ci_high": 68.9951388888889
+                  },
+                  "se_bias_pctpt": {
+                    "point": -0.767197556294624,
+                    "ci_low": -11.710820551532018,
+                    "ci_high": 10.985958310233089
+                  },
+                  "se_mae_pctpt": {
+                    "point": 21.19080566491674,
+                    "ci_low": 14.669994761466029,
+                    "ci_high": 28.69834026036182
+                  },
+                  "awakenings_bias": {
+                    "point": -8.88888888888889,
+                    "ci_low": -12.280555555555555,
+                    "ci_high": -6.4430555555555555
+                  },
+                  "awakenings_mae": {
+                    "point": 8.88888888888889,
+                    "ci_low": 6.443055555555556,
+                    "ci_high": 12.280555555555557
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 13.027777777777779,
+                    "mae": 52.52777777777778,
+                    "sd": 64.24710389953094,
+                    "loa_low": -112.89654586530287,
+                    "loa_high": 138.9521014208584,
+                    "per_record_error": [
+                      -23.0,
+                      59.5,
+                      -117.5,
+                      -71.5,
+                      40.5,
+                      -16.5,
+                      113.0,
+                      50.0,
+                      75.0,
+                      -83.0,
+                      65.5,
+                      1.5,
+                      78.0,
+                      0.5,
+                      95.0,
+                      -26.5,
+                      11.5,
+                      -17.5
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": -0.767197556294624,
+                    "mae": 21.19080566491674,
+                    "sd": 27.89621611946429,
+                    "loa_low": -55.443781150444636,
+                    "loa_high": 53.909386037855384,
+                    "per_record_error": [
+                      -19.2468619246862,
+                      33.05555555555556,
+                      -66.76136363636364,
+                      -53.15985130111524,
+                      11.25,
+                      -4.583333333333329,
+                      31.697054698457222,
+                      14.409221902017293,
+                      23.4375,
+                      -23.782234957020066,
+                      16.794871794871796,
+                      0.3968253968254061,
+                      20.55335968379447,
+                      0.2183406113537103,
+                      26.760563380281695,
+                      -7.3611111111111,
+                      5.239179954441916,
+                      -22.727272727272723
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -8.88888888888889,
+                    "mae": 8.88888888888889,
+                    "sd": 7.028420363812733,
+                    "loa_low": -22.664592801961845,
+                    "loa_high": 4.886815024184068,
+                    "per_record_error": [
+                      -1.0,
+                      -6.0,
+                      -2.0,
+                      -6.0,
+                      -6.0,
+                      -9.0,
+                      -21.0,
+                      -15.0,
+                      -3.0,
+                      -4.0,
+                      -26.0,
+                      -1.0,
+                      -10.0,
+                      -11.0,
+                      -17.0,
+                      -10.0,
+                      -9.0,
+                      -3.0
+                    ]
+                  }
+                }
+              }
+            },
+            "v1": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "nrem",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  2661,
+                  446,
+                  8
+                ],
+                [
+                  161,
+                  6181,
+                  24
+                ],
+                [
+                  8,
+                  101,
+                  591
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.852331290890538,
+                  "ci_low": 0.8238410473082427,
+                  "ci_high": 0.8808171632300952
+                },
+                "accuracy": {
+                  "point": 0.9265298104311953,
+                  "ci_low": 0.9112401365830634,
+                  "ci_high": 0.9406558104631217
+                },
+                "recall_wake": {
+                  "point": 0.8542536115569823,
+                  "ci_low": 0.8171419690395736,
+                  "ci_high": 0.8889555769785523
+                },
+                "precision_wake": {
+                  "point": 0.9402826855123675,
+                  "ci_low": 0.9233371233587612,
+                  "ci_high": 0.9539733775357245
+                },
+                "minutes_bias_wake": {
+                  "point": -7.916666666666667,
+                  "ci_low": -11.784027777777778,
+                  "ci_high": -4.749305555555555
+                },
+                "minutes_mae_wake": {
+                  "point": 8.805555555555555,
+                  "ci_low": 6.360416666666667,
+                  "ci_high": 12.227083333333333
+                },
+                "recall_nrem": {
+                  "point": 0.9709393653785737,
+                  "ci_low": 0.9629162449725297,
+                  "ci_high": 0.9777833579706987
+                },
+                "precision_nrem": {
+                  "point": 0.9186979785969085,
+                  "ci_low": 0.8929742852960755,
+                  "ci_high": 0.9381646017542373
+                },
+                "minutes_bias_nrem": {
+                  "point": 10.055555555555555,
+                  "ci_low": 6.304861111111111,
+                  "ci_high": 15.1125
+                },
+                "minutes_mae_nrem": {
+                  "point": 10.666666666666666,
+                  "ci_low": 7.493055555555557,
+                  "ci_high": 15.281944444444447
+                },
+                "recall_rem": {
+                  "point": 0.8442857142857143,
+                  "ci_low": 0.7701155043898344,
+                  "ci_high": 0.904294194226989
+                },
+                "precision_rem": {
+                  "point": 0.9486356340288925,
+                  "ci_low": 0.9308282096325574,
+                  "ci_high": 0.9680829282663131
+                },
+                "minutes_bias_rem": {
+                  "point": -2.138888888888889,
+                  "ci_low": -3.7256944444444438,
+                  "ci_high": -0.8576388888888882
+                },
+                "minutes_mae_rem": {
+                  "point": 2.3055555555555554,
+                  "ci_low": 1.0,
+                  "ci_high": 3.893750000000001
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.8521333125228974,
+                    "ci_low": 0.8212813765400688,
+                    "ci_high": 0.8817788232035378
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.8435596054326971,
+                    "ci_low": 0.8206130308415378,
+                    "ci_high": 0.8636502878742162
+                  },
+                  "accuracy": {
+                    "point": 0.9388075827521855,
+                    "ci_low": 0.9245928339168318,
+                    "ci_high": 0.95157513487387
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.8542536115569823,
+                    "ci_low": 0.8171419690395736,
+                    "ci_high": 0.8889555769785523
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.9760826493065383,
+                    "ci_low": 0.9682274988483681,
+                    "ci_high": 0.9818508245797177
+                  },
+                  "tst_bias_min": {
+                    "point": 7.916666666666667,
+                    "ci_low": 4.749305555555556,
+                    "ci_high": 11.78402777777778
+                  },
+                  "tst_mae_min": {
+                    "point": 8.805555555555555,
+                    "ci_low": 6.360416666666667,
+                    "ci_high": 12.227083333333333
+                  },
+                  "se_bias_pctpt": {
+                    "point": 2.5237496906214196,
+                    "ci_low": 1.2612698415248134,
+                    "ci_high": 3.8192785978089403
+                  },
+                  "se_mae_pctpt": {
+                    "point": 3.1164564984769263,
+                    "ci_low": 2.3801543000840124,
+                    "ci_high": 4.1877674653373615
+                  },
+                  "awakenings_bias": {
+                    "point": -2.7222222222222223,
+                    "ci_low": -4.3902777777777775,
+                    "ci_high": -1.4972222222222216
+                  },
+                  "awakenings_mae": {
+                    "point": 3.2777777777777777,
+                    "ci_low": 2.2208333333333337,
+                    "ci_high": 4.727777777777779
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 7.916666666666667,
+                    "mae": 8.805555555555555,
+                    "sd": 8.843824698291892,
+                    "loa_low": -9.417229741985441,
+                    "loa_high": 25.250563075318777,
+                    "per_record_error": [
+                      0.0,
+                      10.0,
+                      -3.5,
+                      -4.5,
+                      12.5,
+                      1.5,
+                      29.0,
+                      17.0,
+                      2.5,
+                      3.0,
+                      17.0,
+                      0.5,
+                      14.5,
+                      17.5,
+                      7.5,
+                      5.0,
+                      11.5,
+                      1.5
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 2.5237496906214196,
+                    "mae": 3.1164564984769263,
+                    "sd": 3.1132576134091,
+                    "loa_low": -3.578235231660416,
+                    "loa_high": 8.625734612903255,
+                    "per_record_error": [
+                      0.0,
+                      5.555555555555557,
+                      -1.9886363636363598,
+                      -3.3457249070632002,
+                      3.4722222222222285,
+                      0.4166666666666714,
+                      8.134642356241237,
+                      4.899135446685875,
+                      0.78125,
+                      0.8595988538681922,
+                      4.358974358974365,
+                      0.1322751322751401,
+                      3.820816864295125,
+                      7.641921397379917,
+                      2.1126760563380316,
+                      1.3888888888889,
+                      5.239179954441916,
+                      1.9480519480519547
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -2.7222222222222223,
+                    "mae": 3.2777777777777777,
+                    "sd": 3.4607982002720896,
+                    "loa_low": -9.505386694755519,
+                    "loa_high": 4.060942250311073,
+                    "per_record_error": [
+                      0.0,
+                      0.0,
+                      -1.0,
+                      -1.0,
+                      1.0,
+                      -5.0,
+                      -3.0,
+                      -9.0,
+                      1.0,
+                      -2.0,
+                      -10.0,
+                      3.0,
+                      -3.0,
+                      -5.0,
+                      -6.0,
+                      -3.0,
+                      -5.0,
+                      -1.0
+                    ]
+                  }
+                }
+              }
+            },
+            "asleep_from_lights_off": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "nrem",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  0,
+                  3115,
+                  0
+                ],
+                [
+                  0,
+                  6366,
+                  0
+                ],
+                [
+                  0,
+                  700,
+                  0
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "accuracy": {
+                  "point": 0.6252823887633828,
+                  "ci_low": 0.5681808121159622,
+                  "ci_high": 0.679086572225455
+                },
+                "recall_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_wake": {
+                  "point": -86.52777777777777,
+                  "ci_low": -109.03680555555555,
+                  "ci_high": -68.24374999999999
+                },
+                "minutes_mae_wake": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "recall_nrem": {
+                  "point": 1.0,
+                  "ci_low": 1.0,
+                  "ci_high": 1.0
+                },
+                "precision_nrem": {
+                  "point": 0.6252823887633828,
+                  "ci_low": 0.5681808121159622,
+                  "ci_high": 0.679086572225455
+                },
+                "minutes_bias_nrem": {
+                  "point": 105.97222222222223,
+                  "ci_low": 86.25972222222224,
+                  "ci_high": 131.16944444444442
+                },
+                "minutes_mae_nrem": {
+                  "point": 105.97222222222223,
+                  "ci_low": 86.25972222222224,
+                  "ci_high": 131.16944444444442
+                },
+                "recall_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_rem": {
+                  "point": -19.444444444444443,
+                  "ci_low": -26.41875,
+                  "ci_high": -11.942361111111111
+                },
+                "minutes_mae_rem": {
+                  "point": 19.444444444444443,
+                  "ci_low": 11.942361111111111,
+                  "ci_high": 26.418750000000003
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "accuracy": {
+                    "point": 0.6940379137609273,
+                    "ci_low": 0.6302420941851676,
+                    "ci_high": 0.748855655452189
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "sleep_sensitivity": {
+                    "point": 1.0,
+                    "ci_low": 1.0,
+                    "ci_high": 1.0
+                  },
+                  "tst_bias_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "tst_mae_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "se_bias_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "se_mae_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "awakenings_bias": {
+                    "point": -11.38888888888889,
+                    "ci_low": -15.113888888888887,
+                    "ci_high": -8.722222222222221
+                  },
+                  "awakenings_mae": {
+                    "point": 11.38888888888889,
+                    "ci_low": 8.722222222222221,
+                    "ci_high": 15.113888888888889
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 86.52777777777777,
+                    "mae": 86.52777777777777,
+                    "sd": 52.03518951356302,
+                    "loa_low": -15.461193668805748,
+                    "loa_high": 188.5167492243613,
+                    "per_record_error": [
+                      3.5,
+                      90.0,
+                      22.0,
+                      53.5,
+                      75.5,
+                      81.0,
+                      160.5,
+                      158.0,
+                      197.0,
+                      37.5,
+                      114.5,
+                      59.5,
+                      106.5,
+                      70.0,
+                      143.0,
+                      62.0,
+                      87.5,
+                      36.0
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 31.077268644024926,
+                    "mae": 31.077268644024926,
+                    "sd": 15.978212070522597,
+                    "loa_low": -0.240027014199363,
+                    "loa_high": 62.394564302249215,
+                    "per_record_error": [
+                      2.9288702928870265,
+                      50.0,
+                      12.5,
+                      39.77695167286245,
+                      20.97222222222223,
+                      22.5,
+                      45.02103786816269,
+                      45.53314121037464,
+                      61.5625,
+                      10.744985673352431,
+                      29.358974358974365,
+                      15.740740740740748,
+                      28.063241106719374,
+                      30.567685589519655,
+                      40.28169014084507,
+                      17.22222222222223,
+                      39.863325740318906,
+                      46.753246753246756
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -11.38888888888889,
+                    "mae": 11.38888888888889,
+                    "sd": 7.285270303749396,
+                    "loa_low": -25.668018684237705,
+                    "loa_high": 2.890240906459926,
+                    "per_record_error": [
+                      -2.0,
+                      -8.0,
+                      -3.0,
+                      -6.0,
+                      -9.0,
+                      -14.0,
+                      -26.0,
+                      -19.0,
+                      -8.0,
+                      -7.0,
+                      -27.0,
+                      -6.0,
+                      -12.0,
+                      -13.0,
+                      -19.0,
+                      -11.0,
+                      -11.0,
+                      -4.0
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "all_records": {
+            "v2": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "nrem",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  1393,
+                  1338,
+                  384
+                ],
+                [
+                  1098,
+                  4568,
+                  700
+                ],
+                [
+                  155,
+                  338,
+                  207
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.2538670022848208,
+                  "ci_low": 0.15359812034615367,
+                  "ci_high": 0.3367053606475347
+                },
+                "accuracy": {
+                  "point": 0.6058343974069345,
+                  "ci_low": 0.5501701497116565,
+                  "ci_high": 0.6574263799213186
+                },
+                "recall_wake": {
+                  "point": 0.44719101123595506,
+                  "ci_low": 0.3415748458271197,
+                  "ci_high": 0.5481606846616438
+                },
+                "precision_wake": {
+                  "point": 0.5264550264550265,
+                  "ci_low": 0.3967433708262854,
+                  "ci_high": 0.6568291307464983
+                },
+                "minutes_bias_wake": {
+                  "point": -13.027777777777779,
+                  "ci_low": -41.34930555555555,
+                  "ci_high": 9.979166666666668
+                },
+                "minutes_mae_wake": {
+                  "point": 52.52777777777778,
+                  "ci_low": 38.647222222222226,
+                  "ci_high": 68.9951388888889
+                },
+                "recall_nrem": {
+                  "point": 0.7175620483820295,
+                  "ci_low": 0.6482864382536042,
+                  "ci_high": 0.7846970531208315
+                },
+                "precision_nrem": {
+                  "point": 0.7315823190262652,
+                  "ci_low": 0.6623418464598189,
+                  "ci_high": 0.7933007749511388
+                },
+                "minutes_bias_nrem": {
+                  "point": -3.388888888888889,
+                  "ci_low": -29.336805555555554,
+                  "ci_high": 26.59791666666667
+                },
+                "minutes_mae_nrem": {
+                  "point": 53.22222222222222,
+                  "ci_low": 39.738194444444446,
+                  "ci_high": 70.31111111111112
+                },
+                "recall_rem": {
+                  "point": 0.2957142857142857,
+                  "ci_low": 0.13837607369600397,
+                  "ci_high": 0.45678243728106876
+                },
+                "precision_rem": {
+                  "point": 0.1603408210689388,
+                  "ci_low": 0.07243654656518474,
+                  "ci_high": 0.2815110385610094
+                },
+                "minutes_bias_rem": {
+                  "point": 16.416666666666668,
+                  "ci_low": 0.9652777777777789,
+                  "ci_high": 32.06666666666667
+                },
+                "minutes_mae_rem": {
+                  "point": 26.52777777777778,
+                  "ci_low": 13.888194444444444,
+                  "ci_high": 40.027777777777786
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.28172169993374846,
+                    "ci_low": 0.16825956738774667,
+                    "ci_high": 0.36322536508012104
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.2740651077407719,
+                    "ci_low": 0.1936876844733715,
+                    "ci_high": 0.3366258776658339
+                  },
+                  "accuracy": {
+                    "point": 0.7077890187604361,
+                    "ci_low": 0.6531743427773659,
+                    "ci_high": 0.749648141465175
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.44719101123595506,
+                    "ci_low": 0.3415748458271197,
+                    "ci_high": 0.5481606846616438
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.8226719501839797,
+                    "ci_low": 0.7447306535807631,
+                    "ci_high": 0.8891247362910853
+                  },
+                  "tst_bias_min": {
+                    "point": 13.027777777777779,
+                    "ci_low": -9.979166666666664,
+                    "ci_high": 41.34930555555557
+                  },
+                  "tst_mae_min": {
+                    "point": 52.52777777777778,
+                    "ci_low": 38.647222222222226,
+                    "ci_high": 68.9951388888889
+                  },
+                  "se_bias_pctpt": {
+                    "point": -0.767197556294624,
+                    "ci_low": -11.710820551532018,
+                    "ci_high": 10.985958310233089
+                  },
+                  "se_mae_pctpt": {
+                    "point": 21.19080566491674,
+                    "ci_low": 14.669994761466029,
+                    "ci_high": 28.69834026036182
+                  },
+                  "awakenings_bias": {
+                    "point": -8.88888888888889,
+                    "ci_low": -12.280555555555555,
+                    "ci_high": -6.4430555555555555
+                  },
+                  "awakenings_mae": {
+                    "point": 8.88888888888889,
+                    "ci_low": 6.443055555555556,
+                    "ci_high": 12.280555555555557
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 13.027777777777779,
+                    "mae": 52.52777777777778,
+                    "sd": 64.24710389953094,
+                    "loa_low": -112.89654586530287,
+                    "loa_high": 138.9521014208584,
+                    "per_record_error": [
+                      -23.0,
+                      59.5,
+                      -117.5,
+                      -71.5,
+                      40.5,
+                      -16.5,
+                      113.0,
+                      50.0,
+                      75.0,
+                      -83.0,
+                      65.5,
+                      1.5,
+                      78.0,
+                      0.5,
+                      95.0,
+                      -26.5,
+                      11.5,
+                      -17.5
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": -0.767197556294624,
+                    "mae": 21.19080566491674,
+                    "sd": 27.89621611946429,
+                    "loa_low": -55.443781150444636,
+                    "loa_high": 53.909386037855384,
+                    "per_record_error": [
+                      -19.2468619246862,
+                      33.05555555555556,
+                      -66.76136363636364,
+                      -53.15985130111524,
+                      11.25,
+                      -4.583333333333329,
+                      31.697054698457222,
+                      14.409221902017293,
+                      23.4375,
+                      -23.782234957020066,
+                      16.794871794871796,
+                      0.3968253968254061,
+                      20.55335968379447,
+                      0.2183406113537103,
+                      26.760563380281695,
+                      -7.3611111111111,
+                      5.239179954441916,
+                      -22.727272727272723
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -8.88888888888889,
+                    "mae": 8.88888888888889,
+                    "sd": 7.028420363812733,
+                    "loa_low": -22.664592801961845,
+                    "loa_high": 4.886815024184068,
+                    "per_record_error": [
+                      -1.0,
+                      -6.0,
+                      -2.0,
+                      -6.0,
+                      -6.0,
+                      -9.0,
+                      -21.0,
+                      -15.0,
+                      -3.0,
+                      -4.0,
+                      -26.0,
+                      -1.0,
+                      -10.0,
+                      -11.0,
+                      -17.0,
+                      -10.0,
+                      -9.0,
+                      -3.0
+                    ]
+                  }
+                }
+              }
+            },
+            "v1": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "nrem",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  2661,
+                  446,
+                  8
+                ],
+                [
+                  161,
+                  6181,
+                  24
+                ],
+                [
+                  8,
+                  101,
+                  591
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.852331290890538,
+                  "ci_low": 0.8238410473082427,
+                  "ci_high": 0.8808171632300952
+                },
+                "accuracy": {
+                  "point": 0.9265298104311953,
+                  "ci_low": 0.9112401365830634,
+                  "ci_high": 0.9406558104631217
+                },
+                "recall_wake": {
+                  "point": 0.8542536115569823,
+                  "ci_low": 0.8171419690395736,
+                  "ci_high": 0.8889555769785523
+                },
+                "precision_wake": {
+                  "point": 0.9402826855123675,
+                  "ci_low": 0.9233371233587612,
+                  "ci_high": 0.9539733775357245
+                },
+                "minutes_bias_wake": {
+                  "point": -7.916666666666667,
+                  "ci_low": -11.784027777777778,
+                  "ci_high": -4.749305555555555
+                },
+                "minutes_mae_wake": {
+                  "point": 8.805555555555555,
+                  "ci_low": 6.360416666666667,
+                  "ci_high": 12.227083333333333
+                },
+                "recall_nrem": {
+                  "point": 0.9709393653785737,
+                  "ci_low": 0.9629162449725297,
+                  "ci_high": 0.9777833579706987
+                },
+                "precision_nrem": {
+                  "point": 0.9186979785969085,
+                  "ci_low": 0.8929742852960755,
+                  "ci_high": 0.9381646017542373
+                },
+                "minutes_bias_nrem": {
+                  "point": 10.055555555555555,
+                  "ci_low": 6.304861111111111,
+                  "ci_high": 15.1125
+                },
+                "minutes_mae_nrem": {
+                  "point": 10.666666666666666,
+                  "ci_low": 7.493055555555557,
+                  "ci_high": 15.281944444444447
+                },
+                "recall_rem": {
+                  "point": 0.8442857142857143,
+                  "ci_low": 0.7701155043898344,
+                  "ci_high": 0.904294194226989
+                },
+                "precision_rem": {
+                  "point": 0.9486356340288925,
+                  "ci_low": 0.9308282096325574,
+                  "ci_high": 0.9680829282663131
+                },
+                "minutes_bias_rem": {
+                  "point": -2.138888888888889,
+                  "ci_low": -3.7256944444444438,
+                  "ci_high": -0.8576388888888882
+                },
+                "minutes_mae_rem": {
+                  "point": 2.3055555555555554,
+                  "ci_low": 1.0,
+                  "ci_high": 3.893750000000001
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.8521333125228974,
+                    "ci_low": 0.8212813765400688,
+                    "ci_high": 0.8817788232035378
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.8435596054326971,
+                    "ci_low": 0.8206130308415378,
+                    "ci_high": 0.8636502878742162
+                  },
+                  "accuracy": {
+                    "point": 0.9388075827521855,
+                    "ci_low": 0.9245928339168318,
+                    "ci_high": 0.95157513487387
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.8542536115569823,
+                    "ci_low": 0.8171419690395736,
+                    "ci_high": 0.8889555769785523
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.9760826493065383,
+                    "ci_low": 0.9682274988483681,
+                    "ci_high": 0.9818508245797177
+                  },
+                  "tst_bias_min": {
+                    "point": 7.916666666666667,
+                    "ci_low": 4.749305555555556,
+                    "ci_high": 11.78402777777778
+                  },
+                  "tst_mae_min": {
+                    "point": 8.805555555555555,
+                    "ci_low": 6.360416666666667,
+                    "ci_high": 12.227083333333333
+                  },
+                  "se_bias_pctpt": {
+                    "point": 2.5237496906214196,
+                    "ci_low": 1.2612698415248134,
+                    "ci_high": 3.8192785978089403
+                  },
+                  "se_mae_pctpt": {
+                    "point": 3.1164564984769263,
+                    "ci_low": 2.3801543000840124,
+                    "ci_high": 4.1877674653373615
+                  },
+                  "awakenings_bias": {
+                    "point": -2.7222222222222223,
+                    "ci_low": -4.3902777777777775,
+                    "ci_high": -1.4972222222222216
+                  },
+                  "awakenings_mae": {
+                    "point": 3.2777777777777777,
+                    "ci_low": 2.2208333333333337,
+                    "ci_high": 4.727777777777779
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 7.916666666666667,
+                    "mae": 8.805555555555555,
+                    "sd": 8.843824698291892,
+                    "loa_low": -9.417229741985441,
+                    "loa_high": 25.250563075318777,
+                    "per_record_error": [
+                      0.0,
+                      10.0,
+                      -3.5,
+                      -4.5,
+                      12.5,
+                      1.5,
+                      29.0,
+                      17.0,
+                      2.5,
+                      3.0,
+                      17.0,
+                      0.5,
+                      14.5,
+                      17.5,
+                      7.5,
+                      5.0,
+                      11.5,
+                      1.5
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 2.5237496906214196,
+                    "mae": 3.1164564984769263,
+                    "sd": 3.1132576134091,
+                    "loa_low": -3.578235231660416,
+                    "loa_high": 8.625734612903255,
+                    "per_record_error": [
+                      0.0,
+                      5.555555555555557,
+                      -1.9886363636363598,
+                      -3.3457249070632002,
+                      3.4722222222222285,
+                      0.4166666666666714,
+                      8.134642356241237,
+                      4.899135446685875,
+                      0.78125,
+                      0.8595988538681922,
+                      4.358974358974365,
+                      0.1322751322751401,
+                      3.820816864295125,
+                      7.641921397379917,
+                      2.1126760563380316,
+                      1.3888888888889,
+                      5.239179954441916,
+                      1.9480519480519547
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -2.7222222222222223,
+                    "mae": 3.2777777777777777,
+                    "sd": 3.4607982002720896,
+                    "loa_low": -9.505386694755519,
+                    "loa_high": 4.060942250311073,
+                    "per_record_error": [
+                      0.0,
+                      0.0,
+                      -1.0,
+                      -1.0,
+                      1.0,
+                      -5.0,
+                      -3.0,
+                      -9.0,
+                      1.0,
+                      -2.0,
+                      -10.0,
+                      3.0,
+                      -3.0,
+                      -5.0,
+                      -6.0,
+                      -3.0,
+                      -5.0,
+                      -1.0
+                    ]
+                  }
+                }
+              }
+            },
+            "asleep_from_lights_off": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "nrem",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  0,
+                  3115,
+                  0
+                ],
+                [
+                  0,
+                  6366,
+                  0
+                ],
+                [
+                  0,
+                  700,
+                  0
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "accuracy": {
+                  "point": 0.6252823887633828,
+                  "ci_low": 0.5681808121159622,
+                  "ci_high": 0.679086572225455
+                },
+                "recall_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_wake": {
+                  "point": -86.52777777777777,
+                  "ci_low": -109.03680555555555,
+                  "ci_high": -68.24374999999999
+                },
+                "minutes_mae_wake": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "recall_nrem": {
+                  "point": 1.0,
+                  "ci_low": 1.0,
+                  "ci_high": 1.0
+                },
+                "precision_nrem": {
+                  "point": 0.6252823887633828,
+                  "ci_low": 0.5681808121159622,
+                  "ci_high": 0.679086572225455
+                },
+                "minutes_bias_nrem": {
+                  "point": 105.97222222222223,
+                  "ci_low": 86.25972222222224,
+                  "ci_high": 131.16944444444442
+                },
+                "minutes_mae_nrem": {
+                  "point": 105.97222222222223,
+                  "ci_low": 86.25972222222224,
+                  "ci_high": 131.16944444444442
+                },
+                "recall_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_rem": {
+                  "point": -19.444444444444443,
+                  "ci_low": -26.41875,
+                  "ci_high": -11.942361111111111
+                },
+                "minutes_mae_rem": {
+                  "point": 19.444444444444443,
+                  "ci_low": 11.942361111111111,
+                  "ci_high": 26.418750000000003
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "accuracy": {
+                    "point": 0.6940379137609273,
+                    "ci_low": 0.6302420941851676,
+                    "ci_high": 0.748855655452189
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "sleep_sensitivity": {
+                    "point": 1.0,
+                    "ci_low": 1.0,
+                    "ci_high": 1.0
+                  },
+                  "tst_bias_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "tst_mae_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "se_bias_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "se_mae_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "awakenings_bias": {
+                    "point": -11.38888888888889,
+                    "ci_low": -15.113888888888887,
+                    "ci_high": -8.722222222222221
+                  },
+                  "awakenings_mae": {
+                    "point": 11.38888888888889,
+                    "ci_low": 8.722222222222221,
+                    "ci_high": 15.113888888888889
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 86.52777777777777,
+                    "mae": 86.52777777777777,
+                    "sd": 52.03518951356302,
+                    "loa_low": -15.461193668805748,
+                    "loa_high": 188.5167492243613,
+                    "per_record_error": [
+                      3.5,
+                      90.0,
+                      22.0,
+                      53.5,
+                      75.5,
+                      81.0,
+                      160.5,
+                      158.0,
+                      197.0,
+                      37.5,
+                      114.5,
+                      59.5,
+                      106.5,
+                      70.0,
+                      143.0,
+                      62.0,
+                      87.5,
+                      36.0
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 31.077268644024926,
+                    "mae": 31.077268644024926,
+                    "sd": 15.978212070522597,
+                    "loa_low": -0.240027014199363,
+                    "loa_high": 62.394564302249215,
+                    "per_record_error": [
+                      2.9288702928870265,
+                      50.0,
+                      12.5,
+                      39.77695167286245,
+                      20.97222222222223,
+                      22.5,
+                      45.02103786816269,
+                      45.53314121037464,
+                      61.5625,
+                      10.744985673352431,
+                      29.358974358974365,
+                      15.740740740740748,
+                      28.063241106719374,
+                      30.567685589519655,
+                      40.28169014084507,
+                      17.22222222222223,
+                      39.863325740318906,
+                      46.753246753246756
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -11.38888888888889,
+                    "mae": 11.38888888888889,
+                    "sd": 7.285270303749396,
+                    "loa_low": -25.668018684237705,
+                    "loa_high": 2.890240906459926,
+                    "per_record_error": [
+                      -2.0,
+                      -8.0,
+                      -3.0,
+                      -6.0,
+                      -9.0,
+                      -14.0,
+                      -26.0,
+                      -19.0,
+                      -8.0,
+                      -7.0,
+                      -27.0,
+                      -6.0,
+                      -12.0,
+                      -13.0,
+                      -19.0,
+                      -11.0,
+                      -11.0,
+                      -4.0
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "four_class": {
+          "primary": {
+            "v2": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "light",
+                "deep",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  1296,
+                  977,
+                  409,
+                  433
+                ],
+                [
+                  1182,
+                  2753,
+                  1161,
+                  606
+                ],
+                [
+                  52,
+                  105,
+                  492,
+                  15
+                ],
+                [
+                  162,
+                  267,
+                  43,
+                  228
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.208139890777355,
+                  "ci_low": 0.14002260985509113,
+                  "ci_high": 0.27682582601315875
+                },
+                "accuracy": {
+                  "point": 0.46842156959041353,
+                  "ci_low": 0.415994883478353,
+                  "ci_high": 0.521979616165937
+                },
+                "recall_wake": {
+                  "point": 0.4160513643659711,
+                  "ci_low": 0.3272198406396221,
+                  "ci_high": 0.5073246775527814
+                },
+                "precision_wake": {
+                  "point": 0.4814264487369985,
+                  "ci_low": 0.3597930286808487,
+                  "ci_high": 0.6178914537576573
+                },
+                "minutes_bias_wake": {
+                  "point": -11.75,
+                  "ci_low": -43.445138888888884,
+                  "ci_high": 14.184027777777807
+                },
+                "minutes_mae_wake": {
+                  "point": 54.97222222222222,
+                  "ci_low": 37.79583333333334,
+                  "ci_high": 72.69930555555557
+                },
+                "recall_light": {
+                  "point": 0.48281304805331465,
+                  "ci_low": 0.3907240406137477,
+                  "ci_high": 0.5710377955040677
+                },
+                "precision_light": {
+                  "point": 0.6711360312042906,
+                  "ci_low": 0.5934408894459231,
+                  "ci_high": 0.7467484686206001
+                },
+                "minutes_bias_light": {
+                  "point": -44.44444444444444,
+                  "ci_low": -75.02291666666666,
+                  "ci_high": -10.794444444444435
+                },
+                "minutes_mae_light": {
+                  "point": 61.666666666666664,
+                  "ci_low": 38.53402777777779,
+                  "ci_high": 87.69236111111113
+                },
+                "recall_deep": {
+                  "point": 0.7409638554216867,
+                  "ci_low": 0.5333678359595527,
+                  "ci_high": 0.8814231601731601
+                },
+                "precision_deep": {
+                  "point": 0.233729216152019,
+                  "ci_low": 0.125577331074543,
+                  "ci_high": 0.35060863313118934
+                },
+                "minutes_bias_deep": {
+                  "point": 40.02777777777778,
+                  "ci_low": 22.837500000000002,
+                  "ci_high": 59.452083333333334
+                },
+                "minutes_mae_deep": {
+                  "point": 44.02777777777778,
+                  "ci_low": 29.340972222222224,
+                  "ci_high": 62.22222222222223
+                },
+                "recall_rem": {
+                  "point": 0.32571428571428573,
+                  "ci_low": 0.15085001436644,
+                  "ci_high": 0.5027765798260575
+                },
+                "precision_rem": {
+                  "point": 0.17784711388455537,
+                  "ci_low": 0.07702811893988365,
+                  "ci_high": 0.3333333333333333
+                },
+                "minutes_bias_rem": {
+                  "point": 16.166666666666668,
+                  "ci_low": 1.0187500000000014,
+                  "ci_high": 31.677083333333346
+                },
+                "minutes_mae_rem": {
+                  "point": 27.38888888888889,
+                  "ci_low": 13.963194444444445,
+                  "ci_high": 41.06944444444446
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.22710774783991838,
+                    "ci_low": 0.11673986206544787,
+                    "ci_high": 0.3255408539407108
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.23796559993651226,
+                    "ci_low": 0.15790116939128573,
+                    "ci_high": 0.3053272599106575
+                  },
+                  "accuracy": {
+                    "point": 0.6842156959041351,
+                    "ci_low": 0.6291610178038428,
+                    "ci_high": 0.7363446754948976
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.4160513643659711,
+                    "ci_low": 0.3272198406396221,
+                    "ci_high": 0.5073246775527814
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.8024341919048967,
+                    "ci_low": 0.7134161848088069,
+                    "ci_high": 0.8796126566092574
+                  },
+                  "tst_bias_min": {
+                    "point": 11.75,
+                    "ci_low": -14.184027777777757,
+                    "ci_high": 43.445138888888884
+                  },
+                  "tst_mae_min": {
+                    "point": 54.97222222222222,
+                    "ci_low": 37.79583333333334,
+                    "ci_high": 72.69930555555557
+                  },
+                  "se_bias_pctpt": {
+                    "point": -0.45235470863856264,
+                    "ci_low": -13.327696014460896,
+                    "ci_high": 12.322552818438595
+                  },
+                  "se_mae_pctpt": {
+                    "point": 21.850166856300877,
+                    "ci_low": 14.451223620474213,
+                    "ci_high": 31.142839894555625
+                  },
+                  "awakenings_bias": {
+                    "point": -8.944444444444445,
+                    "ci_low": -12.116666666666665,
+                    "ci_high": -6.7749999999999995
+                  },
+                  "awakenings_mae": {
+                    "point": 8.944444444444445,
+                    "ci_low": 6.775,
+                    "ci_high": 12.116666666666667
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 11.75,
+                    "mae": 54.97222222222222,
+                    "sd": 69.48153584607505,
+                    "loa_low": -124.43381025830709,
+                    "loa_high": 147.9338102583071,
+                    "per_record_error": [
+                      -21.5,
+                      63.5,
+                      -140.5,
+                      -71.5,
+                      48.5,
+                      -14.5,
+                      115.0,
+                      24.0,
+                      94.5,
+                      -111.0,
+                      66.0,
+                      -3.0,
+                      72.0,
+                      4.0,
+                      80.5,
+                      -21.5,
+                      32.5,
+                      -5.5
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": -0.45235470863856264,
+                    "mae": 21.850166856300877,
+                    "sd": 30.10101676023771,
+                    "loa_low": -59.450347558704465,
+                    "loa_high": 58.54563814142735,
+                    "per_record_error": [
+                      -17.991631799163187,
+                      35.27777777777777,
+                      -79.82954545454545,
+                      -53.15985130111524,
+                      13.472222222222229,
+                      -4.0277777777777715,
+                      32.25806451612904,
+                      6.9164265129683,
+                      29.53125,
+                      -31.805157593123212,
+                      16.923076923076934,
+                      -0.7936507936507837,
+                      18.97233201581028,
+                      1.7467248908296966,
+                      22.676056338028175,
+                      -5.972222222222214,
+                      14.806378132118446,
+                      -7.142857142857139
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -8.944444444444445,
+                    "mae": 8.944444444444445,
+                    "sd": 6.672791304308091,
+                    "loa_low": -22.0231154008883,
+                    "loa_high": 4.1342265119994135,
+                    "per_record_error": [
+                      -1.0,
+                      -6.0,
+                      -3.0,
+                      -6.0,
+                      -8.0,
+                      -9.0,
+                      -21.0,
+                      -12.0,
+                      -5.0,
+                      -4.0,
+                      -26.0,
+                      -1.0,
+                      -10.0,
+                      -11.0,
+                      -16.0,
+                      -9.0,
+                      -10.0,
+                      -3.0
+                    ]
+                  }
+                }
+              }
+            },
+            "v1": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "light",
+                "deep",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  2643,
+                  462,
+                  1,
+                  9
+                ],
+                [
+                  179,
+                  5448,
+                  37,
+                  38
+                ],
+                [
+                  12,
+                  181,
+                  468,
+                  3
+                ],
+                [
+                  11,
+                  102,
+                  0,
+                  587
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.8204767578202996,
+                  "ci_low": 0.7979236159489478,
+                  "ci_high": 0.8476412846759078
+                },
+                "accuracy": {
+                  "point": 0.8983400451822021,
+                  "ci_low": 0.8803357641259383,
+                  "ci_high": 0.9174208409080431
+                },
+                "recall_wake": {
+                  "point": 0.8484751203852328,
+                  "ci_low": 0.8120366489485363,
+                  "ci_high": 0.8891588647487426
+                },
+                "precision_wake": {
+                  "point": 0.9289982425307557,
+                  "ci_low": 0.9075017306693844,
+                  "ci_high": 0.9477300034135393
+                },
+                "minutes_bias_wake": {
+                  "point": -7.5,
+                  "ci_low": -11.751388888888888,
+                  "ci_high": -4.071527777777775
+                },
+                "minutes_mae_wake": {
+                  "point": 8.666666666666666,
+                  "ci_low": 5.970138888888889,
+                  "ci_high": 12.308333333333334
+                },
+                "recall_light": {
+                  "point": 0.9554542265871624,
+                  "ci_low": 0.9415249552883331,
+                  "ci_high": 0.9682307917774691
+                },
+                "precision_light": {
+                  "point": 0.879702890360084,
+                  "ci_low": 0.84797114727539,
+                  "ci_high": 0.9073667261830534
+                },
+                "minutes_bias_light": {
+                  "point": 13.63888888888889,
+                  "ci_low": 9.471527777777776,
+                  "ci_high": 18.056250000000002
+                },
+                "minutes_mae_light": {
+                  "point": 14.194444444444445,
+                  "ci_low": 10.518055555555557,
+                  "ci_high": 18.500694444444445
+                },
+                "recall_deep": {
+                  "point": 0.7048192771084337,
+                  "ci_low": 0.54111182017478,
+                  "ci_high": 0.8695886768845793
+                },
+                "precision_deep": {
+                  "point": 0.924901185770751,
+                  "ci_low": 0.879746835443038,
+                  "ci_high": 0.9768837401390471
+                },
+                "minutes_bias_deep": {
+                  "point": -4.388888888888889,
+                  "ci_low": -8.393749999999999,
+                  "ci_high": -1.4361111111111091
+                },
+                "minutes_mae_deep": {
+                  "point": 4.722222222222222,
+                  "ci_low": 1.661111111111112,
+                  "ci_high": 8.779166666666669
+                },
+                "recall_rem": {
+                  "point": 0.8385714285714285,
+                  "ci_low": 0.76543752025124,
+                  "ci_high": 0.9044833488151122
+                },
+                "precision_rem": {
+                  "point": 0.9215070643642073,
+                  "ci_low": 0.8966018841115675,
+                  "ci_high": 0.9427410111003861
+                },
+                "minutes_bias_rem": {
+                  "point": -1.75,
+                  "ci_low": -3.141666666666666,
+                  "ci_high": -0.6618055555555544
+                },
+                "minutes_mae_rem": {
+                  "point": 2.0833333333333335,
+                  "ci_low": 1.0270833333333333,
+                  "ci_high": 3.3083333333333336
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.840249371368388,
+                    "ci_low": 0.8111348600864672,
+                    "ci_high": 0.8706265791120109
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.8312566780717651,
+                    "ci_low": 0.8085440460251779,
+                    "ci_high": 0.8576476836566036
+                  },
+                  "accuracy": {
+                    "point": 0.9337982516452215,
+                    "ci_low": 0.9205421665722969,
+                    "ci_high": 0.947831186392122
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.8484751203852328,
+                    "ci_low": 0.8120366489485363,
+                    "ci_high": 0.8891588647487426
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.9714123973959807,
+                    "ci_low": 0.963510605685635,
+                    "ci_high": 0.9795114747239884
+                  },
+                  "tst_bias_min": {
+                    "point": 7.5,
+                    "ci_low": 4.07152777777778,
+                    "ci_high": 11.75138888888889
+                  },
+                  "tst_mae_min": {
+                    "point": 8.666666666666666,
+                    "ci_low": 5.970138888888889,
+                    "ci_high": 12.308333333333334
+                  },
+                  "se_bias_pctpt": {
+                    "point": 2.4965207236653653,
+                    "ci_low": 1.128037863944001,
+                    "ci_high": 3.9527124211626723
+                  },
+                  "se_mae_pctpt": {
+                    "point": 3.2123702793149445,
+                    "ci_low": 2.4100285862020465,
+                    "ci_high": 4.370589256989974
+                  },
+                  "awakenings_bias": {
+                    "point": -2.388888888888889,
+                    "ci_low": -4.1708333333333325,
+                    "ci_high": -0.9986111111111108
+                  },
+                  "awakenings_mae": {
+                    "point": 3.0555555555555554,
+                    "ci_low": 1.9986111111111113,
+                    "ci_high": 4.6125
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 7.5,
+                    "mae": 8.666666666666666,
+                    "sd": 9.053760999457303,
+                    "loa_low": -10.245371558936313,
+                    "loa_high": 25.245371558936313,
+                    "per_record_error": [
+                      -1.0,
+                      10.0,
+                      -3.0,
+                      -4.5,
+                      12.5,
+                      2.0,
+                      21.5,
+                      20.5,
+                      2.0,
+                      2.5,
+                      21.0,
+                      0.5,
+                      14.5,
+                      19.5,
+                      3.0,
+                      -2.0,
+                      13.0,
+                      3.0
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 2.4965207236653653,
+                    "mae": 3.2123702793149445,
+                    "sd": 3.3025645869771374,
+                    "loa_low": -3.9765058668098243,
+                    "loa_high": 8.969547314140556,
+                    "per_record_error": [
+                      -0.8368200836820137,
+                      5.555555555555557,
+                      -1.7045454545454533,
+                      -3.3457249070632002,
+                      3.4722222222222285,
+                      0.5555555555555571,
+                      6.030855539971952,
+                      5.907780979827088,
+                      0.625,
+                      0.7163323782234983,
+                      5.384615384615387,
+                      0.1322751322751401,
+                      3.820816864295125,
+                      8.515283842794759,
+                      0.8450704225352155,
+                      -0.5555555555555429,
+                      5.922551252847377,
+                      3.8961038961039023
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -2.388888888888889,
+                    "mae": 3.0555555555555554,
+                    "sd": 3.5996550306757564,
+                    "loa_low": -9.44421274901337,
+                    "loa_high": 4.666434971235594,
+                    "per_record_error": [
+                      0.0,
+                      1.0,
+                      -1.0,
+                      -1.0,
+                      -2.0,
+                      -3.0,
+                      -4.0,
+                      -7.0,
+                      1.0,
+                      -1.0,
+                      -11.0,
+                      1.0,
+                      -3.0,
+                      -2.0,
+                      -8.0,
+                      1.0,
+                      -6.0,
+                      2.0
+                    ]
+                  }
+                }
+              }
+            },
+            "asleep_from_lights_off": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "light",
+                "deep",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  0,
+                  3115,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  5702,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  664,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  700,
+                  0,
+                  0
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "accuracy": {
+                  "point": 0.5600628621942835,
+                  "ci_low": 0.48927274126536363,
+                  "ci_high": 0.6096099226622786
+                },
+                "recall_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_wake": {
+                  "point": -86.52777777777777,
+                  "ci_low": -109.03680555555555,
+                  "ci_high": -68.24374999999999
+                },
+                "minutes_mae_wake": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "recall_light": {
+                  "point": 1.0,
+                  "ci_low": 1.0,
+                  "ci_high": 1.0
+                },
+                "precision_light": {
+                  "point": 0.5600628621942835,
+                  "ci_low": 0.48927274126536363,
+                  "ci_high": 0.6096099226622786
+                },
+                "minutes_bias_light": {
+                  "point": 124.41666666666667,
+                  "ci_low": 101.74375,
+                  "ci_high": 146.17708333333331
+                },
+                "minutes_mae_light": {
+                  "point": 124.41666666666667,
+                  "ci_low": 101.74375,
+                  "ci_high": 146.17708333333331
+                },
+                "recall_deep": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_deep": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_deep": {
+                  "point": -18.444444444444443,
+                  "ci_low": -26.39861111111111,
+                  "ci_high": -9.16111111111111
+                },
+                "minutes_mae_deep": {
+                  "point": 18.444444444444443,
+                  "ci_low": 9.161111111111111,
+                  "ci_high": 26.398611111111112
+                },
+                "recall_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_rem": {
+                  "point": -19.444444444444443,
+                  "ci_low": -26.41875,
+                  "ci_high": -11.942361111111111
+                },
+                "minutes_mae_rem": {
+                  "point": 19.444444444444443,
+                  "ci_low": 11.942361111111111,
+                  "ci_high": 26.418750000000003
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "accuracy": {
+                    "point": 0.6940379137609273,
+                    "ci_low": 0.6302420941851676,
+                    "ci_high": 0.748855655452189
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "sleep_sensitivity": {
+                    "point": 1.0,
+                    "ci_low": 1.0,
+                    "ci_high": 1.0
+                  },
+                  "tst_bias_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "tst_mae_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "se_bias_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "se_mae_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "awakenings_bias": {
+                    "point": -11.38888888888889,
+                    "ci_low": -15.113888888888887,
+                    "ci_high": -8.722222222222221
+                  },
+                  "awakenings_mae": {
+                    "point": 11.38888888888889,
+                    "ci_low": 8.722222222222221,
+                    "ci_high": 15.113888888888889
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 86.52777777777777,
+                    "mae": 86.52777777777777,
+                    "sd": 52.03518951356302,
+                    "loa_low": -15.461193668805748,
+                    "loa_high": 188.5167492243613,
+                    "per_record_error": [
+                      3.5,
+                      90.0,
+                      22.0,
+                      53.5,
+                      75.5,
+                      81.0,
+                      160.5,
+                      158.0,
+                      197.0,
+                      37.5,
+                      114.5,
+                      59.5,
+                      106.5,
+                      70.0,
+                      143.0,
+                      62.0,
+                      87.5,
+                      36.0
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 31.077268644024926,
+                    "mae": 31.077268644024926,
+                    "sd": 15.978212070522597,
+                    "loa_low": -0.240027014199363,
+                    "loa_high": 62.394564302249215,
+                    "per_record_error": [
+                      2.9288702928870265,
+                      50.0,
+                      12.5,
+                      39.77695167286245,
+                      20.97222222222223,
+                      22.5,
+                      45.02103786816269,
+                      45.53314121037464,
+                      61.5625,
+                      10.744985673352431,
+                      29.358974358974365,
+                      15.740740740740748,
+                      28.063241106719374,
+                      30.567685589519655,
+                      40.28169014084507,
+                      17.22222222222223,
+                      39.863325740318906,
+                      46.753246753246756
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -11.38888888888889,
+                    "mae": 11.38888888888889,
+                    "sd": 7.285270303749396,
+                    "loa_low": -25.668018684237705,
+                    "loa_high": 2.890240906459926,
+                    "per_record_error": [
+                      -2.0,
+                      -8.0,
+                      -3.0,
+                      -6.0,
+                      -9.0,
+                      -14.0,
+                      -26.0,
+                      -19.0,
+                      -8.0,
+                      -7.0,
+                      -27.0,
+                      -6.0,
+                      -12.0,
+                      -13.0,
+                      -19.0,
+                      -11.0,
+                      -11.0,
+                      -4.0
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "all_records": {
+            "v2": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "light",
+                "deep",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  1296,
+                  977,
+                  409,
+                  433
+                ],
+                [
+                  1182,
+                  2753,
+                  1161,
+                  606
+                ],
+                [
+                  52,
+                  105,
+                  492,
+                  15
+                ],
+                [
+                  162,
+                  267,
+                  43,
+                  228
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.208139890777355,
+                  "ci_low": 0.14002260985509113,
+                  "ci_high": 0.27682582601315875
+                },
+                "accuracy": {
+                  "point": 0.46842156959041353,
+                  "ci_low": 0.415994883478353,
+                  "ci_high": 0.521979616165937
+                },
+                "recall_wake": {
+                  "point": 0.4160513643659711,
+                  "ci_low": 0.3272198406396221,
+                  "ci_high": 0.5073246775527814
+                },
+                "precision_wake": {
+                  "point": 0.4814264487369985,
+                  "ci_low": 0.3597930286808487,
+                  "ci_high": 0.6178914537576573
+                },
+                "minutes_bias_wake": {
+                  "point": -11.75,
+                  "ci_low": -43.445138888888884,
+                  "ci_high": 14.184027777777807
+                },
+                "minutes_mae_wake": {
+                  "point": 54.97222222222222,
+                  "ci_low": 37.79583333333334,
+                  "ci_high": 72.69930555555557
+                },
+                "recall_light": {
+                  "point": 0.48281304805331465,
+                  "ci_low": 0.3907240406137477,
+                  "ci_high": 0.5710377955040677
+                },
+                "precision_light": {
+                  "point": 0.6711360312042906,
+                  "ci_low": 0.5934408894459231,
+                  "ci_high": 0.7467484686206001
+                },
+                "minutes_bias_light": {
+                  "point": -44.44444444444444,
+                  "ci_low": -75.02291666666666,
+                  "ci_high": -10.794444444444435
+                },
+                "minutes_mae_light": {
+                  "point": 61.666666666666664,
+                  "ci_low": 38.53402777777779,
+                  "ci_high": 87.69236111111113
+                },
+                "recall_deep": {
+                  "point": 0.7409638554216867,
+                  "ci_low": 0.5333678359595527,
+                  "ci_high": 0.8814231601731601
+                },
+                "precision_deep": {
+                  "point": 0.233729216152019,
+                  "ci_low": 0.125577331074543,
+                  "ci_high": 0.35060863313118934
+                },
+                "minutes_bias_deep": {
+                  "point": 40.02777777777778,
+                  "ci_low": 22.837500000000002,
+                  "ci_high": 59.452083333333334
+                },
+                "minutes_mae_deep": {
+                  "point": 44.02777777777778,
+                  "ci_low": 29.340972222222224,
+                  "ci_high": 62.22222222222223
+                },
+                "recall_rem": {
+                  "point": 0.32571428571428573,
+                  "ci_low": 0.15085001436644,
+                  "ci_high": 0.5027765798260575
+                },
+                "precision_rem": {
+                  "point": 0.17784711388455537,
+                  "ci_low": 0.07702811893988365,
+                  "ci_high": 0.3333333333333333
+                },
+                "minutes_bias_rem": {
+                  "point": 16.166666666666668,
+                  "ci_low": 1.0187500000000014,
+                  "ci_high": 31.677083333333346
+                },
+                "minutes_mae_rem": {
+                  "point": 27.38888888888889,
+                  "ci_low": 13.963194444444445,
+                  "ci_high": 41.06944444444446
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.22710774783991838,
+                    "ci_low": 0.11673986206544787,
+                    "ci_high": 0.3255408539407108
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.23796559993651226,
+                    "ci_low": 0.15790116939128573,
+                    "ci_high": 0.3053272599106575
+                  },
+                  "accuracy": {
+                    "point": 0.6842156959041351,
+                    "ci_low": 0.6291610178038428,
+                    "ci_high": 0.7363446754948976
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.4160513643659711,
+                    "ci_low": 0.3272198406396221,
+                    "ci_high": 0.5073246775527814
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.8024341919048967,
+                    "ci_low": 0.7134161848088069,
+                    "ci_high": 0.8796126566092574
+                  },
+                  "tst_bias_min": {
+                    "point": 11.75,
+                    "ci_low": -14.184027777777757,
+                    "ci_high": 43.445138888888884
+                  },
+                  "tst_mae_min": {
+                    "point": 54.97222222222222,
+                    "ci_low": 37.79583333333334,
+                    "ci_high": 72.69930555555557
+                  },
+                  "se_bias_pctpt": {
+                    "point": -0.45235470863856264,
+                    "ci_low": -13.327696014460896,
+                    "ci_high": 12.322552818438595
+                  },
+                  "se_mae_pctpt": {
+                    "point": 21.850166856300877,
+                    "ci_low": 14.451223620474213,
+                    "ci_high": 31.142839894555625
+                  },
+                  "awakenings_bias": {
+                    "point": -8.944444444444445,
+                    "ci_low": -12.116666666666665,
+                    "ci_high": -6.7749999999999995
+                  },
+                  "awakenings_mae": {
+                    "point": 8.944444444444445,
+                    "ci_low": 6.775,
+                    "ci_high": 12.116666666666667
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 11.75,
+                    "mae": 54.97222222222222,
+                    "sd": 69.48153584607505,
+                    "loa_low": -124.43381025830709,
+                    "loa_high": 147.9338102583071,
+                    "per_record_error": [
+                      -21.5,
+                      63.5,
+                      -140.5,
+                      -71.5,
+                      48.5,
+                      -14.5,
+                      115.0,
+                      24.0,
+                      94.5,
+                      -111.0,
+                      66.0,
+                      -3.0,
+                      72.0,
+                      4.0,
+                      80.5,
+                      -21.5,
+                      32.5,
+                      -5.5
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": -0.45235470863856264,
+                    "mae": 21.850166856300877,
+                    "sd": 30.10101676023771,
+                    "loa_low": -59.450347558704465,
+                    "loa_high": 58.54563814142735,
+                    "per_record_error": [
+                      -17.991631799163187,
+                      35.27777777777777,
+                      -79.82954545454545,
+                      -53.15985130111524,
+                      13.472222222222229,
+                      -4.0277777777777715,
+                      32.25806451612904,
+                      6.9164265129683,
+                      29.53125,
+                      -31.805157593123212,
+                      16.923076923076934,
+                      -0.7936507936507837,
+                      18.97233201581028,
+                      1.7467248908296966,
+                      22.676056338028175,
+                      -5.972222222222214,
+                      14.806378132118446,
+                      -7.142857142857139
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -8.944444444444445,
+                    "mae": 8.944444444444445,
+                    "sd": 6.672791304308091,
+                    "loa_low": -22.0231154008883,
+                    "loa_high": 4.1342265119994135,
+                    "per_record_error": [
+                      -1.0,
+                      -6.0,
+                      -3.0,
+                      -6.0,
+                      -8.0,
+                      -9.0,
+                      -21.0,
+                      -12.0,
+                      -5.0,
+                      -4.0,
+                      -26.0,
+                      -1.0,
+                      -10.0,
+                      -11.0,
+                      -16.0,
+                      -9.0,
+                      -10.0,
+                      -3.0
+                    ]
+                  }
+                }
+              }
+            },
+            "v1": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "light",
+                "deep",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  2643,
+                  462,
+                  1,
+                  9
+                ],
+                [
+                  179,
+                  5448,
+                  37,
+                  38
+                ],
+                [
+                  12,
+                  181,
+                  468,
+                  3
+                ],
+                [
+                  11,
+                  102,
+                  0,
+                  587
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.8204767578202996,
+                  "ci_low": 0.7979236159489478,
+                  "ci_high": 0.8476412846759078
+                },
+                "accuracy": {
+                  "point": 0.8983400451822021,
+                  "ci_low": 0.8803357641259383,
+                  "ci_high": 0.9174208409080431
+                },
+                "recall_wake": {
+                  "point": 0.8484751203852328,
+                  "ci_low": 0.8120366489485363,
+                  "ci_high": 0.8891588647487426
+                },
+                "precision_wake": {
+                  "point": 0.9289982425307557,
+                  "ci_low": 0.9075017306693844,
+                  "ci_high": 0.9477300034135393
+                },
+                "minutes_bias_wake": {
+                  "point": -7.5,
+                  "ci_low": -11.751388888888888,
+                  "ci_high": -4.071527777777775
+                },
+                "minutes_mae_wake": {
+                  "point": 8.666666666666666,
+                  "ci_low": 5.970138888888889,
+                  "ci_high": 12.308333333333334
+                },
+                "recall_light": {
+                  "point": 0.9554542265871624,
+                  "ci_low": 0.9415249552883331,
+                  "ci_high": 0.9682307917774691
+                },
+                "precision_light": {
+                  "point": 0.879702890360084,
+                  "ci_low": 0.84797114727539,
+                  "ci_high": 0.9073667261830534
+                },
+                "minutes_bias_light": {
+                  "point": 13.63888888888889,
+                  "ci_low": 9.471527777777776,
+                  "ci_high": 18.056250000000002
+                },
+                "minutes_mae_light": {
+                  "point": 14.194444444444445,
+                  "ci_low": 10.518055555555557,
+                  "ci_high": 18.500694444444445
+                },
+                "recall_deep": {
+                  "point": 0.7048192771084337,
+                  "ci_low": 0.54111182017478,
+                  "ci_high": 0.8695886768845793
+                },
+                "precision_deep": {
+                  "point": 0.924901185770751,
+                  "ci_low": 0.879746835443038,
+                  "ci_high": 0.9768837401390471
+                },
+                "minutes_bias_deep": {
+                  "point": -4.388888888888889,
+                  "ci_low": -8.393749999999999,
+                  "ci_high": -1.4361111111111091
+                },
+                "minutes_mae_deep": {
+                  "point": 4.722222222222222,
+                  "ci_low": 1.661111111111112,
+                  "ci_high": 8.779166666666669
+                },
+                "recall_rem": {
+                  "point": 0.8385714285714285,
+                  "ci_low": 0.76543752025124,
+                  "ci_high": 0.9044833488151122
+                },
+                "precision_rem": {
+                  "point": 0.9215070643642073,
+                  "ci_low": 0.8966018841115675,
+                  "ci_high": 0.9427410111003861
+                },
+                "minutes_bias_rem": {
+                  "point": -1.75,
+                  "ci_low": -3.141666666666666,
+                  "ci_high": -0.6618055555555544
+                },
+                "minutes_mae_rem": {
+                  "point": 2.0833333333333335,
+                  "ci_low": 1.0270833333333333,
+                  "ci_high": 3.3083333333333336
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.840249371368388,
+                    "ci_low": 0.8111348600864672,
+                    "ci_high": 0.8706265791120109
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.8312566780717651,
+                    "ci_low": 0.8085440460251779,
+                    "ci_high": 0.8576476836566036
+                  },
+                  "accuracy": {
+                    "point": 0.9337982516452215,
+                    "ci_low": 0.9205421665722969,
+                    "ci_high": 0.947831186392122
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.8484751203852328,
+                    "ci_low": 0.8120366489485363,
+                    "ci_high": 0.8891588647487426
+                  },
+                  "sleep_sensitivity": {
+                    "point": 0.9714123973959807,
+                    "ci_low": 0.963510605685635,
+                    "ci_high": 0.9795114747239884
+                  },
+                  "tst_bias_min": {
+                    "point": 7.5,
+                    "ci_low": 4.07152777777778,
+                    "ci_high": 11.75138888888889
+                  },
+                  "tst_mae_min": {
+                    "point": 8.666666666666666,
+                    "ci_low": 5.970138888888889,
+                    "ci_high": 12.308333333333334
+                  },
+                  "se_bias_pctpt": {
+                    "point": 2.4965207236653653,
+                    "ci_low": 1.128037863944001,
+                    "ci_high": 3.9527124211626723
+                  },
+                  "se_mae_pctpt": {
+                    "point": 3.2123702793149445,
+                    "ci_low": 2.4100285862020465,
+                    "ci_high": 4.370589256989974
+                  },
+                  "awakenings_bias": {
+                    "point": -2.388888888888889,
+                    "ci_low": -4.1708333333333325,
+                    "ci_high": -0.9986111111111108
+                  },
+                  "awakenings_mae": {
+                    "point": 3.0555555555555554,
+                    "ci_low": 1.9986111111111113,
+                    "ci_high": 4.6125
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 7.5,
+                    "mae": 8.666666666666666,
+                    "sd": 9.053760999457303,
+                    "loa_low": -10.245371558936313,
+                    "loa_high": 25.245371558936313,
+                    "per_record_error": [
+                      -1.0,
+                      10.0,
+                      -3.0,
+                      -4.5,
+                      12.5,
+                      2.0,
+                      21.5,
+                      20.5,
+                      2.0,
+                      2.5,
+                      21.0,
+                      0.5,
+                      14.5,
+                      19.5,
+                      3.0,
+                      -2.0,
+                      13.0,
+                      3.0
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 2.4965207236653653,
+                    "mae": 3.2123702793149445,
+                    "sd": 3.3025645869771374,
+                    "loa_low": -3.9765058668098243,
+                    "loa_high": 8.969547314140556,
+                    "per_record_error": [
+                      -0.8368200836820137,
+                      5.555555555555557,
+                      -1.7045454545454533,
+                      -3.3457249070632002,
+                      3.4722222222222285,
+                      0.5555555555555571,
+                      6.030855539971952,
+                      5.907780979827088,
+                      0.625,
+                      0.7163323782234983,
+                      5.384615384615387,
+                      0.1322751322751401,
+                      3.820816864295125,
+                      8.515283842794759,
+                      0.8450704225352155,
+                      -0.5555555555555429,
+                      5.922551252847377,
+                      3.8961038961039023
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -2.388888888888889,
+                    "mae": 3.0555555555555554,
+                    "sd": 3.5996550306757564,
+                    "loa_low": -9.44421274901337,
+                    "loa_high": 4.666434971235594,
+                    "per_record_error": [
+                      0.0,
+                      1.0,
+                      -1.0,
+                      -1.0,
+                      -2.0,
+                      -3.0,
+                      -4.0,
+                      -7.0,
+                      1.0,
+                      -1.0,
+                      -11.0,
+                      1.0,
+                      -3.0,
+                      -2.0,
+                      -8.0,
+                      1.0,
+                      -6.0,
+                      2.0
+                    ]
+                  }
+                }
+              }
+            },
+            "asleep_from_lights_off": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "labels": [
+                "wake",
+                "light",
+                "deep",
+                "rem"
+              ],
+              "confusion_matrix_rows_ref_cols_pred": [
+                [
+                  0,
+                  3115,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  5702,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  664,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  700,
+                  0,
+                  0
+                ]
+              ],
+              "metrics": {
+                "kappa_pooled": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "accuracy": {
+                  "point": 0.5600628621942835,
+                  "ci_low": 0.48927274126536363,
+                  "ci_high": 0.6096099226622786
+                },
+                "recall_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_wake": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_wake": {
+                  "point": -86.52777777777777,
+                  "ci_low": -109.03680555555555,
+                  "ci_high": -68.24374999999999
+                },
+                "minutes_mae_wake": {
+                  "point": 86.52777777777777,
+                  "ci_low": 68.24375,
+                  "ci_high": 109.03680555555555
+                },
+                "recall_light": {
+                  "point": 1.0,
+                  "ci_low": 1.0,
+                  "ci_high": 1.0
+                },
+                "precision_light": {
+                  "point": 0.5600628621942835,
+                  "ci_low": 0.48927274126536363,
+                  "ci_high": 0.6096099226622786
+                },
+                "minutes_bias_light": {
+                  "point": 124.41666666666667,
+                  "ci_low": 101.74375,
+                  "ci_high": 146.17708333333331
+                },
+                "minutes_mae_light": {
+                  "point": 124.41666666666667,
+                  "ci_low": 101.74375,
+                  "ci_high": 146.17708333333331
+                },
+                "recall_deep": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_deep": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_deep": {
+                  "point": -18.444444444444443,
+                  "ci_low": -26.39861111111111,
+                  "ci_high": -9.16111111111111
+                },
+                "minutes_mae_deep": {
+                  "point": 18.444444444444443,
+                  "ci_low": 9.161111111111111,
+                  "ci_high": 26.398611111111112
+                },
+                "recall_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "precision_rem": {
+                  "point": 0.0,
+                  "ci_low": 0.0,
+                  "ci_high": 0.0
+                },
+                "minutes_bias_rem": {
+                  "point": -19.444444444444443,
+                  "ci_low": -26.41875,
+                  "ci_high": -11.942361111111111
+                },
+                "minutes_mae_rem": {
+                  "point": 19.444444444444443,
+                  "ci_low": 11.942361111111111,
+                  "ci_high": 26.418750000000003
+                }
+              },
+              "as_sleep_wake": {
+                "n_records": 18,
+                "n_epochs": 10181,
+                "metrics": {
+                  "kappa_pooled": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "kappa_mean_per_record": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "accuracy": {
+                    "point": 0.6940379137609273,
+                    "ci_low": 0.6302420941851676,
+                    "ci_high": 0.748855655452189
+                  },
+                  "wake_sensitivity": {
+                    "point": 0.0,
+                    "ci_low": 0.0,
+                    "ci_high": 0.0
+                  },
+                  "sleep_sensitivity": {
+                    "point": 1.0,
+                    "ci_low": 1.0,
+                    "ci_high": 1.0
+                  },
+                  "tst_bias_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "tst_mae_min": {
+                    "point": 86.52777777777777,
+                    "ci_low": 68.24375,
+                    "ci_high": 109.03680555555555
+                  },
+                  "se_bias_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "se_mae_pctpt": {
+                    "point": 31.077268644024926,
+                    "ci_low": 25.235886578069298,
+                    "ci_high": 37.17270938160833
+                  },
+                  "awakenings_bias": {
+                    "point": -11.38888888888889,
+                    "ci_low": -15.113888888888887,
+                    "ci_high": -8.722222222222221
+                  },
+                  "awakenings_mae": {
+                    "point": 11.38888888888889,
+                    "ci_low": 8.722222222222221,
+                    "ci_high": 15.113888888888889
+                  }
+                },
+                "bland_altman": {
+                  "tst_min": {
+                    "bias": 86.52777777777777,
+                    "mae": 86.52777777777777,
+                    "sd": 52.03518951356302,
+                    "loa_low": -15.461193668805748,
+                    "loa_high": 188.5167492243613,
+                    "per_record_error": [
+                      3.5,
+                      90.0,
+                      22.0,
+                      53.5,
+                      75.5,
+                      81.0,
+                      160.5,
+                      158.0,
+                      197.0,
+                      37.5,
+                      114.5,
+                      59.5,
+                      106.5,
+                      70.0,
+                      143.0,
+                      62.0,
+                      87.5,
+                      36.0
+                    ]
+                  },
+                  "se_pct": {
+                    "bias": 31.077268644024926,
+                    "mae": 31.077268644024926,
+                    "sd": 15.978212070522597,
+                    "loa_low": -0.240027014199363,
+                    "loa_high": 62.394564302249215,
+                    "per_record_error": [
+                      2.9288702928870265,
+                      50.0,
+                      12.5,
+                      39.77695167286245,
+                      20.97222222222223,
+                      22.5,
+                      45.02103786816269,
+                      45.53314121037464,
+                      61.5625,
+                      10.744985673352431,
+                      29.358974358974365,
+                      15.740740740740748,
+                      28.063241106719374,
+                      30.567685589519655,
+                      40.28169014084507,
+                      17.22222222222223,
+                      39.863325740318906,
+                      46.753246753246756
+                    ]
+                  },
+                  "awakenings": {
+                    "bias": -11.38888888888889,
+                    "mae": 11.38888888888889,
+                    "sd": 7.285270303749396,
+                    "loa_low": -25.668018684237705,
+                    "loa_high": 2.890240906459926,
+                    "per_record_error": [
+                      -2.0,
+                      -8.0,
+                      -3.0,
+                      -6.0,
+                      -9.0,
+                      -14.0,
+                      -26.0,
+                      -19.0,
+                      -8.0,
+                      -7.0,
+                      -27.0,
+                      -6.0,
+                      -12.0,
+                      -13.0,
+                      -19.0,
+                      -11.0,
+                      -11.0,
+                      -4.0
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "inputs": {
+    "train_features_sha256": "cbe8c4342c6d9ea7584687794f35812af8fb3caafd901bee382e6649675e7944",
+    "train_extra_sha256": "ecd61373ff88d8d1e0f6106799f254bcac4527d1e1dded1630f4bc6fb0debfed"
+  },
+  "apnea_dry_run": {
+    "threshold_p_apnea": 0.49,
+    "primary": {
+      "v2": {
+        "n_records": 15,
+        "n_minutes": 6991,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": 196.6,
+            "ci_low": 149.23833333333334,
+            "ci_high": 241.74499999999998
+          },
+          "apnea_min_mae": {
+            "point": 196.6,
+            "ci_low": 149.23833333333334,
+            "ci_high": 241.74499999999998
+          },
+          "kappa_pooled": {
+            "point": 0.06348629307995145,
+            "ci_low": 0.007890799520388663,
+            "ci_high": 0.1071445680734626
+          },
+          "accuracy": {
+            "point": 0.5667286511228723,
+            "ci_low": 0.4854202666222424,
+            "ci_high": 0.6554555512831144
+          },
+          "sensitivity": {
+            "point": 0.8484848484848485,
+            "ci_low": 0.48629661339421615,
+            "ci_high": 0.9933993452956323
+          },
+          "specificity": {
+            "point": 0.5556711758584808,
+            "ci_low": 0.45947204453008833,
+            "ci_high": 0.6545659747408408
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": 196.6,
+            "mae": 196.6,
+            "sd": 93.22921062781619,
+            "loa_low": 13.870747169480268,
+            "loa_high": 379.32925283051975,
+            "per_record_error": [
+              246.0,
+              320.0,
+              236.0,
+              273.0,
+              80.0,
+              165.0,
+              285.0,
+              127.0,
+              52.0,
+              85.0,
+              106.0,
+              216.0,
+              358.0,
+              226.0,
+              174.0
+            ]
+          }
+        },
+        "per_record": [
+          {
+            "record": "b01",
+            "ref_apnea_min": 19.0,
+            "pred_apnea_min": 265.0,
+            "total_min": 486.0,
+            "kappa": 0.06563296184566324
+          },
+          {
+            "record": "b02",
+            "ref_apnea_min": 93.0,
+            "pred_apnea_min": 413.0,
+            "total_min": 517.0,
+            "kappa": 0.10468438825872374
+          },
+          {
+            "record": "b03",
+            "ref_apnea_min": 73.0,
+            "pred_apnea_min": 309.0,
+            "total_min": 440.0,
+            "kappa": 0.15553892946017597
+          },
+          {
+            "record": "b04",
+            "ref_apnea_min": 10.0,
+            "pred_apnea_min": 283.0,
+            "total_min": 428.0,
+            "kappa": 0.02421833244254408
+          },
+          {
+            "record": "b05",
+            "ref_apnea_min": 57.0,
+            "pred_apnea_min": 137.0,
+            "total_min": 432.0,
+            "kappa": 0.06238451385833702
+          },
+          {
+            "record": "c01",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 165.0,
+            "total_min": 483.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c02",
+            "ref_apnea_min": 1.0,
+            "pred_apnea_min": 286.0,
+            "total_min": 501.0,
+            "kappa": 0.0030024787906295348
+          },
+          {
+            "record": "c03",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 127.0,
+            "total_min": 453.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c04",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 52.0,
+            "total_min": 481.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c05",
+            "ref_apnea_min": 3.0,
+            "pred_apnea_min": 88.0,
+            "total_min": 465.0,
+            "kappa": -0.012635508651015715
+          },
+          {
+            "record": "c06",
+            "ref_apnea_min": 1.0,
+            "pred_apnea_min": 107.0,
+            "total_min": 467.0,
+            "kappa": -0.004261080801242386
+          },
+          {
+            "record": "c07",
+            "ref_apnea_min": 4.0,
+            "pred_apnea_min": 220.0,
+            "total_min": 428.0,
+            "kappa": 0.017681060863651784
+          },
+          {
+            "record": "c08",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 358.0,
+            "total_min": 513.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c09",
+            "ref_apnea_min": 2.0,
+            "pred_apnea_min": 228.0,
+            "total_min": 467.0,
+            "kappa": 0.00020657664932659662
+          },
+          {
+            "record": "c10",
+            "ref_apnea_min": 1.0,
+            "pred_apnea_min": 175.0,
+            "total_min": 430.0,
+            "kappa": -0.004646223284216029
+          }
+        ]
+      },
+      "v1": {
+        "n_records": 15,
+        "n_minutes": 6991,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": 1.9333333333333333,
+            "ci_low": 0.26666666666666666,
+            "ci_high": 3.670000000000001
+          },
+          "apnea_min_mae": {
+            "point": 2.3333333333333335,
+            "ci_low": 0.7316666666666669,
+            "ci_high": 4.068333333333333
+          },
+          "kappa_pooled": {
+            "point": 0.9308244388028403,
+            "ci_low": 0.850549585684989,
+            "ci_high": 0.9669927429750274
+          },
+          "accuracy": {
+            "point": 0.9947074810470605,
+            "ci_low": 0.9906705510863845,
+            "ci_high": 0.9984454146567283
+          },
+          "sensitivity": {
+            "point": 0.9848484848484849,
+            "ci_low": 0.9499715909090909,
+            "ci_high": 0.9960570971372301
+          },
+          "specificity": {
+            "point": 0.9950943957187454,
+            "ci_low": 0.9910222391221661,
+            "ci_high": 0.9988447044174802
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": 1.9333333333333333,
+            "mae": 2.3333333333333335,
+            "sd": 3.899938949461108,
+            "loa_low": -5.7105470076104385,
+            "loa_high": 9.577213674277106,
+            "per_record_error": [
+              10.0,
+              10.0,
+              7.0,
+              0.0,
+              -1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              4.0,
+              1.0,
+              -1.0,
+              -1.0
+            ]
+          }
+        }
+      },
+      "no_apnea": {
+        "n_records": 15,
+        "n_minutes": 6991,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": -17.6,
+            "ci_low": -31.56333333333333,
+            "ci_high": -5.998333333333333
+          },
+          "apnea_min_mae": {
+            "point": 17.6,
+            "ci_low": 5.998333333333334,
+            "ci_high": 31.563333333333343
+          },
+          "kappa_pooled": {
+            "point": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          "accuracy": {
+            "point": 0.9622371620655128,
+            "ci_low": 0.9316970725504883,
+            "ci_high": 0.9870798162737736
+          },
+          "sensitivity": {
+            "point": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          "specificity": {
+            "point": 1.0,
+            "ci_low": 1.0,
+            "ci_high": 1.0
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": -17.6,
+            "mae": 17.6,
+            "sd": 30.55860879406279,
+            "loa_low": -77.49487323636306,
+            "loa_high": 42.29487323636306,
+            "per_record_error": [
+              -19.0,
+              -93.0,
+              -73.0,
+              -10.0,
+              -57.0,
+              0.0,
+              -1.0,
+              0.0,
+              0.0,
+              -3.0,
+              -1.0,
+              -4.0,
+              0.0,
+              -2.0,
+              -1.0
+            ]
+          }
+        }
+      }
+    },
+    "all_records": {
+      "v2": {
+        "n_records": 15,
+        "n_minutes": 6991,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": 196.6,
+            "ci_low": 149.23833333333334,
+            "ci_high": 241.74499999999998
+          },
+          "apnea_min_mae": {
+            "point": 196.6,
+            "ci_low": 149.23833333333334,
+            "ci_high": 241.74499999999998
+          },
+          "kappa_pooled": {
+            "point": 0.06348629307995145,
+            "ci_low": 0.007890799520388663,
+            "ci_high": 0.1071445680734626
+          },
+          "accuracy": {
+            "point": 0.5667286511228723,
+            "ci_low": 0.4854202666222424,
+            "ci_high": 0.6554555512831144
+          },
+          "sensitivity": {
+            "point": 0.8484848484848485,
+            "ci_low": 0.48629661339421615,
+            "ci_high": 0.9933993452956323
+          },
+          "specificity": {
+            "point": 0.5556711758584808,
+            "ci_low": 0.45947204453008833,
+            "ci_high": 0.6545659747408408
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": 196.6,
+            "mae": 196.6,
+            "sd": 93.22921062781619,
+            "loa_low": 13.870747169480268,
+            "loa_high": 379.32925283051975,
+            "per_record_error": [
+              246.0,
+              320.0,
+              236.0,
+              273.0,
+              80.0,
+              165.0,
+              285.0,
+              127.0,
+              52.0,
+              85.0,
+              106.0,
+              216.0,
+              358.0,
+              226.0,
+              174.0
+            ]
+          }
+        },
+        "per_record": [
+          {
+            "record": "b01",
+            "ref_apnea_min": 19.0,
+            "pred_apnea_min": 265.0,
+            "total_min": 486.0,
+            "kappa": 0.06563296184566324
+          },
+          {
+            "record": "b02",
+            "ref_apnea_min": 93.0,
+            "pred_apnea_min": 413.0,
+            "total_min": 517.0,
+            "kappa": 0.10468438825872374
+          },
+          {
+            "record": "b03",
+            "ref_apnea_min": 73.0,
+            "pred_apnea_min": 309.0,
+            "total_min": 440.0,
+            "kappa": 0.15553892946017597
+          },
+          {
+            "record": "b04",
+            "ref_apnea_min": 10.0,
+            "pred_apnea_min": 283.0,
+            "total_min": 428.0,
+            "kappa": 0.02421833244254408
+          },
+          {
+            "record": "b05",
+            "ref_apnea_min": 57.0,
+            "pred_apnea_min": 137.0,
+            "total_min": 432.0,
+            "kappa": 0.06238451385833702
+          },
+          {
+            "record": "c01",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 165.0,
+            "total_min": 483.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c02",
+            "ref_apnea_min": 1.0,
+            "pred_apnea_min": 286.0,
+            "total_min": 501.0,
+            "kappa": 0.0030024787906295348
+          },
+          {
+            "record": "c03",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 127.0,
+            "total_min": 453.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c04",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 52.0,
+            "total_min": 481.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c05",
+            "ref_apnea_min": 3.0,
+            "pred_apnea_min": 88.0,
+            "total_min": 465.0,
+            "kappa": -0.012635508651015715
+          },
+          {
+            "record": "c06",
+            "ref_apnea_min": 1.0,
+            "pred_apnea_min": 107.0,
+            "total_min": 467.0,
+            "kappa": -0.004261080801242386
+          },
+          {
+            "record": "c07",
+            "ref_apnea_min": 4.0,
+            "pred_apnea_min": 220.0,
+            "total_min": 428.0,
+            "kappa": 0.017681060863651784
+          },
+          {
+            "record": "c08",
+            "ref_apnea_min": 0.0,
+            "pred_apnea_min": 358.0,
+            "total_min": 513.0,
+            "kappa": 0.0
+          },
+          {
+            "record": "c09",
+            "ref_apnea_min": 2.0,
+            "pred_apnea_min": 228.0,
+            "total_min": 467.0,
+            "kappa": 0.00020657664932659662
+          },
+          {
+            "record": "c10",
+            "ref_apnea_min": 1.0,
+            "pred_apnea_min": 175.0,
+            "total_min": 430.0,
+            "kappa": -0.004646223284216029
+          }
+        ]
+      },
+      "v1": {
+        "n_records": 15,
+        "n_minutes": 6991,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": 1.9333333333333333,
+            "ci_low": 0.26666666666666666,
+            "ci_high": 3.670000000000001
+          },
+          "apnea_min_mae": {
+            "point": 2.3333333333333335,
+            "ci_low": 0.7316666666666669,
+            "ci_high": 4.068333333333333
+          },
+          "kappa_pooled": {
+            "point": 0.9308244388028403,
+            "ci_low": 0.850549585684989,
+            "ci_high": 0.9669927429750274
+          },
+          "accuracy": {
+            "point": 0.9947074810470605,
+            "ci_low": 0.9906705510863845,
+            "ci_high": 0.9984454146567283
+          },
+          "sensitivity": {
+            "point": 0.9848484848484849,
+            "ci_low": 0.9499715909090909,
+            "ci_high": 0.9960570971372301
+          },
+          "specificity": {
+            "point": 0.9950943957187454,
+            "ci_low": 0.9910222391221661,
+            "ci_high": 0.9988447044174802
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": 1.9333333333333333,
+            "mae": 2.3333333333333335,
+            "sd": 3.899938949461108,
+            "loa_low": -5.7105470076104385,
+            "loa_high": 9.577213674277106,
+            "per_record_error": [
+              10.0,
+              10.0,
+              7.0,
+              0.0,
+              -1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              4.0,
+              1.0,
+              -1.0,
+              -1.0
+            ]
+          }
+        }
+      },
+      "no_apnea": {
+        "n_records": 15,
+        "n_minutes": 6991,
+        "metrics": {
+          "apnea_min_bias": {
+            "point": -17.6,
+            "ci_low": -31.56333333333333,
+            "ci_high": -5.998333333333333
+          },
+          "apnea_min_mae": {
+            "point": 17.6,
+            "ci_low": 5.998333333333334,
+            "ci_high": 31.563333333333343
+          },
+          "kappa_pooled": {
+            "point": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          "accuracy": {
+            "point": 0.9622371620655128,
+            "ci_low": 0.9316970725504883,
+            "ci_high": 0.9870798162737736
+          },
+          "sensitivity": {
+            "point": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          "specificity": {
+            "point": 1.0,
+            "ci_low": 1.0,
+            "ci_high": 1.0
+          }
+        },
+        "bland_altman": {
+          "apnea_min": {
+            "bias": -17.6,
+            "mae": 17.6,
+            "sd": 30.55860879406279,
+            "loa_low": -77.49487323636306,
+            "loa_high": 42.29487323636306,
+            "per_record_error": [
+              -19.0,
+              -93.0,
+              -73.0,
+              -10.0,
+              -57.0,
+              0.0,
+              -1.0,
+              0.0,
+              0.0,
+              -3.0,
+              -1.0,
+              -4.0,
+              0.0,
+              -2.0,
+              -1.0
+            ]
+          }
+        }
+      }
+    }
+  },
+  "note": "Dry run on training data: trained on CAP only, slpdb treated as a test set."
+}

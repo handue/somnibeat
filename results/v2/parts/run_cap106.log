@@ -1,1 +1,5 @@
 loaded 117133 rows, datasets ['cap', 'slpdb'], 119 v1 + 24 extra features (0.8s)
+v1_reference                             sleep_wake     xds kappa 0.152 TST MAE 81.1  (421.6s, fits so far 12)
+gb|cw=balanced|hmm_viterbi|v1+extra      sleep_wake     xds kappa 0.227 TST MAE 65.1  (144.7s, fits so far 14)
+wrote results/v2/selection_cap106.json (567.3s)
+.venv/bin/python scripts/v2_select.py --candidates  --tasks sleep_wake         658.12s user 373.12s system 181% cpu 9:28.93 total

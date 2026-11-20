@@ -1,0 +1,6 @@
+slpdb_as_test sleep_wake v2 kappa 0.22 v1 kappa 0.768
+slpdb_as_test wake_nrem_rem v2 kappa 0.254 v1 kappa 0.852
+slpdb_as_test four_class v2 kappa 0.208 v1 kappa 0.82
+apnea v2 kappa 0.063
+wrote /Users/anjung/coding/somnibeat/results/v2/dry_run/test_results.json
+.venv/bin/python scripts/train_eval_v2.py --dry-run --bootstrap 200  768.97s user 119.32s system 130% cpu 11:19.01 total

@@ -50,10 +50,12 @@ def _keys(path: Path, cols: list[str]) -> pd.DataFrame:
 def load_grids() -> tuple[dict, dict]:
     """{(dataset, record): (epoch_idx, start_s)} for staging and apnea grids; v1 first."""
     stage, apnea = {}, {}
-    for cache in (V1_CACHE, V2_CACHE):
-        s = _keys(cache / "stage_features.csv.gz", ["dataset", "record", "epoch", "epoch_start_s"])
+    for cache, name in ((V1_CACHE, "stage_features"), (V2_CACHE, "stage_features"), (V2_CACHE, "hmc_stage_features")):
+        s = _keys(cache / f"{name}.csv.gz", ["dataset", "record", "epoch", "epoch_start_s"])
         for (d, r), g in s.groupby(["dataset", "record"], sort=False):
             stage.setdefault((d, r), (g["epoch"].to_numpy(), g["epoch_start_s"].to_numpy(float)))
+        if name != "stage_features":
+            continue
         a = _keys(cache / "apnea_features.csv.gz", ["dataset", "record", "minute"])
         for (d, r), g in a.groupby(["dataset", "record"], sort=False):
             m = g["minute"].to_numpy()

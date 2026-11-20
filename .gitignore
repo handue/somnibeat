@@ -7,3 +7,5 @@ data/cache/
 data/*.log
 .pytest_cache/
 node_modules/
+results/v2/**/models/
+results/v2/models/

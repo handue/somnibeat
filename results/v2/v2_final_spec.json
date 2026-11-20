@@ -1,0 +1,84 @@
+{
+  "protocol": "docs/v2_protocol.md (candidate-1 clarification)",
+  "rule": {
+    "fold": "train CAP -> evaluate slpdb (fold A)",
+    "tie_margin": 0.01,
+    "tst_guard": 1.1
+  },
+  "candidate_1": {
+    "v1_reference": {
+      "cap49": {
+        "kappa": 0.12865407295333808,
+        "tst_mae_min": 62.80555555555556,
+        "kappa_ci": [
+          0.04630938819160213,
+          0.22727205952608678
+        ]
+      },
+      "cap106": {
+        "kappa": 0.1432520050114428,
+        "tst_mae_min": 60.861111111111114,
+        "kappa_ci": [
+          0.07755539161134258,
+          0.2202610901258038
+        ]
+      },
+      "decision": {
+        "kappa_gain": 0.014597932058104723,
+        "guard_ok": true,
+        "accepted": true
+      }
+    },
+    "gb|cw=balanced|hmm_viterbi|v1+extra": {
+      "cap49": {
+        "kappa": 0.21221416949570568,
+        "tst_mae_min": 57.833333333333336,
+        "kappa_ci": [
+          0.13016850910345676,
+          0.3171443613468326
+        ]
+      },
+      "cap106": {
+        "kappa": 0.22342260318840318,
+        "tst_mae_min": 58.22222222222222,
+        "kappa_ci": [
+          0.13679232117616189,
+          0.3163560139715787
+        ]
+      },
+      "decision": {
+        "kappa_gain": 0.0112084336926975,
+        "guard_ok": true,
+        "accepted": true
+      }
+    }
+  },
+  "staging": {
+    "model": "gb",
+    "class_weight": "balanced",
+    "smoothing": "hmm_viterbi",
+    "feature_set": "v1+extra",
+    "cap_records": "all usable (config/v2.toml)"
+  },
+  "apnea": {
+    "name": "ensemble_mean|cw=None|v1+extra|train=apnea-ecg",
+    "model": "ensemble_mean",
+    "class_weight": null,
+    "feature_set": "v1+extra"
+  },
+  "hyperparameters": {
+    "seed": 20261204,
+    "gb": {
+      "max_iter": 300,
+      "learning_rate": 0.05,
+      "max_leaf_nodes": 31,
+      "l2_regularization": 1.0,
+      "early_stopping": false
+    },
+    "lr": {
+      "C": 1.0,
+      "max_iter": 2000
+    },
+    "inner_folds": 5
+  }
+}
