@@ -24,8 +24,8 @@ OUT = ROOT / "tools/video/out"
 TMP = OUT / "build"
 W, H, FPS = 1920, 1080, 30
 LEAD_IN, TAIL = 0.6, 1.0
-ORDER = [("intro", "N0"), ("start", "N1"), ("report", "N2"), ("compare", "N3"), ("failure", "N4"),
-         ("apnea", "N5"), ("noisy", "N6"), ("trust", "N7"), ("method", "N8"), ("harm", "N9"), ("outro", "N10")]
+ORDER = [("intro", "N0"), ("start", "N1"), ("report", "N2"), ("compare", "N3"), ("apnea", "N4"),
+         ("noisy", "N5"), ("trust", "N6"), ("method", "N7"), ("outro", "N8")]
 MUSIC_GAIN = 0.03          # quiet bed: music-only stretches sit about 18 dB under the voice
 MUSIC_DUCK = "threshold=0.015:ratio=12:attack=30:release=900:makeup=1"
 CARD_LEN = {"intro": 7.0, "outro": 8.0}
@@ -109,9 +109,21 @@ def scene_clip(name: str, min_len: float) -> tuple[Path, float, tuple[float, flo
     lst.write_text("\n".join(lines) + "\n")
     clip = TMP / f"{name}.mp4"
     run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst),
-         "-vf", f"scale={W}:{H}:flags=lanczos,fps={FPS},format=yuv420p", "-t", f"{out_len:.3f}",
+         "-vf", f"{crop_filter(meta, frames[0][1])}scale={W}:{H}:flags=lanczos,fps={FPS},format=yuv420p",
+         "-t", f"{out_len:.3f}",
          "-c:v", "libx264", "-preset", "slow", "-crf", "16", str(clip)])
     return clip, out_len, fast
+
+
+def crop_filter(meta: dict, first_frame: Path) -> str:
+    """Optional crop recorded by record.py (CSS px of the 1440 x 810 viewport) -> frame pixels."""
+    if not meta.get("crop"):
+        return ""
+    fw, fh = Image.open(first_frame).size
+    k = fw / 1440.0
+    x, y, w, h = (int(round(v * k)) for v in meta["crop"])
+    w, h = min(w, fw - x), min(h, fh - y)
+    return f"crop={w}:{h}:{x}:{y},"
 
 
 def card_clip(name: str, png: Path, length: float) -> Path:

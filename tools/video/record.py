@@ -41,7 +41,9 @@ async ([y, ms]) => {
 """
 TOP_OF = """([sel, text, offset]) => {
   const els = [...document.querySelectorAll(sel)].filter(e => !text || e.textContent.includes(text));
-  const e = els.find(x => x.offsetParent !== null) || els[0];
+  const vis = els.filter(x => x.offsetParent !== null);
+  const pool = vis.length ? vis : els;
+  const e = pool.sort((a, b) => a.textContent.length - b.textContent.length)[0];  // innermost match
   return e ? Math.max(0, e.getBoundingClientRect().top + window.scrollY - offset) : null;
 }"""
 
@@ -54,6 +56,7 @@ class Recorder:
         self.dir.mkdir(parents=True)
         self.frames: list[tuple[float, str]] = []
         self.marks: dict[str, float] = {}
+        self.crop: list[float] | None = None  # [x, y, w, h] in CSS px of the viewport
         self.cdp = page.context.new_cdp_session(page)
         self.cdp.on("Page.screencastFrame", self._frame)
 
@@ -86,7 +89,7 @@ class Recorder:
             self.hold(min_len - elapsed)
         t_end = time.monotonic()
         self.cdp.send("Page.stopScreencast")
-        meta = {"t0": self.t0, "t_end": t_end, "length": t_end - self.t0, "marks": self.marks,
+        meta = {"t0": self.t0, "t_end": t_end, "length": t_end - self.t0, "marks": self.marks, "crop": self.crop, "scale": None,
                 "frames": [{"t": t - self.t0, "file": f} for t, f in self.frames]}
         (self.dir / "frames.json").write_text(json.dumps(meta))
         print(self.name, f"{meta['length']:.1f}s", len(self.frames), "frames")
@@ -164,10 +167,17 @@ def scene_failure(page, rec, need):
 def scene_trust(page, rec, need):
     # continues on the same report
     rec.start()
-    scroll_to(page, "h2", "How far can you trust this?", offset=30, ms=1600)
+    scroll_to(page, "h2", "How far can you trust this?", offset=24, ms=1600)
+    # Frame only the trust card (the editor crops to this 16:9 box and enlarges it).
+    box = page.evaluate("""() => { const r = document.querySelector('.trust-card').getBoundingClientRect();
+                                    return [r.left, r.width]; }""")
+    x, w = box[0] - 16, box[1] + 32
+    rec.crop = [x, 0, w, w * 9 / 16]
+    rec.hold(4.5)
+    # then the side-by-side table (v2, v1, trivial rule)
+    # bring the agreement (kappa) rows of the side-by-side table above the caption area
+    scroll_to(page, "#trust-compare td, #trust-compare th, #trust-compare div", "Epoch agreement", offset=195, ms=2400)
     rec.hold(4.0)
-    scroll_to(page, "p, div, strong", "Better with v2", offset=260, ms=2600)
-    rec.hold(3.5)
     rec.stop(need)
 
 
@@ -235,9 +245,9 @@ def scene_harm(page, rec, need):
 
 
 SCENES = {"start": ("N1", scene_start), "report": ("N2", scene_report), "compare": ("N3", scene_compare),
-          "failure": ("N4", scene_failure), "apnea": ("N5", scene_apnea), "noisy": ("N6", scene_noisy),
-          "trust": ("N7", scene_trust_on), "method": ("N8", scene_method), "harm": ("N9", scene_harm)}
-ORDER = ["start", "report", "compare", "failure", "apnea", "noisy", "trust", "method", "harm"]
+          "apnea": ("N4", scene_apnea), "noisy": ("N5", scene_noisy),
+          "trust": ("N6", scene_trust_on), "method": ("N7", scene_method)}
+ORDER = ["start", "report", "compare", "apnea", "noisy", "trust", "method"]
 
 
 def main(names: list[str]) -> None:
