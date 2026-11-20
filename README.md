@@ -226,6 +226,16 @@ Attribution 4.0 International license. Citations, sample attribution and
 library licenses are in [`SOURCES.md`](SOURCES.md). The code is released
 under the MIT License ([`LICENSE`](LICENSE)).
 
+## AI tools used
+
+This project was built with **Claude Code** (Anthropic's coding assistant, model Claude Opus 5.5). Under the
+author's direction it wrote most of the code (data checks, R-peak detection, features, training and evaluation,
+the browser port and its parity tests), the documentation and the demo-video tooling, and it ran the
+multi-agent reviews recorded in `docs/review_2026-11-19.md`. The author set the problem, datasets,
+evaluation protocol, design and decision gates, and reviewed the results. The demo video's narration uses
+Kokoro-82M text to speech and its music was generated algorithmically (details in [`SOURCES.md`](SOURCES.md)).
+No AI model is used at run time: the demo runs gradient boosting, logistic regression and an HMM in the browser.
+
 ## Not a medical device
 
 Somnibeat has not been validated on home wearables (chest straps, watches,
