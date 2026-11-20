@@ -1,0 +1,9 @@
+ucddb sleep_wake v2 kappa 0.411 v1 kappa 0.34
+ucddb wake_nrem_rem v2 kappa 0.4 v1 kappa 0.333
+ucddb four_class v2 kappa 0.379 v1 kappa 0.295
+hmc sleep_wake v2 kappa 0.426 v1 kappa 0.392
+hmc wake_nrem_rem v2 kappa 0.424 v1 kappa 0.36
+hmc four_class v2 kappa 0.382 v1 kappa 0.308
+apnea v2 kappa 0.293
+wrote /Users/anjung/coding/somnibeat/results/v2/test_results.json
+.venv/bin/python scripts/train_eval_v2.py --final  1779.38s user 590.83s system 160% cpu 24:35.36 total
