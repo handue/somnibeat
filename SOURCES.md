@@ -1,17 +1,20 @@
 # Sources and licenses
 
 All datasets are public on PhysioNet and need no account. License text was
-checked on each PhysioNet project page on 2026-11-18.
+checked on each PhysioNet project page on 2026-11-18 (HMC: 2026-11-19).
 
 | Dataset | Version / DOI | License (as stated on PhysioNet) | Used for |
 |---|---|---|---|
-| St. Vincent's University Hospital / University College Dublin Sleep Apnea Database (UCDDB) | 1.0.0, doi:10.13026/C26C7D | Open Data Commons Attribution License v1.0 | External validation (staging, apnea) |
-| CAP Sleep Database (capslpdb) | 1.0.0 | Open Data Commons Attribution License v1.0 | Staging training |
-| MIT-BIH Polysomnographic Database (slpdb) | 1.0.0, doi:10.13026/C23K5S | Open Data Commons Attribution License v1.0 | Staging training |
-| Apnea-ECG Database (apnea-ecg) | 1.0.0 | Open Data Commons Attribution License v1.0 | Apnea training |
+| St. Vincent's University Hospital / University College Dublin Sleep Apnea Database (UCDDB) | 1.0.0, doi:10.13026/C26C7D | Open Data Commons Attribution License v1.0 | v1 external test (staging, apnea); v2 second look |
+| CAP Sleep Database (capslpdb) | 1.0.0 | Open Data Commons Attribution License v1.0 | Staging training (v1 subset; v2 all usable records) |
+| MIT-BIH Polysomnographic Database (slpdb) | 1.0.0, doi:10.13026/C23K5S | Open Data Commons Attribution License v1.0 | Staging training; v2 apnea selection (event-derived minute labels) |
+| Apnea-ECG Database (apnea-ecg) | 1.0.0 | Open Data Commons Attribution License v1.0 | Apnea training (v1, v2); v2 apnea selection |
+| Haaglanden Medisch Centrum sleep staging database (hmc-sleep-staging) | 1.1, doi:10.13026/t79q-fr32 | Creative Commons Attribution 4.0 International Public License (CC BY 4.0) | v2 external test (staging) only |
 
 License: https://physionet.org/content/<project>/1.0.0/ links to
-https://opendatacommons.org/licenses/by/1-0/
+https://opendatacommons.org/licenses/by/1-0/ for the first four databases.
+HMC: https://physionet.org/content/hmc-sleep-staging/1.1/ links to
+https://creativecommons.org/licenses/by/4.0/
 
 ## Citations
 
@@ -20,21 +23,26 @@ https://opendatacommons.org/licenses/by/1-0/
 - Apnea-ECG Database: Penzel T, Moody GB, Mark RG, Goldberger AL, Peter JH. "The Apnea-ECG Database." *Computers in Cardiology* 27:255-258 (2000).
 - CAP Sleep Database: Terzano MG, et al. "Atlas, rules, and recording techniques for the scoring of cyclic alternating pattern (CAP) in human sleep." *Sleep Medicine* 2:537-553 (2001).
 - UCDDB: no original publication is listed on the PhysioNet page; cite the dataset DOI and the PhysioNet platform paper.
+- HMC dataset (citation as shown on the PhysioNet page): Alvarez-Estevez, D., & Rijsman, R. (2022). Haaglanden Medisch Centrum sleep staging database (version 1.1). PhysioNet. RRID:SCR_007345. https://doi.org/10.13026/t79q-fr32
+- HMC original publication (listed on the PhysioNet page): Alvarez-Estevez D, Rijsman RM (2021) Inter-database validation of a deep learning approach for automatic sleep scoring. *PLoS ONE* 16(8): e0256111. https://doi.org/10.1371/journal.pone.0256111
 
 ## Population notes (from the dataset pages)
 
 - UCDDB: 25 adults (21 male, 4 female), suspected sleep-disordered breathing, age 50 ± 10 (28–68), AHI 1.7–90.9.
 - slpdb: 18 records from 16 male subjects (slp01a/b and slp02a/b are the same two subjects), mean age 40 (32–56).
-- CAP: 49 records used: 15 healthy controls (n1–n15; n16 has no ECG channel) and 34 patients (SDB, insomnia, PLM, narcolepsy, RBD, bruxism). NFLE records are not used.
+- CAP: 49 records used: 15 healthy controls (n1–n15; n16 has no ECG channel) and 34 patients (SDB, insomnia, PLM, narcolepsy, RBD, bruxism). NFLE records are not used in v1. v2 uses every CAP record with an ECG channel, including NFLE, except nfle27 (hypnogram starts before the EDF, so the alignment cannot be verified): 106 records (`config/v2.toml`).
 - Apnea-ECG: 35 learning-set records (a01–a20, b01–b05, c01–c10).
+- HMC (version 1.1, published 2022-03-18): 151 whole-night PSG recordings (85 male, 66 female, mean age 53.9 ± 15.4) from a heterogeneous population referred for PSG for different sleep disorders; no age range or ethnicity is given. Version 1.1 removed SN014, SN064 and SN135 for erroneous signal data; the downloaded release contains 151 recordings.
 
 ## Code and models
 
 - All Somnibeat code (Python package, scripts, web demo, tests) was written for
   this project and is released under the MIT License (`LICENSE`).
 - No pretrained or third-party models are used. Every model in
-  `results/models/` and `web/data/models.json` is trained from the datasets
-  above by `scripts/train_eval.py`.
+  `results/models/` and `web/data/models.json` (v1) is trained from the datasets
+  above by `scripts/train_eval.py`; every model in `results/v2/models/` and
+  `web/data/models_v2.json` (v2) by `scripts/train_eval_v2.py`. No HMC or
+  UCDDB data is used for training.
 - The web demo has no third-party JavaScript, CSS or fonts and makes no
   network requests outside its own files.
 - The R-peak detector follows the general energy-envelope approach of
@@ -71,7 +79,7 @@ License strings are read from each installed package's metadata.
 
 ## Demo samples
 
-The web demo (`web/data/samples/`) ships three RR-interval files, copied
+The web demo (`web/data/samples/`) ships four RR-interval files, copied
 unmodified from `data/cache/rr/` by `scripts/export_web.py`. They are derived
 data (RR intervals from R-peaks detected by this project's detector) and are
 redistributed under the Open Data Commons Attribution License v1.0 of their
@@ -84,9 +92,11 @@ listed record.
 | `ordinary` | `ucddb018.csv` | UCDDB `ucddb018`, https://physionet.org/content/ucddb/1.0.0/ | UCDDB record with the fewest reference apnea minutes (`results/apnea.json`) |
 | `apnea` | `ucddb025.csv` | UCDDB `ucddb025`, https://physionet.org/content/ucddb/1.0.0/ | UCDDB record with the most reference apnea minutes (`results/apnea.json`) |
 | `noisy` | `apnea-ecg-c04.csv` | Apnea-ECG `c04`, https://physionet.org/content/apnea-ecg/1.0.0/ | Apnea-ECG record with the lowest fraction of valid RR intervals (`data/cache/record_summary.json`) |
+| `typical` | `ucddb015.csv` | UCDDB `ucddb015`, https://physionet.org/content/ucddb/1.0.0/ | UCDDB record (primary analysis) whose v2 absolute total sleep time error is the median among UCDDB records; with an even count, the lower record id of the two middle records (`results/v2/test_results.json`) |
 
-- Both UCDDB samples are part of the external test set, so the demo shows
-  nights the models never saw during training.
+- The three UCDDB samples are part of the v1 external test set (and the v2
+  second look), so the demo shows nights the models never saw during training
+  or model selection.
 - `c04` is an Apnea-ECG training record and has no sleep-stage reference.
 - License: Open Data Commons Attribution License v1.0,
   https://opendatacommons.org/licenses/by/1-0/

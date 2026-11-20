@@ -425,3 +425,30 @@ main { flex: 1; padding-top: 40px; padding-bottom: 56px; }
   .compare-value { font-size: 24px; }
   .series-title { font-size: 13px; }
 }
+
+/* Model line on the report (v2 / v1) ------------------------------------- */
+/* Text colors reuse --text (19.06:1 on #000000) and --muted (7.85:1 on #000000). */
+
+.model-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.model-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.segmented-model .seg { min-width: 56px; }
+.model-help { flex: 1 1 260px; }
+
+/* Honest summary and comparison columns ---------------------------------- */
+/* Text uses --text and --body-muted (7.86:1 on card); the border is decoration only. */
+
+.honest-box {
+  display: flex; flex-direction: column; gap: 8px;
+  border-left: 3px solid var(--muted); padding-left: 12px;
+  font-size: 14px; color: var(--body-muted); line-height: 1.6;
+}
+.honest-box strong { color: var(--text); font-weight: 600; }
+.data-table td.is-current .cell-value { color: var(--accent); }
+#method-v2-results { display: flex; flex-direction: column; gap: 12px; }
+
+@media (max-width: 480px) {
+  .segmented-model { width: auto; }
+  .segmented-model .seg { flex: 0 0 auto; padding: 10px 16px; }
+  .model-help { flex-basis: 100%; }
+}
+#method-v2-story code { overflow-wrap: anywhere; word-break: break-word; }

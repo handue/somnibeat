@@ -25,6 +25,7 @@ NODE = shutil.which("node")
 FOUR = {"wake", "rem", "light", "deep"}
 VOCAB = {"sleep_wake": {"wake", "sleep"}, "wake_nrem_rem": {"wake", "nrem", "rem"}, "four_class": FOUR}
 TOP_KEYS = {"schema", "record", "kind", "source", "grid", "stage_mapping", "apnea_rule", "stages", "apnea"}
+UCDDB_SAMPLES = ["ucddb018", "ucddb025", "ucddb015"]
 
 
 def load_export():
@@ -50,7 +51,7 @@ def test_export_is_deterministic_and_matches_committed(tmp_path):
         ex.export_samples(cfg(), web)
         outs.append(web)
     committed = WEB / "data"
-    names = ["samples.json", "samples/ucddb018_reference.json", "samples/ucddb025_reference.json"]
+    names = ["samples.json"] + [f"samples/{rid}_reference.json" for rid in UCDDB_SAMPLES]
     for name in names:
         a = (outs[0] / "data" / name).read_bytes()
         b = (outs[1] / "data" / name).read_bytes()
@@ -64,6 +65,7 @@ def test_samples_json_references():
     by_record = {s["source"]["record"]: s for s in samples}
     assert by_record["ucddb018"]["reference"] == "samples/ucddb018_reference.json"
     assert by_record["ucddb025"]["reference"] == "samples/ucddb025_reference.json"
+    assert by_record["ucddb015"]["reference"] == "samples/ucddb015_reference.json"
     assert "reference" not in by_record["c04"] and by_record["c04"]["has_stage_reference"] is False
     for s in samples:
         if "reference" in s:
@@ -71,7 +73,7 @@ def test_samples_json_references():
             assert Path(s["reference"]).stem == Path(s["file"]).stem + "_reference"
 
 
-@pytest.mark.parametrize("rid", ["ucddb018", "ucddb025"])
+@pytest.mark.parametrize("rid", UCDDB_SAMPLES)
 def test_reference_content(rid):
     ref = json.loads((WEB / "data" / "samples" / f"{rid}_reference.json").read_text())
     assert set(ref) == TOP_KEYS, "unexpected keys (the file must hold reference labels only)"
@@ -96,7 +98,7 @@ def test_reference_content(rid):
 
 
 @needs_raw
-@pytest.mark.parametrize("rid", ["ucddb018", "ucddb025"])
+@pytest.mark.parametrize("rid", UCDDB_SAMPLES)
 def test_reference_matches_raw_annotation(rid):
     """Stage codes come straight from <rid>_stage.txt with the config mapping (8 etc. -> gap)."""
     ref = json.loads((WEB / "data" / "samples" / f"{rid}_reference.json").read_text())

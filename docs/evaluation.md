@@ -53,5 +53,44 @@ Fixed before any model tuning. Numbers in the README and demo are read from
 ## Reproducibility
 
 `make reproduce` runs download -> data check -> features -> detector
-validation -> training and evaluation -> tests. Seed and all parameters live
-in `config/default.toml`; each results JSON stores the config SHA-256.
+validation -> training and evaluation -> tests for v1 (`make reproduce-v1`),
+then the v2 pipeline (`make v2`, see the README). Seed and all parameters
+live in `config/default.toml` (v1) and `config/v2.toml` (v2); each results
+JSON stores the hashes of its inputs.
+
+## v2 (second protocol)
+
+v1 above is the pre-registered first result and is not changed. v2 follows a
+separate protocol, [`docs/v2_protocol.md`](v2_protocol.md), written before
+any v2 experiment. In short:
+
+- **Test sets.** The HMC Sleep Staging Database (PhysioNet, CC BY 4.0) is the
+  primary v2 test set and was never used before the single v2 test run.
+  UCDDB, already used by v1, is reported only as a labeled "second look".
+  Apnea minutes are tested on UCDDB only.
+- **Selection on training data only.** Candidate changes (more CAP records,
+  longer-context features, HMM smoothing, ensembles, class weighting,
+  event-derived apnea labels from MIT-BIH) are compared by cross-dataset CV
+  between the training databases (train CAP -> evaluate slpdb, and the
+  reverse). Staging metric: mean cross-dataset sleep/wake kappa, with a
+  total-sleep-time MAE guard (not worse than v1 by more than 10 %) and ties
+  (< 0.01 kappa) going to the simpler candidate. Apnea: the same scheme with
+  minute kappa and an apnea-minute MAE guard. The chosen staging
+  specification is also used for 3 and 4 classes.
+- **Freezing.** The choice is recorded in `results/v2/v2_selection.json` and
+  `results/v2/v2_final_spec.json` (summaries: [`docs/v2_selection.md`](v2_selection.md),
+  [`docs/v2_final_spec.md`](v2_final_spec.md)) and tagged `v2-frozen`
+  before any test-set prediction.
+- **Single test run.** `scripts/train_eval_v2.py --final` predicts HMC and
+  UCDDB once and scores v1 on the same epochs at the same time
+  (`results/v2/test_results.json`). Statistics are as for v1.
+- **HMC data-quality rule (fixed before any HMC prediction).** The primary
+  analysis excludes records in which fewer than 50 % of epochs have adequate
+  RR coverage; the excluded IDs are listed in the results, and an
+  all-records analysis is reported alongside. The rule uses only the RR
+  series, never labels or predictions, and applies to UCDDB as well.
+- **Reference labels.** AASM stages map as Wake; REM; light = N1 + N2;
+  deep = N3.
+
+Results and their discussion are in the README and in
+[`docs/WRITEUP.md`](WRITEUP.md), rendered from the results JSON.

@@ -51,5 +51,23 @@
    "note": "Part of the apnea training set. It has no sleep-stage reference, so the hypnogram cannot be compared with a reference for this night.",
    "record": "c04"
   }
+ },
+ {
+  "id": "typical",
+  "title": "A typical night",
+  "summary": "The UCDDB night where the v2 total sleep time error is the median of the 25 UCDDB test nights: v2 estimates 5 h 9 min of sleep, the sleep lab scored 5 h 54 min.",
+  "file": "samples/ucddb015.csv",
+  "selection": "UCDDB record (primary analysis) whose v2 absolute total sleep time error is the median among UCDDB records (results/v2/test_results.json, per_record of sleep_wake v2); with an even count, the lower record id of the two middle records.",
+  "has_stage_reference": true,
+  "source": {
+   "dataset": "St. Vincent's University Hospital / University College Dublin Sleep Apnea Database (UCDDB)",
+   "license": "ODC-By 1.0",
+   "license_url": "https://opendatacommons.org/licenses/by/1-0/",
+   "url": "https://physionet.org/content/ucddb/1.0.0/",
+   "doi": "10.13026/C26C7D",
+   "note": "Part of the v1 external test set and the v2 second look: neither model was trained or selected on this night. Reference sleep stages and apnea events exist for it.",
+   "record": "ucddb015"
+  },
+  "reference": "samples/ucddb015_reference.json"
  }
 ]

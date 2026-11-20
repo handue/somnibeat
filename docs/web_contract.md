@@ -14,15 +14,21 @@ web/
   css/app.css
   js/rr.js              CSV parsing + RR cleaning           (mirror of somnibeat/rr.py)
   js/features.js        epoch features                       (mirror of somnibeat/features.py)
-  js/model.js           HistGradientBoosting inference from JSON
-  js/report.js          grid, predictions, night metrics     (mirror of somnibeat/report.py)
-  js/worker.js          module Web Worker: runs report.js off the main thread, posts progress
+  js/features_v2.js     v2 long-context features (600 s windows around each epoch; mirror of somnibeat/features_v2.py)
+  js/model.js           HistGradientBoosting inference from JSON (v1)
+  js/model_v2.js        v2 inference: staging trees + whole-night HMM Viterbi; apnea mean of trees and logistic regression
+  js/smoothing.js       HMM smoothing                        (mirror of somnibeat/smoothing.py)
+  js/report.js          v1 grid, predictions, night metrics  (mirror of somnibeat/report.py)
+  js/report_v2.js       v2 report, same grid, metrics and shape (mirror of somnibeat/report_v2.py)
+  js/worker.js          module Web Worker: runs report_v2.js (default) or report.js off the main thread
   js/app.js             UI, routing, rendering
   js/charts.js          SVG hypnogram, apnea strip, Bland-Altman, comparison bars
-  data/models.json      exported by scripts/export_web.py
-  data/results.json     exported by scripts/export_web.py (subset of results/*.json)
+  data/models.json      v1 models, exported by scripts/export_web.py
+  data/models_v2.json   frozen v2 models, exported by scripts/export_web_v2.py
+  data/results.json     exported by scripts/export_web.py (subset of results/*.json + "v2" block)
   data/samples.json     sample metadata + attribution
-  data/samples/*.csv    three sample RR files
+  data/samples/*.csv    four sample RR files
+  data/samples/*_reference.json  expert reference labels of the UCDDB samples (never a model output)
   assets/somnibeat-mark.svg, assets/somnibeat-lockup.svg, assets/favicon.svg (copies, unmodified)
 ```
 
@@ -53,12 +59,34 @@ web/
   for staging and the same call with a 60 s grid for apnea, on the full RR
   series (beats outside the grid still feed the windows near its edges).
 
+## Worker protocol (`js/worker.js`)
+
+- In: `{type: "run", csvText, fileName, lightsOffS, lightsOnS, model}`. `model` is
+  `"v2"` (default when omitted) or `"v1"`; any other value is an `INTERNAL` error.
+- Out: `{type: "progress", step, status}` for steps `read`, `beats`, `features`,
+  `report` (status `running` | `done`); `{type: "result", report}`;
+  `{type: "error", code, message, details}`.
+- `report.model` is the model actually used (`"v2"` or `"v1"`). If
+  `data/models_v2.json` cannot be loaded, a v2 request falls back to v1 and
+  the reason is the first entry of `report.quality.warnings`. A dry-run v2
+  export (`source.dry_run == true`) also adds a warning.
+- The UI shows `Model: v2 (frozen <date>)` with the date from
+  `results.json` `v2.frozen.date`, and a v1 / v2 switch that reruns the same
+  file, clock times and sample with the other model. The `features` step
+  reads "Computing 30-second and 10-minute features" for v2 and
+  "Computing 30-second features" for v1.
+
 ## Predictions
 
 - Task models: `sleep_wake` (labels `["sleep", "wake"]`, binary threshold on
   p(wake)), `wake_nrem_rem`, `four_class` (argmax), `apnea` (labels
   `["normal", "apnea"]`, threshold on p(apnea)).
-- Primary model: gradient boosting (fixed in `config/default.toml`).
+- v1 primary model: gradient boosting (fixed in `config/default.toml`).
+- v2 (default in the browser): the frozen spec of `results/v2/v2_final_spec.json`;
+  staging adds the long-context features and smooths each task with an HMM
+  (Viterbi) over the whole night; apnea averages gradient boosting and
+  logistic regression. The format of `data/models_v2.json` is documented in
+  `scripts/export_web_v2.py`.
 - Low-quality epochs (`low_quality == 1`) are still predicted, exactly as in
   evaluation, and drawn hatched on the chart with the label
   "not enough usable data".
@@ -98,29 +126,92 @@ Binary: p(positive) = 1 / (1 + exp(-raw_0)). Multiclass: softmax(raw).
 
 ## `data/results.json`
 
-Exported subset of `results/*.json` (no per-epoch data). Every number shown on
-the page comes from this file or from the computation on the loaded RR file.
-Nothing is hard-coded in HTML/JS. Keys:
+Exported subset of `results/*.json` and `results/v2/*.json` (no per-epoch
+data). Every number shown on the page comes from this file, `samples.json`
+or from the computation on the loaded RR file. Nothing is hard-coded in
+HTML/JS. Write it with `python scripts/export_web.py --skip-models` to leave
+`models.json` untouched. Keys (v1 keys unchanged; `datasets` gains `roles`
+and an HMC row; `v2` is new):
 
 ```
 {
-  "generated_from": {"<task>.json": "<sha256>", ...},
+  "generated_from": {"<task>.json": "<sha256>", ..., "v2/test_results.json": "<sha256>", "v2/v2_final_spec.json": ...,
+                     "v2/v2_selection.json": ..., "v2/hmc_check.json": ..., "v2/selection_cap106.json": ...},
   "primary_model": "gradient_boosting",
   "tasks": {"<task>": {"models": {"<model>": {"external_ucddb": {"metrics": {...}, "bland_altman": {...}}, "internal_cv": {"metrics": {...}}, "threshold": ...}},
-                       "baselines": {...metrics...}, "data": {...}}},
-  "per_record": {"sleep_wake": [{record, ref_tst_min, pred_tst_min, ref_se_pct, pred_se_pct}], "apnea": [{record, ref_apnea_min, pred_apnea_min}]},
+                       "baselines": {...metrics...}, "data": {...}}},                      // v1, UCDDB first look
+  "per_record": {"sleep_wake": [{record, ref_tst_min, pred_tst_min, ref_se_pct, pred_se_pct, ...}], "apnea": [{record, ref_apnea_min, pred_apnea_min, ...}]},
   "rpeak_validation": {...pooled numbers...},
-  "datasets": [{"name", "role", "records", "subjects", "population", "license", "citation", "url"}],
-  "limitations": [...strings...]
+  "datasets": [{"id", "name", "short", "role" (v1 role), "roles": {"v1", "v2"}, "records", "subjects", "population",
+                "license", "license_url", "citation", "doi", "url",
+                // HMC row only: "records_primary", "male", "female", "scoring", "version", "license_short"
+                // CAP row only: "records_v2"
+               }],
+  "limitations": [...v1 strings...],
+  "v2": {
+    "version": "v2",
+    "frozen": {"tag": "v2-frozen", "date": "YYYY-MM-DD", "commit": "<sha>"},   // tag date in the tagger's time zone
+    "note": "...", "primary_test_set": "hmc",
+    "exclusion_rule": {"min_adequate_fraction": <from scripts/train_eval_v2.py>, "text": "..."},
+    "spec": {"protocol", "staging", "apnea", "hyperparameters"},              // from v2_final_spec.json
+    "selection": {"protocol", "training_datasets_only", "folds",
+                  "staging": {"rule", "n_candidates", "chosen": {name, xds_sw_kappa, fold_a_sw_kappa, ...},
+                              "v1_reference": {...same keys...}},
+                  "apnea": {"rule", "n_candidates", "chosen": {name, xds_kappa, ...}, "v1_reference": {...}}},
+    "test_sets": {"hmc" | "ucddb": {"records_all", "records_primary",
+                  "excluded_low_coverage": [{"record", "adequate_fraction"}],
+                  "tasks": {"sleep_wake" | "wake_nrem_rem" | "four_class": {"primary" | "all_records": {
+                      "v2" | "v1" | "asleep_from_lights_off": {"n_records", "n_epochs", "metrics": {"<metric>": {point, ci_low, ci_high}},
+                                                               "bland_altman" (sleep_wake), "labels", "confusion_matrix_rows_ref_cols_pred", "as_sleep_wake" (multiclass)}}}}}},
+    "apnea_ucddb": {"threshold_p_apnea", "primary" | "all_records": {"v2" | "v1" | "no_apnea": {"n_records", "n_minutes", "metrics", "bland_altman"}}},
+    "per_record": {"hmc_primary_sleep_wake": [{record, ref_tib_min, ref_tst_min, pred_tst_min, ref_se_pct, pred_se_pct, ref_awakenings, pred_awakenings, kappa}],
+                   "ucddb_primary_sleep_wake": [...same...], "ucddb_primary_apnea": [{record, ref_apnea_min, pred_apnea_min, total_min, kappa}]},
+    "baselines": {"stages": "asleep_from_lights_off", "apnea": "no_apnea"},
+    "limitations": [...strings shown on the page...]
+  }
 }
 ```
+
+Metrics are copied unchanged from `results/v2/test_results.json`; per-record
+rows are v2 only and carry night totals, never epochs. `bland_altman` keeps
+bias, MAE, SD and limits of agreement, without `per_record_error`. The frozen
+date is read from the `v2-frozen` tag object in `.git` (no git command; only
+the date and commit are kept), or from `--v2-frozen-date`; the export stops if
+the tag does not point to the commit recorded in `test_results.json`. The
+export also stops if a qualitative statement in `v2.limitations` (for example
+"total sleep time error not smaller than v1's") no longer follows from the
+numbers.
+
+The page uses `v2` as follows: "How far can you trust this?" leads with the
+report's model on HMC primary, a side-by-side row for v2, v1 and the trivial
+rule on the same HMC nights, a plain list of what v2 improved, did not
+improve and made worse, including the 3-stage REM-minute error (based on
+whether the 95 % intervals overlap), one line for UCDDB (second
+look) and one for apnea (UCDDB only), and the Bland-Altman plot of v2 HMC
+primary per-record total sleep time. Method & evaluation shows the selection
+story, v1-vs-v2 tables for HMC primary, HMC all records and UCDDB with
+intervals, the apnea table, the excluded HMC records, and keeps the v1
+tables labeled "v1, first look".
 
 ## `data/samples.json`
 
 ```
 [{"id": "ordinary", "title": "An ordinary night", "summary": "...", "file": "samples/ucddb018.csv",
-  "source": {"dataset": "...", "record": "...", "license": "ODC-By 1.0", "url": "...", "note": "Part of the external test set"}}]
+  "selection": "...rule...", "has_stage_reference": true, "reference": "samples/ucddb018_reference.json",
+  "source": {"dataset": "...", "record": "...", "license": "ODC-By 1.0", "license_url": "...", "url": "...", "doi": "...",
+             "note": "Part of the external test set..."}}]
 ```
+
+Samples, in this order (the export stops if a rule picks another record):
+
+| id | record | rule |
+|---|---|---|
+| `ordinary` | `ucddb018` | UCDDB record with the fewest reference apnea minutes (`results/apnea.json`) |
+| `apnea` | `ucddb025` | UCDDB record with the most reference apnea minutes |
+| `noisy` | Apnea-ECG `c04` | lowest fraction of valid RR intervals; no stage reference |
+| `typical` | `ucddb015` | UCDDB primary record whose v2 absolute total sleep time error is the median (`results/v2/test_results.json`); with an even count, the lower record id of the two middle records |
+
+Numbers in `summary` are formatted at export time from the JSON results.
 
 ## Parity
 
@@ -132,6 +223,14 @@ same ES modules the browser uses.
 | `tests/test_parity_features.py` | `tests/parity/features_cli.mjs` | CSV parsing rules, RR cleaning, every feature on 30 s and 60 s grids, edge cases |
 | `tests/test_parity_model.py` | `tests/parity/model_cli.mjs` | tree inference vs sklearn `predict_proba`, decisions, all four tasks |
 | `tests/test_parity_report.py` | `tests/parity/report_cli.mjs` | grid, per-epoch labels, low-quality flags, apnea labels, night metrics, worker protocol, timing |
+| `tests/test_parity_features_v2.py` | `tests/parity/features_v2_cli.mjs` | v2 long-context features |
+| `tests/test_parity_model_v2.py` | `tests/parity/model_v2_cli.mjs` | v2 staging (trees + HMM) and apnea (trees + logistic) inference |
+| `tests/test_parity_report_v2.py` | `tests/parity/report_v2_cli.mjs` | v2 report end to end, worker `model` field |
+
+Export checks (no Node needed for most): `tests/test_reference_export.py`
+(sample reference files) and `tests/test_web_results_v2.py` (results.json is a
+fresh export, v2 numbers copied unchanged, no per-epoch arrays, HMC row, typical
+sample rule).
 
 Tolerance: features and probabilities within 1e-9 relative, except where
 V8 and the platform libm differ in the last bit of sin/cos/log/atan2. Those

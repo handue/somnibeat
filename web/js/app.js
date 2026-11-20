@@ -43,6 +43,10 @@ const state = {
   reportReferenceError: null,
   mode: 'sleep_wake',
   animateNext: false,
+  // Inputs of the last run, kept so the report can be recomputed with the other model.
+  lastRun: null,
+  // Method page: which v2 test analysis the results table shows.
+  v2View: 'hmc:primary',
   job: null,
   error: null,
   minHours: null,
@@ -131,8 +135,88 @@ function prettyName(key) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+// ---------------------------------------------------------------------------
+// results.json "v2" block accessors (v2 and v1 on HMC / UCDDB, docs/web_contract.md)
+
+const MODEL_IDS = ['v2', 'v1'];
+
+function v2Block() {
+  return (state.results && state.results.v2) || null;
+}
+
+function v2Set(ds) {
+  const v = v2Block();
+  return (v && v.test_sets && v.test_sets[ds]) || null;
+}
+
+/** Entry of a v2 test analysis: ds 'hmc' | 'ucddb', analysis 'primary' | 'all_records', model 'v2' | 'v1' | baseline. */
+function v2Entry(ds, task, analysis, model) {
+  const set = v2Set(ds);
+  const t = set && set.tasks && set.tasks[task];
+  return (t && t[analysis] && t[analysis][model]) || null;
+}
+
+function v2Metric(ds, task, analysis, model, key) {
+  const e = v2Entry(ds, task, analysis, model);
+  return e && e.metrics ? stat(e.metrics[key]) : null;
+}
+
+function v2Apnea(model, analysis = 'primary') {
+  const v = v2Block();
+  const a = v && v.apnea_ucddb && v.apnea_ucddb[analysis];
+  return (a && a[model]) || null;
+}
+
+function v2ApneaMetric(model, key) {
+  const e = v2Apnea(model);
+  return e && e.metrics ? stat(e.metrics[key]) : null;
+}
+
+function v2StageBaseline() {
+  const v = v2Block();
+  return (v && v.baselines && v.baselines.stages) || 'asleep_from_lights_off';
+}
+
+function v2ApneaBaseline() {
+  const v = v2Block();
+  return (v && v.baselines && v.baselines.apnea) || 'no_apnea';
+}
+
+function frozenDate() {
+  const v = v2Block();
+  return (v && v.frozen && v.frozen.date) || null;
+}
+
+function modelLabel(model) {
+  if (model === 'v2') {
+    const d = frozenDate();
+    return d ? `v2 (frozen ${d})` : 'v2';
+  }
+  if (model === 'v1') return 'v1 (first version)';
+  return String(model || 'unknown');
+}
+
+function datasetShort(id) {
+  const ds = (state.results && state.results.datasets) || [];
+  const hit = ds.find((d) => d.id === id);
+  return hit ? (hit.short || hit.name) : String(id).toUpperCase();
+}
+
+/**
+ * Compare model a with model b on one metric using the 95% intervals.
+ * Returns 'better' | 'worse' (intervals do not overlap) or 'overlap'; null without data.
+ */
+function compareStats(a, b, higherIsBetter) {
+  if (!a || !b) return null;
+  if (![a.ci_low, a.ci_high, b.ci_low, b.ci_high].every(Number.isFinite)) return null;
+  if (a.ci_low > b.ci_high) return higherIsBetter ? 'better' : 'worse';
+  if (a.ci_high < b.ci_low) return higherIsBetter ? 'worse' : 'better';
+  return 'overlap';
+}
+
 function ciText(s, digits, opts = {}) {
   if (!s || !Number.isFinite(s.ci_low) || !Number.isFinite(s.ci_high)) return '';
+  if (s.ci_low === s.ci_high) return ''; // a fixed rule (for example kappa 0 of the trivial rule) has no interval
   return `${fmtNum(s.ci_low, digits, opts)} to ${fmtNum(s.ci_high, digits, opts)}`;
 }
 
@@ -373,12 +457,21 @@ function createWorker() {
   return new Worker('js/worker.js', { type: 'module' });
 }
 
-function runAnalysis(csvText, fileName, clocks, origin = null) {
+// Text of the "features" progress step: v2 also computes 10-minute context windows.
+const FEATURE_STEP_TEXT = {
+  v2: 'Computing 30-second and 10-minute features',
+  v1: 'Computing 30-second features',
+};
+
+function runAnalysis(csvText, fileName, clocks, origin = null, model = 'v2') {
   cancelJob();
   state.error = null;
-  const job = { fileName, clocks, origin, steps: {}, worker: null };
+  state.lastRun = { csvText, fileName, clocks, origin };
+  const job = { fileName, clocks, origin, model, steps: {}, worker: null };
   state.job = job;
   for (const el of $$('[data-bind="job-file"]')) el.textContent = fileName;
+  const featureStep = $('#steps li[data-step="features"] > span:first-child');
+  if (featureStep) featureStep.textContent = FEATURE_STEP_TEXT[model] || FEATURE_STEP_TEXT.v2;
   resetSteps();
   go('processing');
 
@@ -402,7 +495,17 @@ function runAnalysis(csvText, fileName, clocks, origin = null) {
     fileName,
     lightsOffS: clocks.lightsOffS,
     lightsOnS: clocks.lightsOnS,
+    model,
   });
+}
+
+/** Recompute the current report with the other model (same file, clock times and sample). */
+function rerunWithModel(model) {
+  const run = state.lastRun;
+  if (!run || !state.report || state.report.model === model) return;
+  const mode = state.mode;
+  runAnalysis(run.csvText, run.fileName, run.clocks, run.origin, model);
+  if (state.job) state.job.keepMode = mode;
 }
 
 function onWorkerMessage(job, msg) {
@@ -421,7 +524,7 @@ function onWorkerMessage(job, msg) {
     state.reportSample = (job.origin && job.origin.sample) || null;
     state.reportReference = (job.origin && job.origin.reference) || null;
     state.reportReferenceError = (job.origin && job.origin.referenceError) || null;
-    state.mode = 'sleep_wake';
+    state.mode = job.keepMode || 'sleep_wake';
     state.animateNext = true;
     go('report');
   }
@@ -547,13 +650,14 @@ function renderReport() {
   $('#quality-line').textContent = (parts.length ? `Data quality: ${parts.join(' · ')}.` : '') +
     (state.reportClockNote ? ` ${state.reportClockNote}` : '');
 
+  renderModelLine();
   syncModeButtons();
   renderChart();
   renderTrust();
 }
 
 function syncModeButtons() {
-  for (const btn of $$('.seg')) btn.setAttribute('aria-pressed', String(btn.dataset.mode === state.mode));
+  for (const btn of $$('.seg[data-mode]')) btn.setAttribute('aria-pressed', String(btn.dataset.mode === state.mode));
 }
 
 function renderChart() {
@@ -586,9 +690,10 @@ function renderChart() {
   const note = $('#chart-note');
   let text = 'Stages are shown by row position and text labels as well as color.';
   if (state.mode !== 'sleep_wake') {
-    const k = metricOf(state.mode, primaryModel(), 'kappa_pooled');
+    const model = reportModel();
+    const k = v2Metric('hmc', state.mode, 'primary', model, 'kappa_pooled');
     text += ' Experimental: separating sleep stages from heartbeats alone is much less accurate than wake versus sleep';
-    text += k ? ` (agreement on the test set: kappa ${fmtNum(k.point, 2)}).` : '.';
+    text += k ? ` (${model} agreement on the ${datasetShort('hmc')} test set: kappa ${fmtNum(k.point, 2)}).` : '.';
   }
   if (clockStartIsKnown()) text += ' Times are clock times.';
   else text += ' Times are hours from the start of the analysed window.';
@@ -691,11 +796,25 @@ function noResults(el) {
   el.innerHTML = `<p class="body-muted small">Evaluation results could not be loaded${state.resultsError ? ` (${esc(state.resultsError.message)})` : ''}.</p>`;
 }
 
-// Rows of the "How far can you trust this?" table.
+// Rows of the v1 results table (UCDDB, first look).
 const ERROR_ROWS = [
   { task: 'sleep_wake', label: 'Total sleep time error', unit: 'min', bias: 'tst_bias_min', mae: 'tst_mae_min', digits: 0 },
   { task: 'sleep_wake', label: 'Sleep efficiency error', unit: 'pct. points', bias: 'se_bias_pctpt', mae: 'se_mae_pctpt', digits: 1 },
   { task: 'apnea', label: 'Suspected apnea minutes error', unit: 'min', bias: 'apnea_min_bias', mae: 'apnea_min_mae', digits: 0 },
+];
+
+// Night-level error rows of the v2 test results (task sleep_wake).
+const NIGHT_ROWS = [
+  { label: 'Total sleep time error', short: 'total sleep time error', unit: 'min', bias: 'tst_bias_min', mae: 'tst_mae_min', digits: 0 },
+  { label: 'Sleep efficiency error', short: 'sleep efficiency error', unit: 'pct. points', bias: 'se_bias_pctpt', mae: 'se_mae_pctpt', digits: 1 },
+  { label: 'Wake bouts error', short: 'wake-bout error', unit: 'bouts', bias: 'awakenings_bias', mae: 'awakenings_mae', digits: 1 },
+];
+
+// Epoch agreement rows (kappa) of the v2 test results.
+const KAPPA_TASK_ROWS = [
+  { task: 'sleep_wake', label: 'Epoch agreement, wake/sleep', short: 'wake/sleep kappa' },
+  { task: 'wake_nrem_rem', label: '3-stage agreement (experimental)', short: '3-stage kappa' },
+  { task: 'four_class', label: '4-stage agreement (experimental)', short: '4-stage kappa' },
 ];
 
 function valueInner(s, digits, opts = {}) {
@@ -704,48 +823,187 @@ function valueInner(s, digits, opts = {}) {
   return `<span class="cell-stack"><span class="cell-value">${fmtNum(s.point, digits, opts)}</span>${ci ? `<span class="cell-ci">95% CI ${ci}</span>` : ''}</span>`;
 }
 
+function reportModel() {
+  const m = state.report && state.report.model;
+  return MODEL_IDS.includes(m) ? m : 'v2';
+}
+
+function renderModelLine() {
+  const r = state.report;
+  const model = r && MODEL_IDS.includes(r.model) ? r.model : null;
+  $('#model-label').textContent = model ? `Model: ${modelLabel(model)}` : 'Model: unknown';
+  for (const btn of $$('.seg-model')) {
+    btn.setAttribute('aria-pressed', String(btn.dataset.model === model));
+    btn.disabled = !state.lastRun;
+  }
+}
+
 function renderTrust() {
   const tableBox = $('#trust-table');
+  const cmpBox = $('#trust-compare');
+  const honestBox = $('#trust-honest');
+  const otherBox = $('#trust-other');
   const baBox = $('#trust-ba');
   const barsBox = $('#trust-bars');
   renderLimitations($('#report-limitations'));
-  if (!state.results) {
+  if (!state.results || !v2Block()) {
     noResults(tableBox);
-    baBox.innerHTML = '';
-    barsBox.innerHTML = '';
+    for (const el of [cmpBox, honestBox, otherBox, baBox, barsBox]) el.innerHTML = '';
+    $('#trust-bars-note').textContent = '';
     return;
   }
-  const model = primaryModel();
-  const n = nTestRecords('sleep_wake');
-  $('#trust-intro').textContent = `Errors against hospital sleep studies (estimate minus reference), measured on ${n !== null ? `${n} UCDDB recordings` : 'UCDDB recordings'} the model never saw during training. Model: ${prettyName(model)}.`;
+  const model = reportModel();
+  const other = model === 'v2' ? 'v1' : 'v2';
+  const base = v2StageBaseline();
+  const hmc = v2Set('hmc') || {};
+  const hmcName = datasetShort('hmc');
+  const nP = hmc.records_primary;
+  const nAll = hmc.records_all;
+  $('#trust-intro').textContent = `Errors against hospital sleep studies (estimate minus reference) on ${nP ?? '—'} ${hmcName} recordings ` +
+    `(primary analysis${Number.isFinite(nAll) && Number.isFinite(nP) && nAll !== nP ? `; ${nAll - nP} of ${nAll} left out for too little usable heartbeat data` : ''}). ` +
+    `${hmcName} was never used before v2 was frozen, so it is a fresh test. Model behind this report: ${modelLabel(model)}.`;
 
-  const rows = ERROR_ROWS.map((row) => {
-    const bias = metricOf(row.task, model, row.bias);
-    const mae = metricOf(row.task, model, row.mae);
+  // Headline: the report's model on HMC primary.
+  const rows = NIGHT_ROWS.map((row) => {
+    const bias = v2Metric('hmc', 'sleep_wake', 'primary', model, row.bias);
+    const mae = v2Metric('hmc', 'sleep_wake', 'primary', model, row.mae);
     return `<tr><th scope="row">${esc(row.label)} <span class="unit-note">(${esc(row.unit)})</span></th>` +
       `<td data-label="Bias" class="num">${valueInner(bias, row.digits, { sign: true })}</td>` +
       `<td data-label="Mean absolute error" class="num">${valueInner(mae, row.digits)}</td></tr>`;
   });
-  const kappa = metricOf('sleep_wake', model, 'kappa_pooled');
+  const kappa = v2Metric('hmc', 'sleep_wake', 'primary', model, 'kappa_pooled');
   rows.push(`<tr><th scope="row">Epoch agreement, wake/sleep <span class="unit-note">(kappa)</span></th>` +
     `<td data-label="Kappa" class="num" colspan="2">${valueInner(kappa, 2)}</td></tr>`);
   tableBox.innerHTML = `<div class="table-wrap"><table class="data-table stack-on-mobile">
+    <caption class="visually-hidden">${esc(modelLabel(model))} on ${esc(hmcName)}, primary analysis</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Bias (mean error)</th><th scope="col">Mean absolute error</th></tr></thead>
     <tbody>${rows.join('')}</tbody></table></div>`;
 
-  baBox.innerHTML = tstBlandAltman(chartWidth(baBox), model);
+  // Compact comparison on the same nights: v2, v1, trivial rule.
+  const cols = [...MODEL_IDS, base];
+  const colName = (c) => (c === base ? 'Trivial rule' : c);
+  const cmpRow = (label, get, digits) => `<tr><th scope="row">${esc(label)}</th>${cols.map((c) => {
+    const s = get(c);
+    return `<td data-label="${esc(colName(c))}" class="num${c === model ? ' is-current' : ''}">${valueInner(s, digits)}</td>`;
+  }).join('')}</tr>`;
+  const cmpRows = NIGHT_ROWS.map((row) => cmpRow(`${row.label}, mean absolute (${row.unit})`, (c) => v2Metric('hmc', 'sleep_wake', 'primary', c, row.mae), row.digits))
+    .concat(KAPPA_TASK_ROWS.map((row) => cmpRow(`${row.label} (kappa)`, (c) => v2Metric('hmc', row.task, 'primary', c, 'kappa_pooled'), 2)));
+  cmpBox.innerHTML = `<div class="table-wrap"><table class="data-table compare-table stack-on-mobile">
+    <caption class="visually-hidden">v2, v1 and the trivial rule on the same ${esc(hmcName)} nights</caption>
+    <thead><tr><th scope="col">Metric</th>${cols.map((c) => `<th scope="col">${esc(colName(c))}</th>`).join('')}</tr></thead>
+    <tbody>${cmpRows.join('')}</tbody></table></div>`;
 
-  const modelMae = metricOf('sleep_wake', model, 'tst_mae_min');
-  const baseMae = baselineMetric('sleep_wake', 'tst_mae_min');
+  honestBox.innerHTML = honestySummary();
+  otherBox.innerHTML = otherEvidence();
+
+  baBox.innerHTML = v2TstBlandAltman(chartWidth(baBox), 'hmc');
+  $('#trust-ba-title').textContent = `Total sleep time: v2 estimate vs. sleep study (${hmcName}, primary analysis)`;
+
   const items = [];
-  if (modelMae) items.push({ label: 'Our model', value: modelMae.point, ciLow: modelMae.ci_low, ciHigh: modelMae.ci_high, color: COLORS.accent });
-  if (baseMae) items.push({ label: 'Trivial rule', value: baseMae.point, ciLow: baseMae.ci_low, ciHigh: baseMae.ci_high, color: COLORS.muted });
+  const barColors = { v2: COLORS.accent, v1: COLORS.muted };
+  for (const c of cols) {
+    const s = v2Metric('hmc', 'sleep_wake', 'primary', c, 'tst_mae_min');
+    if (s) items.push({ label: c === base ? 'Trivial rule' : c, value: s.point, ciLow: s.ci_low, ciHigh: s.ci_high, color: barColors[c] || COLORS.hatch });
+  }
   barsBox.innerHTML = items.length
-    ? comparisonBarsSvg({ items, width: chartWidth(barsBox), unit: 'min', digits: 0, title: 'Mean absolute error of total sleep time' })
+    ? comparisonBarsSvg({ items, width: chartWidth(barsBox), unit: 'min', digits: 0, title: `Mean absolute error of total sleep time on ${hmcName}` })
     : '<p class="body-muted small">No comparison available.</p>';
   $('#trust-bars-note').textContent = items.length
-    ? 'Mean absolute error of total sleep time; whiskers show the 95% interval. The trivial rule counts every epoch from lights off to lights on as sleep.'
+    ? `Mean absolute error of total sleep time on the same ${hmcName} nights; whiskers show the 95% interval. The trivial rule counts every epoch from lights off to lights on as sleep.`
     : '';
+}
+
+/** Plain statement of where v2 improved on HMC, where it did not, and where it got worse (from the 95% intervals). */
+function honestySummary() {
+  const hmcName = datasetShort('hmc');
+  const better = [];
+  const notBetter = [];
+  const worse = [];
+  for (const row of KAPPA_TASK_ROWS) {
+    const a = v2Metric('hmc', row.task, 'primary', 'v2', 'kappa_pooled');
+    const b = v2Metric('hmc', row.task, 'primary', 'v1', 'kappa_pooled');
+    const cmp = compareStats(a, b, true);
+    if (!cmp) continue;
+    const text = `${row.short} ${fmtNum(b.point, 2)} → ${fmtNum(a.point, 2)}`;
+    if (cmp === 'better') better.push(text);
+    else if (cmp === 'worse') worse.push(text);
+    else notBetter.push(`${text} (${a.point > b.point ? 'higher, but the 95% intervals overlap' : 'the 95% intervals overlap'})`);
+  }
+  // Night-level errors, plus the 3-stage REM-minute error (where v2 overestimates REM).
+  const errorRows = NIGHT_ROWS.map((row) => ({ task: 'sleep_wake', key: row.mae, short: row.short, unit: row.unit, digits: row.digits }))
+    .concat([{ task: 'wake_nrem_rem', key: 'minutes_mae_rem', short: 'REM minutes error (3-stage)', unit: 'min', digits: 0 }]);
+  for (const row of errorRows) {
+    const a = v2Metric('hmc', row.task, 'primary', 'v2', row.key);
+    const b = v2Metric('hmc', row.task, 'primary', 'v1', row.key);
+    const cmp = compareStats(a, b, false);
+    if (!cmp) continue;
+    const text = `${row.short} ${fmtNum(b.point, row.digits)} → ${fmtNum(a.point, row.digits)} ${row.unit}`;
+    if (cmp === 'better') better.push(text);
+    else if (cmp === 'worse') worse.push(text);
+    else notBetter.push(`${text} (not clearly different: the 95% intervals overlap)`);
+  }
+  const parts = [];
+  if (better.length) parts.push(`<p><strong>Better with v2</strong> on ${esc(hmcName)} (v1 → v2, 95% intervals do not overlap): ${esc(better.join('; '))}.</p>`);
+  if (notBetter.length) parts.push(`<p><strong>Not improved by v2</strong> on ${esc(hmcName)} (v1 → v2): ${esc(notBetter.join('; '))}.</p>`);
+  if (worse.length) parts.push(`<p><strong>Worse with v2</strong> on ${esc(hmcName)} (v1 → v2, 95% intervals do not overlap): ${esc(worse.join('; '))}.</p>`);
+  return parts.length ? `<div class="honest-box">${parts.join('')}</div>` : '';
+}
+
+/** One line for UCDDB (second look) and one for apnea (UCDDB only). */
+function otherEvidence() {
+  const v = v2Block();
+  const ucd = v2Set('ucddb') || {};
+  const name = datasetShort('ucddb');
+  const lines = [];
+  const pair = (task, key, digits, higherIsBetter) => {
+    const a = v2Metric('ucddb', task, 'primary', 'v2', key);
+    const b = v2Metric('ucddb', task, 'primary', 'v1', key);
+    if (!a || !b) return null;
+    const cmp = compareStats(a, b, higherIsBetter);
+    const note = cmp === 'better' ? 'better with v2' : cmp === 'worse' ? 'worse with v2' : 'intervals overlap';
+    return { text: `v1 ${fmtNum(b.point, digits)} → v2 ${fmtNum(a.point, digits)}`, note };
+  };
+  const k = pair('sleep_wake', 'kappa_pooled', 2, true);
+  const tst = pair('sleep_wake', 'tst_mae_min', 0, false);
+  const wb = pair('sleep_wake', 'awakenings_mae', 1, false);
+  if (k || tst || wb) {
+    const bits = [
+      k && `wake/sleep kappa ${k.text} (${k.note})`,
+      tst && `total sleep time error ${tst.text} min (${tst.note})`,
+      wb && `wake-bout error ${wb.text} bouts (${wb.note})`,
+    ].filter(Boolean);
+    lines.push(`<li><strong>${esc(name)}, second look</strong> (${esc(String(ucd.records_primary ?? '—'))} nights; v1 was first tested there, so these numbers are less independent): ${esc(bits.join('; '))}.</li>`);
+  }
+  const a2 = v2ApneaMetric('v2', 'apnea_min_mae');
+  const a1 = v2ApneaMetric('v1', 'apnea_min_mae');
+  const a0 = v2ApneaMetric(v2ApneaBaseline(), 'apnea_min_mae');
+  const k2 = v2ApneaMetric('v2', 'kappa_pooled');
+  const k1 = v2ApneaMetric('v1', 'kappa_pooled');
+  const s2 = v2ApneaMetric('v2', 'sensitivity');
+  const s1 = v2ApneaMetric('v1', 'sensitivity');
+  const bias2 = v2ApneaMetric('v2', 'apnea_min_bias');
+  if (a2 && a1) {
+    lines.push(`<li><strong>Suspected apnea minutes</strong> (tested on ${esc(name)} only): mean absolute error v1 ${fmtNum(a1.point, 0)} → v2 ${fmtNum(a2.point, 0)} min (95% CI ${esc(ciText(a2, 0))})` +
+      `${a0 ? `, trivial rule (${esc(prettyName(v2ApneaBaseline()).toLowerCase())}) ${fmtNum(a0.point, 0)} min` : ''}` +
+      `${k1 && k2 ? `; minute agreement (kappa) ${fmtNum(k1.point, 2)} → ${fmtNum(k2.point, 2)}` : ''}` +
+      `${s1 && s2 ? `; share of apnea minutes found (sensitivity) ${fmtNum(s1.point, 2)} → ${fmtNum(s2.point, 2)}` : ''}` +
+      `${bias2 ? `; v2 bias ${fmtNum(bias2.point, 0, { sign: true })} min${bias2.point < 0 ? ' (v2 reports fewer apnea minutes than the reference on average)' : ''}` : ''}.</li>`);
+  }
+  return lines.length && v ? `<ul class="bullets small">${lines.join('')}</ul>` : '';
+}
+
+function v2TstBlandAltman(width, ds) {
+  const v = v2Block();
+  const pr = (v && v.per_record && v.per_record[`${ds}_primary_sleep_wake`]) || [];
+  const e = v2Entry(ds, 'sleep_wake', 'primary', 'v2');
+  return blandAltmanSvg({
+    points: pr.map((p) => ({ ref: Number(p.ref_tst_min), pred: Number(p.pred_tst_min), record: p.record })),
+    stats: (e && e.bland_altman && e.bland_altman.tst_min) || null,
+    width,
+    unit: 'min',
+    quantity: 'total sleep time',
+    digits: 0,
+  });
 }
 
 function tstBlandAltman(width, model) {
@@ -763,7 +1021,9 @@ function tstBlandAltman(width, model) {
 }
 
 function renderLimitations(ul) {
-  const lims = state.results && Array.isArray(state.results.limitations) ? state.results.limitations : [];
+  const v = v2Block();
+  const src = v && Array.isArray(v.limitations) ? v.limitations : (state.results && state.results.limitations);
+  const lims = Array.isArray(src) ? src : [];
   ul.innerHTML = lims.length
     ? lims.map((l) => `<li>${esc(typeof l === 'string' ? l : warningText(l))}</li>`).join('')
     : '<li>Limitations could not be loaded.</li>';
@@ -794,36 +1054,40 @@ function methodRows(model) {
 
 function renderMethod() {
   renderLimitations($('#method-limitations'));
-  for (const id of ['#method-datasets', '#method-results', '#method-rpeak', '#method-ba-tst', '#method-ba-apnea']) {
+  for (const id of ['#method-datasets', '#method-results', '#method-rpeak', '#method-ba-tst', '#method-ba-apnea', '#method-v2-story', '#method-v2-results', '#method-v2-apnea', '#method-v2-excluded', '#method-v2-ba-tst', '#method-v2-ba-apnea']) {
     if (!state.results) noResults($(id));
   }
   if (!state.results) return;
 
   // Data table.
   const ds = Array.isArray(state.results.datasets) ? state.results.datasets : [];
+  const roleOf = (d, v) => (d.roles && d.roles[v]) || (v === 'v1' ? d.role || '' : '');
   $('#method-datasets').innerHTML = ds.length ? `<div class="table-wrap"><table class="data-table stack-on-mobile">
-    <thead><tr><th scope="col">Dataset</th><th scope="col">Role</th><th scope="col">Records / subjects</th><th scope="col">Population</th><th scope="col">License</th></tr></thead>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Role for v1</th><th scope="col">Role for v2</th><th scope="col">Records / subjects</th><th scope="col">Population</th><th scope="col">License</th></tr></thead>
     <tbody>${ds.map((d) => `<tr>
       <th scope="row">${d.url ? `<a href="${esc(d.url)}" rel="noopener" target="_blank">${esc(d.short || d.name)}</a>` : esc(d.short || d.name)}${d.short && d.name && d.short !== d.name ? `<span class="cell-ci">${esc(d.name)}</span>` : ''}</th>
-      <td data-label="Role">${esc(d.role || '')}</td>
+      <td data-label="Role for v1">${esc(roleOf(d, 'v1'))}</td>
+      <td data-label="Role for v2">${esc(roleOf(d, 'v2'))}</td>
       <td data-label="Records / subjects" class="num">${esc(recordsText(d))}</td>
       <td data-label="Population">${esc(d.population || '')}</td>
-      <td data-label="License">${d.license_url ? `<a href="${esc(d.license_url)}" rel="noopener" target="_blank">${esc(d.license || 'license')}</a>` : esc(d.license || '')}</td></tr>`).join('')}</tbody></table></div>` : '<p class="body-muted small">No dataset information.</p>';
+      <td data-label="License">${d.license_url ? `<a href="${esc(d.license_url)}" rel="noopener" target="_blank">${esc(d.license_short || d.license || 'license')}</a>` : esc(d.license || '')}</td></tr>`).join('')}</tbody></table></div>` : '<p class="body-muted small">No dataset information.</p>';
 
-  // Results table: primary model group, then the other models.
+  renderMethodV2();
+
+  // v1 results table (UCDDB, first look): primary model group, then the other models.
   const models = modelNames('sleep_wake');
   const swBase = baselineName('sleep_wake');
   const apBase = baselineName('apnea');
   const n = nTestRecords('sleep_wake');
   const baseNote = [swBase && `stages: ${prettyName(swBase).toLowerCase()}`, apBase && `apnea: ${prettyName(apBase).toLowerCase()}`].filter(Boolean).join('; ');
-  $('#method-results-intro').textContent = `External test on UCDDB${n !== null ? ` (${n} recordings)` : ''}. Errors are estimate minus reference. Lower error and higher kappa are better. Trivial rule${baseNote ? ` (${baseNote})` : ''} is scored on the same epochs.`;
+  $('#method-results-intro').textContent = `v1, first look: external test on UCDDB${n !== null ? ` (${n} recordings)` : ''}, the first and only test of v1 before v2 existed. Errors are estimate minus reference. Lower error and higher kappa are better. Trivial rule${baseNote ? ` (${baseNote})` : ''} is scored on the same epochs.`;
   const groups = models.map((model, gi) => {
     const rows = methodRows(model).map((row) => `<tr>
       <th scope="row">${esc(row.label)}</th>
       <td data-label="${esc(prettyName(model))}" class="num">${row.m ? fmtNum(row.m.point, row.digits, { sign: row.sign }) : '—'}</td>
       <td data-label="Trivial rule" class="num">${row.b ? fmtNum(row.b.point, row.digits, { sign: row.sign }) : '—'}</td>
       <td data-label="95% interval (model)" class="num">${row.m ? (ciText(row.m, row.digits, { sign: row.sign }) || '—') : '—'}</td></tr>`).join('');
-    const title = gi === 0 ? `${prettyName(model)} (primary model)` : `${prettyName(model)} (shown alongside)`;
+    const title = gi === 0 ? `v1: ${prettyName(model)} (primary model)` : `v1: ${prettyName(model)} (shown alongside)`;
     return `<tbody class="${gi === 0 ? 'group-primary' : 'group-secondary'}"><tr class="group-row"><th scope="rowgroup" colspan="4">${esc(title)}</th></tr>${rows}</tbody>`;
   }).join('');
   $('#method-results').innerHTML = `<div class="table-wrap"><table class="data-table results-table stack-on-mobile">
@@ -846,6 +1110,131 @@ function renderMethod() {
   });
 
   renderRpeak();
+}
+
+// v2 views of the method results table: test set and analysis.
+function v2Views() {
+  const hmc = v2Set('hmc') || {};
+  const ucd = v2Set('ucddb') || {};
+  const h = datasetShort('hmc');
+  const u = datasetShort('ucddb');
+  return [
+    { id: 'hmc:primary', ds: 'hmc', analysis: 'primary', label: `${h}, primary (${hmc.records_primary ?? '—'})`, short: `${h} primary` },
+    { id: 'hmc:all_records', ds: 'hmc', analysis: 'all_records', label: `${h}, all records (${hmc.records_all ?? '—'})`, short: `${h} all` },
+    { id: 'ucddb:primary', ds: 'ucddb', analysis: 'primary', label: `${u}, second look (${ucd.records_primary ?? '—'})`, short: u },
+  ];
+}
+
+const V2_TABLE_ROWS = [
+  ...NIGHT_ROWS.flatMap((row) => [
+    { task: 'sleep_wake', key: row.mae, label: `${row.label} (${row.unit}), mean absolute`, digits: row.digits, sign: false, higher: false },
+    { task: 'sleep_wake', key: row.bias, label: `${row.label} (${row.unit}), bias`, digits: row.digits, sign: true, higher: null },
+  ]),
+  ...KAPPA_TASK_ROWS.map((row) => ({ task: row.task, key: 'kappa_pooled', label: `${row.label} (kappa)`, digits: 2, sign: false, higher: true })),
+  { task: 'wake_nrem_rem', key: 'minutes_mae_rem', label: 'REM minutes error, 3-stage (min), mean absolute', digits: 0, sign: false, higher: false },
+  { task: 'wake_nrem_rem', key: 'minutes_bias_rem', label: 'REM minutes error, 3-stage (min), bias', digits: 0, sign: true, higher: null },
+];
+
+function renderMethodV2() {
+  const v = v2Block();
+  const ids = ['#method-v2-story', '#method-v2-results', '#method-v2-apnea', '#method-v2-excluded', '#method-v2-ba-tst', '#method-v2-ba-apnea'];
+  if (!v) {
+    for (const id of ids) $(id).innerHTML = '<p class="body-muted small">v2 results could not be loaded.</p>';
+    return;
+  }
+  const sel = v.selection || {};
+  const st = sel.staging || {};
+  const ap = sel.apnea || {};
+  const folds = sel.folds || {};
+  const hmc = v2Set('hmc') || {};
+  const hName = datasetShort('hmc');
+  const uName = datasetShort('ucddb');
+  const trainNames = (list) => (list || []).map(datasetShort).join(' and ');
+  const story = [];
+  story.push(`Candidates were compared on training data only (stages: ${esc(trainNames(sel.training_datasets_only && sel.training_datasets_only.staging))}; apnea: ${esc(trainNames(sel.training_datasets_only && sel.training_datasets_only.apnea))}) with cross-dataset tests: train on one database, test on the other, then swap${folds.staging ? ` (${esc(folds.staging.a)}; ${esc(folds.staging.b)})` : ''}. No test set was looked at.`);
+  if (st.chosen && st.v1_reference) {
+    const guard = /<=\s*([0-9.]+)\s*x/.exec((st.rule && st.rule.guard) || '');
+    const guardText = guard ? `at most ${fmtNum(100 * (Number(guard[1]) - 1), 0)}% worse than v1's` : "not much worse than v1's";
+    story.push(`Sleep staging: ${esc(String(st.n_candidates ?? '—'))} candidates; the rule picks the highest mean cross-dataset wake/sleep kappa among candidates whose total sleep time error is ${guardText}, preferring the simpler model on near-ties. Chosen: <code>${esc(st.chosen.name)}</code>. Cross-dataset kappa: v1 reference ${fmtNum(st.v1_reference.xds_sw_kappa, 2)}, chosen ${fmtNum(st.chosen.xds_sw_kappa, 2)}.`);
+  }
+  if (ap.chosen && ap.v1_reference) {
+    story.push(`Apnea minutes: ${esc(String(ap.n_candidates ?? '—'))} candidates, same kind of rule on minute kappa. Chosen: <code>${esc(ap.chosen.name)}</code>. Cross-dataset kappa: v1 reference ${fmtNum(ap.v1_reference.xds_kappa, 2)}, chosen ${fmtNum(ap.chosen.xds_kappa, 2)}.`);
+  }
+  const fz = v.frozen || {};
+  story.push(`The choice was frozen (git tag <code>${esc(fz.tag || 'v2-frozen')}</code>${fz.date ? `, ${esc(fz.date)}` : ''}) before any test-set prediction. Then v2 and v1 predicted the test sets once, side by side, with the trivial rule scored on the same epochs.`);
+  story.push(`${esc(hName)} (${esc(String(hmc.records_all ?? '—'))} recordings) had never been used and is the main test. ${esc(v.exclusion_rule && v.exclusion_rule.text ? v.exclusion_rule.text : '')}`);
+  story.push(`${esc(uName)} is a second look: v1 was already evaluated on it before v2 was built, so it is less independent. Apnea is tested on ${esc(uName)} only.`);
+  $('#method-v2-story').innerHTML = `<ul class="bullets">${story.map((s) => `<li>${s}</li>`).join('')}</ul>`;
+
+  // View switch + results table.
+  const views = v2Views();
+  if (!views.some((x) => x.id === state.v2View)) state.v2View = views[0].id;
+  const view = views.find((x) => x.id === state.v2View);
+  const base = v2StageBaseline();
+  const cols = [...MODEL_IDS, base];
+  const colName = (c) => (c === base ? 'Trivial rule' : c);
+  const seg = `<div class="segmented" role="group" aria-label="Test set shown in the v2 table">${views.map((x) => `<button type="button" class="seg seg-v2view" data-view="${esc(x.id)}" aria-pressed="${x.id === view.id}" aria-label="${esc(x.label)}"><span class="lbl-long">${esc(x.label)}</span><span class="lbl-short">${esc(x.short)}</span></button>`).join('')}</div>`;
+  const body = V2_TABLE_ROWS.map((row) => {
+    const vals = cols.map((c) => v2Metric(view.ds, row.task, view.analysis, c, row.key));
+    const cmp = row.higher === null ? null : compareStats(vals[0], vals[1], row.higher);
+    const cmpText = cmp === 'better' ? 'v2 better' : cmp === 'worse' ? 'v2 worse' : cmp === 'overlap' ? 'intervals overlap' : '—';
+    return `<tr><th scope="row">${esc(row.label)}</th>${cols.map((c, i) => `<td data-label="${esc(colName(c))}" class="num">${valueInner(vals[i], row.digits, { sign: row.sign })}</td>`).join('')}` +
+      `<td data-label="v2 vs v1">${esc(cmpText)}</td></tr>`;
+  }).join('');
+  const e2 = v2Entry(view.ds, 'sleep_wake', view.analysis, 'v2');
+  $('#method-v2-results').innerHTML = `${seg}
+    <p class="body-muted small">${esc(view.label.replace(/\s*\(.*\)$/, ''))}: ${esc(String(e2 && e2.n_records != null ? e2.n_records : '—'))} recordings, ${esc(e2 && e2.n_epochs != null ? Number(e2.n_epochs).toLocaleString('en-US') : '—')} epochs of 30 s. Errors are estimate minus reference, with record-level bootstrap 95% intervals. “v2 vs v1” says whether the two 95% intervals overlap.</p>
+    <div class="table-wrap"><table class="data-table stack-on-mobile">
+    <thead><tr><th scope="col">Metric</th>${cols.map((c) => `<th scope="col">${esc(colName(c))}</th>`).join('')}<th scope="col">v2 vs v1</th></tr></thead>
+    <tbody>${body}</tbody></table></div>`;
+  for (const btn of $$('.seg-v2view')) {
+    btn.addEventListener('click', () => {
+      if (state.v2View === btn.dataset.view) return;
+      state.v2View = btn.dataset.view;
+      renderMethodV2();
+    });
+  }
+
+  // Apnea (UCDDB only).
+  const aBase = v2ApneaBaseline();
+  const aCols = [...MODEL_IDS, aBase];
+  const aName = (c) => (c === aBase ? 'Trivial rule' : c);
+  const aRows = [
+    { key: 'apnea_min_mae', label: 'Suspected apnea minutes error (min), mean absolute', digits: 0, sign: false, higher: false },
+    { key: 'apnea_min_bias', label: 'Suspected apnea minutes error (min), bias', digits: 0, sign: true, higher: null },
+    { key: 'kappa_pooled', label: 'Apnea-minute agreement (kappa)', digits: 2, sign: false, higher: true },
+    { key: 'sensitivity', label: 'Share of apnea minutes found (sensitivity)', digits: 2, sign: false, higher: true },
+  ];
+  const a2 = v2Apnea('v2');
+  $('#method-v2-apnea').innerHTML = `<p class="body-muted small">Apnea minutes on ${esc(uName)} (${esc(String(a2 && a2.n_records != null ? a2.n_records : '—'))} nights, second look); ${esc(hName)} was not used for apnea. Trivial rule: ${esc(prettyName(aBase).toLowerCase())}.</p>
+    <div class="table-wrap"><table class="data-table stack-on-mobile">
+    <thead><tr><th scope="col">Metric</th>${aCols.map((c) => `<th scope="col">${esc(aName(c))}</th>`).join('')}<th scope="col">v2 vs v1</th></tr></thead>
+    <tbody>${aRows.map((row) => {
+      const vals = aCols.map((c) => v2ApneaMetric(c, row.key));
+      const cmp = row.higher === null ? null : compareStats(vals[0], vals[1], row.higher);
+      const cmpText = cmp === 'better' ? 'v2 better' : cmp === 'worse' ? 'v2 worse' : cmp === 'overlap' ? 'intervals overlap' : '—';
+      return `<tr><th scope="row">${esc(row.label)}</th>${aCols.map((c, i) => `<td data-label="${esc(aName(c))}" class="num">${valueInner(vals[i], row.digits, { sign: row.sign })}</td>`).join('')}<td data-label="v2 vs v1">${esc(cmpText)}</td></tr>`;
+    }).join('')}</tbody></table></div>`;
+
+  // Excluded HMC records.
+  const exc = Array.isArray(hmc.excluded_low_coverage) ? hmc.excluded_low_coverage : [];
+  $('#method-v2-excluded').innerHTML = exc.length
+    ? `<p class="body-muted small">Left out of the ${esc(hName)} primary analysis (${exc.length} of ${esc(String(hmc.records_all ?? '—'))}) because too few epochs had enough usable heartbeats; they are included in “all records”:</p>
+      <ul class="bullets small">${exc.map((x) => `<li>${esc(x.record)}: ${fmtNum(100 * Number(x.adequate_fraction), 0)}% of epochs usable</li>`).join('')}</ul>`
+    : `<p class="body-muted small">No ${esc(hName)} recording was left out.</p>`;
+
+  const baT = $('#method-v2-ba-tst');
+  baT.innerHTML = v2TstBlandAltman(chartWidth(baT), 'hmc');
+  const baA = $('#method-v2-ba-apnea');
+  const prA = (v.per_record && v.per_record.ucddb_primary_apnea) || [];
+  baA.innerHTML = blandAltmanSvg({
+    points: prA.map((p) => ({ ref: Number(p.ref_apnea_min), pred: Number(p.pred_apnea_min), record: p.record })),
+    stats: (a2 && a2.bland_altman && a2.bland_altman.apnea_min) || null,
+    width: chartWidth(baA),
+    unit: 'min',
+    quantity: 'suspected apnea minutes',
+    digits: 0,
+  });
 }
 
 function recordsText(d) {
@@ -1043,7 +1432,7 @@ function createStubWorker() {
 // Boot
 
 function wireReport() {
-  for (const btn of $$('.seg')) {
+  for (const btn of $$('.seg[data-mode]')) {
     btn.addEventListener('click', () => {
       if (state.mode === btn.dataset.mode) return;
       state.mode = btn.dataset.mode;
@@ -1051,6 +1440,9 @@ function wireReport() {
       syncModeButtons();
       renderChart();
     });
+  }
+  for (const btn of $$('.seg-model')) {
+    btn.addEventListener('click', () => rerunWithModel(btn.dataset.model));
   }
   $('#btn-cancel').addEventListener('click', () => {
     cancelJob();

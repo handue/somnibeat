@@ -13,41 +13,108 @@ the models never saw during training.
 
 - **Live demo:** https://handue.github.io/somnibeat/ (a static page; the file you load is analysed in your browser and never uploaded)
 - **Written description:** [`docs/WRITEUP.md`](docs/WRITEUP.md)
-- **Results:** [`results/`](results/) (every number in this README and in the demo is read from these files)
+- **Results:** [`results/`](results/) (v1) and [`results/v2/`](results/v2/) (v2); every number in this README and in the demo is read from these files
+
+There are two model versions. **v1** is the first, pre-registered result.
+**v2** is a second version chosen on training data only, frozen, and then
+tested once on a new database (HMC). The demo runs v2 by default; v1 remains
+available.
 
 ## What it does
 
 | Output | How it is computed |
 |---|---|
-| Total sleep time, sleep efficiency, wake bouts | 30-second epochs classified sleep vs wake by gradient boosting on heart-rate-variability features |
-| Suspected apnea minutes | 60-second windows classified by a separate gradient-boosting model |
+| Total sleep time, sleep efficiency, wake bouts | 30-second epochs classified sleep vs wake by gradient boosting on heart-rate-variability features (v2: plus longer-context features, class weighting and HMM/Viterbi smoothing over the night) |
+| Suspected apnea minutes | 60-second windows classified by a separate model (v2: mean of gradient boosting and logistic regression) |
 | Wake / NREM / REM and wake / light / deep / REM (experimental) | Same features, multi-class models |
 
-Each output sits next to two baselines: (a) asleep from lights-off, and (b) the
-majority class of the training data.
+Each output sits next to a trivial baseline: asleep from lights-off (every
+epoch scored as sleep) and, for apnea, "no apnea at all".
 
-## Headline results (external test: UCDDB, 25 overnight recordings)
+## Headline results
 
-Primary model: gradient boosting (chosen by internal cross-validation before
-the test set was scored). Errors are model minus polysomnography; brackets are
-record-level bootstrap 95% confidence intervals.
+### v2 on HMC: new external test set (146 of 151 recordings, primary analysis)
 
-| Metric | Gradient boosting | Logistic regression | Asleep from lights-off |
+HMC was never used before this single test run. 5 recordings with
+adequate RR coverage in fewer than half of their epochs were excluded by a rule
+fixed before any HMC prediction (SN001, SN036, SN098, SN111, SN130); results on all
+151 are in the write-up. Errors are model minus polysomnography; brackets
+are record-level bootstrap 95% confidence intervals.
+
+| Metric | v2 | v1 | Asleep from lights-off |
 |---|---|---|---|
-| Total sleep time, mean absolute error (min) | 50.9 (95% CI 35.2 to 68.9) | 32.7 (95% CI 24.3 to 41.1) | 94.1 |
-| Total sleep time, bias (min) | +12.3 | -7.1 | +94.1 |
-| Sleep efficiency, mean absolute error (pct. points) | 12.1 (95% CI 8.4 to 16.3) | 7.7 (95% CI 5.8 to 9.7) | 22.8 |
-| Sleep/wake epoch kappa | 0.34 (95% CI 0.26 to 0.41) | 0.35 (95% CI 0.26 to 0.42) | 0.00 |
-| Apnea minutes, mean absolute error (min) | 78.2 (95% CI 55.0 to 104.6) | 83.4 (95% CI 61.4 to 105.1) | 111.2 (no apnea) |
-| 3-stage kappa (experimental) | 0.33 (95% CI 0.26 to 0.40) | 0.27 (95% CI 0.21 to 0.32) | 0.00 |
-| 4-stage kappa (experimental) | 0.29 (95% CI 0.24 to 0.35) | 0.28 (95% CI 0.22 to 0.33) | 0.00 |
+| Total sleep time, mean absolute error (min) | 46.1 (95% CI 39.5 to 52.8) | 45.0 (95% CI 37.9 to 52.8) | 79.4 |
+| Total sleep time, bias (min) | -6.0 (-16.1 to 4.1) | +2.4 (-7.9 to 13.0) | +79.4 |
+| Sleep efficiency, mean absolute error (pct. points) | 10.2 (95% CI 8.8 to 11.6) | 10.0 (95% CI 8.4 to 11.6) | 17.4 |
+| Wake bouts, mean absolute error (count) | 7.6 (95% CI 6.6 to 8.7) | 7.3 (95% CI 6.2 to 8.5) | 11.2 |
+| Sleep/wake epoch kappa | 0.43 (95% CI 0.39 to 0.46) | 0.39 (95% CI 0.36 to 0.43) | 0.00 |
+| 3-stage kappa (experimental) | 0.42 (95% CI 0.39 to 0.45) | 0.36 (95% CI 0.33 to 0.39) | 0.00 |
+| 4-stage kappa (experimental) | 0.38 (95% CI 0.36 to 0.41) | 0.31 (95% CI 0.29 to 0.33) | 0.00 |
 
-Read these with the limitations in mind: the test set is small and made of
-sleep-clinic patients, per-night errors are wide (Bland-Altman limits of
-agreement for total sleep time: -119 to
-144 min), and logistic regression did better than the
-primary model on this test set, which we report rather than switch models
-after seeing test results. Full discussion in [`docs/WRITEUP.md`](docs/WRITEUP.md).
+HMC is the staging test set; apnea minutes are tested on UCDDB only (below).
+
+### UCDDB: second look (25 recordings)
+
+UCDDB was v1's test set. v1 was scored on it once, before v2 existed; the v2
+numbers below are a second look at the same 25 nights and are weaker
+evidence than the HMC result.
+
+| Metric | v2 | v1 | Trivial baseline |
+|---|---|---|---|
+| Total sleep time, mean absolute error (min) | 48.6 (95% CI 35.3 to 64.1) | 50.9 (95% CI 35.2 to 68.9) | 94.1 (asleep from lights-off) |
+| Sleep efficiency, mean absolute error (pct. points) | 11.8 (95% CI 8.4 to 15.6) | 12.1 (95% CI 8.4 to 16.3) | 22.8 |
+| Wake bouts, mean absolute error (count) | 10.2 (95% CI 7.6 to 13.0) | 5.2 (95% CI 3.6 to 7.1) | 14.2 |
+| Sleep/wake epoch kappa | 0.41 (95% CI 0.33 to 0.48) | 0.34 (95% CI 0.26 to 0.41) | 0.00 |
+| 3-stage kappa (experimental) | 0.40 (95% CI 0.32 to 0.48) | 0.33 (95% CI 0.26 to 0.40) | 0.00 |
+| 4-stage kappa (experimental) | 0.38 (95% CI 0.32 to 0.43) | 0.29 (95% CI 0.24 to 0.35) | 0.00 |
+| Apnea minutes, mean absolute error (min) | 66.9 (95% CI 45.7 to 90.6) | 78.2 (95% CI 55.0 to 104.6) | 111.2 (no apnea) |
+| Apnea minute kappa | 0.29 (95% CI 0.21 to 0.37) | 0.25 (95% CI 0.15 to 0.34) | 0.00 (no apnea) |
+| Apnea minutes detected (sensitivity) | 0.41 | 0.45 | 0.00 (no apnea) |
+
+### How the numbers were made
+
+- **v1 (first look).** The protocol ([`docs/evaluation.md`](docs/evaluation.md))
+  was written before any model was trained. v1 was trained on CAP + MIT-BIH
+  (staging) and Apnea-ECG (apnea), and UCDDB was predicted once (git tag
+  `v1-results`).
+- **v2 (selected on training data only).** A second protocol
+  ([`docs/v2_protocol.md`](docs/v2_protocol.md)) was written before any v2
+  experiment. 36 staging specifications (including the v1 reference) and
+  24 apnea specifications were compared by cross-dataset cross-validation
+  between the training databases (train on CAP, test on MIT-BIH, and the
+  reverse). No test data was loaded during selection
+  ([`docs/v2_selection.md`](docs/v2_selection.md),
+  [`docs/v2_final_spec.md`](docs/v2_final_spec.md)). The choice was frozen
+  at git tag `v2-frozen` and then evaluated **once** on HMC and UCDDB,
+  together with v1 (`scripts/train_eval_v2.py --final`).
+- **HMC is the new test set.** The Haaglanden Medisch Centrum database had
+  never been used for anything in this project before that run.
+
+### What improved and what did not
+
+- **Epoch agreement improved on HMC.** Sleep/wake kappa rose from
+  0.39 to 0.43, but the confidence intervals overlap.
+  The 3-stage (0.36 to 0.42) and 4-stage
+  (0.31 to 0.38) gains have clearly separated intervals.
+- **The night-level numbers a user reads did not improve.** On HMC, total
+  sleep time error (45.0 vs 46.1 min), sleep efficiency error
+  (10.0 vs 10.2 points) and wake-bout error (7.3 vs
+  7.6) are essentially unchanged from v1. Single nights can still be off
+  by about two hours (v2 limits of agreement -127 to
+  115 min).
+- **Something got worse.** On UCDDB, the wake-bout error roughly doubled
+  (5.2 to 10.2): v2 undercounts wake bouts, consistent with
+  its whole-night smoothing merging short awakenings (bias -10.2; on HMC -7.2).
+  REM minutes also became less accurate on HMC (3-stage REM-minute error
+  29.2 to 40.2 min), because v2 overestimates REM.
+- **Apnea on UCDDB** improved in kappa and minute error, with overlapping
+  intervals, but v2 finds a slightly smaller share of apnea minutes
+  (sensitivity 0.45 to 0.41) and underestimates them on average
+  (bias -23.8 min).
+- 3- and 4-stage output remains experimental and far from agreement between
+  human sleep scorers.
+
+Full discussion, including the all-records analysis, in [`docs/WRITEUP.md`](docs/WRITEUP.md).
 
 ## Run the demo locally
 
@@ -57,7 +124,7 @@ The demo is plain HTML, CSS and JavaScript modules in `web/`; there is no build 
 python3 -m http.server 8000 --directory web
 ```
 
-Then open http://localhost:8000/. Load one of the three sample nights, or
+Then open http://localhost:8000/. Load one of the sample nights, or
 upload your own RR CSV:
 
 ```csv
@@ -74,8 +141,10 @@ the analysis to time in bed.
 ## Reproduce every number
 
 Requirements (tested versions): Python 3.14, Node.js 24 (for the
-Python/JavaScript parity tests), GNU or BSD `make`, about 25 GB of free disk for the raw
-PhysioNet files, and an internet connection. No accounts are needed.
+Python/JavaScript parity tests), GNU or BSD `make`, an internet connection
+and enough free disk for the raw PhysioNet files: about 60 GB in total for
+v1 and v2 (the HMC download adds about 17 GB, and v2 downloads all usable
+CAP records instead of the v1 subset). No accounts are needed.
 
 ```bash
 git clone https://github.com/handue/somnibeat.git
@@ -83,7 +152,10 @@ cd somnibeat
 make reproduce
 ```
 
-`make reproduce` runs, in order:
+`make reproduce` runs v1 and then v2 end to end (`reproduce` =
+`reproduce-v1` + `v2`).
+
+**v1** (`make reproduce-v1`):
 
 | Step | Target | Output |
 |---|---|---|
@@ -97,39 +169,62 @@ make reproduce
 | Render this README and the write-up from the results | `docs` | `README.md`, `docs/WRITEUP.md` |
 | Python/JavaScript parity and unit tests | `parity`, `test` | |
 
-A complete run takes a few hours, most of it downloading. The seed and every
-parameter are in [`config/default.toml`](config/default.toml); each results
-file records the SHA-256 of the config and of the feature cache it was built
-from. The data check currently passes 587 of 587 checks.
+**v2** (`make v2`):
+
+| Step | Target | Output |
+|---|---|---|
+| Download HMC and the remaining CAP records, verify SHA-256 | `v2-download` | `data/raw/` |
+| Check HMC, the new CAP records and the MIT-BIH apnea annotations | `v2-check` | `results/v2/hmc_check.json`, `results/v2/data_check.json`, `results/v2/slpdb_apnea_check.json` |
+| v1 and extra features for all v2 databases | `v2-features` | `data/cache/v2/` |
+| Score every candidate on training data only | `v2-select` | `results/v2/selection_*.json`, `results/v2/v2_selection.json` |
+| Decide the final specification (training data only) | `v2-decide` | `results/v2/v2_final_spec.json` |
+| Train the frozen v2, test once on HMC and UCDDB, with v1 alongside | `v2-evaluate` | `results/v2/test_results.json`, `results/v2/models/` |
+| Export browser data and v2 models | `web`, `web-v2` | `web/data/`, `web/data/models_v2.json` |
+| Render this README and the write-up | `docs` | `README.md`, `docs/WRITEUP.md` |
+
+Approximate durations on a recent laptop, after downloads: v1 about 45
+minutes; v2 several hours, most of it the candidate grids in `v2-select`
+(the final `v2-evaluate` run takes about 25 minutes). Downloads add several
+hours depending on the connection. The seeds and parameters are in
+[`config/default.toml`](config/default.toml) (v1) and
+[`config/v2.toml`](config/v2.toml) (v2); each results file records the
+SHA-256 of its inputs. The v1 data check passes 587 of 587 checks; of the
+24 HMC checks, 1 fails: it flags recordings with flat or clipped ECG,
+a property of those recordings rather than of the loader (see the write-up).
 
 ## Configuration
 
-`config/default.toml` holds the seed, the CAP record list, the stage mapping,
-the RR artifact rules, the feature windows, model hyperparameters and the
-evaluation settings (bootstrap resamples, CI level, inner folds). Change it
-and rerun `make features evaluate web docs` to regenerate all outputs.
+`config/default.toml` holds the v1 seed, the CAP record list, the stage
+mapping, the RR artifact rules, the feature windows, model hyperparameters
+and the evaluation settings (bootstrap resamples, CI level, inner folds).
+`config/v2.toml` holds the v2 record lists and paths. The v1 and v2 results
+are frozen at git tags `v1-results` and `v2-frozen`; changing a
+configuration and rerunning produces new results that must be reported as
+such.
 
 ## Repository layout
 
 ```
-config/       pipeline configuration (seed, records, rules, models)
-somnibeat/    Python package: EDF reading, dataset loaders, R-peaks, RR rules, features, evaluation, report
-scripts/      download, data check, feature build, training/evaluation, web export, doc rendering
+config/       pipeline configuration (v1: default.toml, v2: v2.toml)
+somnibeat/    Python package: EDF reading, dataset loaders, R-peaks, RR rules, features, smoothing, evaluation, report
+scripts/      download, data checks, feature builds, v1 training/evaluation, v2 selection and evaluation, web export, doc rendering
 web/          static demo (index.html, css/, js/, data/, assets/)
 tests/        unit tests and Python/JavaScript parity tests
-results/      evaluation outputs (JSON and figures)
-docs/         evaluation protocol, RR rules, review log, web contract, write-up
+results/      v1 evaluation outputs (JSON and figures); results/v2/ holds v2 selection and test outputs
+docs/         evaluation protocols (v1, v2), v2 selection, RR rules, review log, web contract, write-up
 ```
 
 ## Data and licenses
 
-All four datasets are public on PhysioNet under the Open Data Commons
-Attribution License v1.0: UCDDB (test), CAP Sleep Database (training,
-49 records), MIT-BIH Polysomnographic Database (training,
+UCDDB (v1 test, v2 second look), CAP Sleep Database (training;
+49 records in v1, 106 in v2), MIT-BIH Polysomnographic Database (training,
 18 records from 16 men) and Apnea-ECG (apnea training,
-35 records). Citations, sample attribution and library licenses are in
-[`SOURCES.md`](SOURCES.md). The code is released under the MIT License
-([`LICENSE`](LICENSE)).
+35 records) are public on PhysioNet under the Open Data Commons
+Attribution License v1.0. The HMC Sleep Staging Database (v2 test,
+151 recordings) is public on PhysioNet under the Creative Commons
+Attribution 4.0 International license. Citations, sample attribution and
+library licenses are in [`SOURCES.md`](SOURCES.md). The code is released
+under the MIT License ([`LICENSE`](LICENSE)).
 
 ## Not a medical device
 

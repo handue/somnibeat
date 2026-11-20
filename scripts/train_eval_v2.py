@@ -180,13 +180,65 @@ def apnea_model(train: pd.DataFrame, v1_cols, extra_cols, spec, hp) -> dict:
 
 # ----------------------------------------------------------------------------- main
 
-def check_frozen() -> str:
-    tags = subprocess.run(["git", "tag", "--points-at", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.split()
-    dirty = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], capture_output=True, text=True,
-                           cwd=ROOT).stdout.strip()
-    if "v2-frozen" not in tags or dirty:
-        raise SystemExit("--final requires HEAD tagged v2-frozen and no uncommitted changes to tracked files.")
-    return subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
+def check_frozen() -> dict:
+    """Freeze gate for --final. Raises SystemExit unless the frozen v2 is what would run.
+
+    Required:
+      1. the tag v2-frozen exists;
+      2. HEAD contains it (git merge-base --is-ancestor v2-frozen HEAD), so commits after the
+         freeze (results, docs, web, pipeline targets) are allowed;
+      3. every frozen file is identical at v2-frozen, at HEAD and in the working tree:
+         results/v2/v2_final_spec.json, somnibeat/features.py, somnibeat/features_v2.py,
+         somnibeat/smoothing.py, somnibeat/v2_models.py, somnibeat/rr.py, somnibeat/evaluate.py,
+         config/default.toml, config/v2.toml, and scripts/train_eval_v2.py except this function:
+         for that file the text of check_frozen (located with ast, decorators and docstring
+         included) is removed from each version before hashing, so only the gate itself may change.
+    Other files (e.g. untracked outputs, Makefile, web/) do not block the run.
+    Everything this gate needs lives inside it, so the rest of the file stays byte-identical.
+
+    Returns {"commit": HEAD sha, "frozen_tag_commit": sha of the commit tagged v2-frozen}.
+    """
+    import ast
+
+    tag = "v2-frozen"
+    frozen = ["scripts/train_eval_v2.py", "results/v2/v2_final_spec.json", "somnibeat/features.py",
+              "somnibeat/features_v2.py", "somnibeat/smoothing.py", "somnibeat/v2_models.py", "somnibeat/rr.py",
+              "somnibeat/evaluate.py", "config/default.toml", "config/v2.toml"]
+
+    def git(*args: str) -> subprocess.CompletedProcess:
+        return subprocess.run(["git", *args], capture_output=True, cwd=ROOT)
+
+    def strip_gate(src: bytes) -> bytes:
+        lines = src.decode("utf-8").splitlines(keepends=True)
+        for node in ast.parse(src).body:
+            if isinstance(node, ast.FunctionDef) and node.name == "check_frozen":
+                start = min([node.lineno] + [d.lineno for d in node.decorator_list]) - 1
+                return "".join(lines[:start] + lines[node.end_lineno:]).encode("utf-8")
+        raise SystemExit("freeze gate: check_frozen not found in scripts/train_eval_v2.py version")
+
+    def digest(path: str, src: bytes) -> str:
+        return hashlib.sha256(strip_gate(src) if path == "scripts/train_eval_v2.py" else src).hexdigest()
+
+    tag_sha = git("rev-parse", "-q", "--verify", f"refs/tags/{tag}^{{commit}}")
+    if tag_sha.returncode != 0:
+        raise SystemExit(f"--final requires the git tag {tag}; it does not exist.")
+    head = git("rev-parse", "HEAD").stdout.decode().strip()
+    if git("merge-base", "--is-ancestor", tag, "HEAD").returncode != 0:
+        raise SystemExit(f"--final requires HEAD ({head[:12]}) to contain the tag {tag}.")
+    changed = []
+    for path in frozen:
+        versions = {}
+        for rev in (tag, "HEAD"):
+            r = git("show", f"{rev}:{path}")
+            versions[rev] = digest(path, r.stdout) if r.returncode == 0 else f"missing at {rev}"
+        wt = ROOT / path
+        versions["working tree"] = digest(path, wt.read_bytes()) if wt.exists() else "missing in working tree"
+        if len(set(versions.values())) != 1:
+            changed.append(f"{path} ({', '.join(k for k, v in versions.items() if v != versions[tag])} differs "
+                           f"from {tag})")
+    if changed:
+        raise SystemExit("--final refused: frozen files changed since v2-frozen:\n  " + "\n  ".join(changed))
+    return {"commit": head, "frozen_tag_commit": tag_sha.stdout.decode().strip()}
 
 
 def good_fraction(test: pd.DataFrame) -> dict[str, float]:

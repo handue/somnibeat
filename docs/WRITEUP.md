@@ -4,8 +4,8 @@
 **Research prototype · not a diagnostic tool.**
 Live demo: https://handue.github.io/somnibeat/ · Code: https://github.com/handue/somnibeat
 
-Every number in this document is filled in from `results/*.json` by
-`scripts/render_docs.py`; none is typed by hand.
+Every number in this document is filled in from `results/*.json` (v1) and
+`results/v2/*.json` (v2) by `scripts/render_docs.py`; none is typed by hand.
 
 ## 1. Problem and who it is for
 
@@ -30,49 +30,75 @@ physiology. It is not intended for self-diagnosis.
 
 ## 2. Method
 
-**Data.** Four public PhysioNet databases (Open Data Commons Attribution
-License v1.0), all with ECG and expert annotations:
+There are two model versions. **v1** is the first, pre-registered model.
+**v2** is a second version chosen on training data only under a protocol
+written before any v2 experiment ([`docs/v2_protocol.md`](v2_protocol.md)).
+The demo runs v2 by default; v1 remains available.
+
+**Data.** Five public PhysioNet databases, all with ECG and expert annotations:
 
 | Database | Role | Size used | Population |
 |---|---|---|---|
-| CAP Sleep Database | stage training | 49 records | 15 healthy controls and patients with sleep disorders (insomnia, PLM, narcolepsy, RBD, sleep-disordered breathing, bruxism) |
+| CAP Sleep Database | stage training | v1: 49 records; v2: 106 records | v1: 15 healthy controls and patients with sleep disorders (insomnia, PLM, narcolepsy, RBD, sleep-disordered breathing, bruxism); v2 adds the remaining usable records, including nocturnal frontal lobe epilepsy |
 | MIT-BIH Polysomnographic Database | stage training | 18 records, 16 subjects | men evaluated for sleep apnea, all male |
 | Apnea-ECG | apnea training | 35 records, 34 subjects | per-minute apnea labels |
-| UCDDB (St. Vincent's / UCD) | external test only | 25 records | adults with suspected sleep-disordered breathing (21 men, 4 women) |
+| UCDDB (St. Vincent's / UCD) | v1 external test; v2 second look | 25 records | adults with suspected sleep-disordered breathing (21 men, 4 women) |
+| HMC Sleep Staging Database (Haaglanden Medisch Centrum) | v2 external test only | 151 records | patients referred for PSG for a range of sleep disorders; 85 men and 66 women, mean age 53.9 ± 15.4 (as stated on the dataset page and in its demographics file; no age range or ethnicity given); AASM scoring |
+
+The first four are licensed under the Open Data Commons Attribution License
+v1.0, HMC under Creative Commons Attribution 4.0.
 
 Before any modeling, `scripts/check_data.py` read the facts the plan relied on
 from the files themselves (sampling rates, channel names, 30 s epochs,
 alignment of stages, events and ECG, label definitions). All
-587 checks pass. Two surprises were resolved and
+587 v1 checks pass. Two surprises were resolved and
 documented: an undocumented UCDDB stage code 8 (dropped as unscored), and a
 difference in apnea labels (Apnea-ECG marks minutes containing apnea or
 hypopnea; for UCDDB we mark minutes overlapped by any scored apnea or
-hypopnea event).
+hypopnea event). HMC was checked the same way before any prediction
+(`results/v2/hmc_check.json`; 1 of 24 checks
+failed). The failing check flags recordings whose ECG is mostly flat or
+clipped, a property of those recordings that led to the coverage rule in
+section 3.2.
 
 **ECG to RR.** An energy-envelope R-peak detector (Pan-Tompkins family) runs
 at each database's native sampling rate. Against the MIT-BIH beat
 annotations it finds 99.93% of beats with
 99.78% positive predictive value. RR intervals outside 300-2000 ms, or more
 than 30 % away from the local median, are marked invalid and never
-interpolated ([`docs/rr_rules.md`](rr_rules.md)).
+interpolated ([`docs/rr_rules.md`](rr_rules.md)). The detector and RR rules
+are the same in v1 and v2.
 
 **Features.** For each 30 s epoch (60 s for apnea): mean RR, SDNN, RMSSD,
 pNN50 and coefficient of variation over 30 s, 150 s and 300 s windows;
 Lomb-Scargle band powers, LF/HF and HF peak frequency; DFA alpha1. Each
 feature is also robustly z-scored within the night, differenced against
-neighbouring epochs and smoothed, plus time since the start of the night.
+neighbouring epochs and smoothed, plus time since the start of the night
+(119 features). v2 adds 24 longer-context features (5-10 minute
+windows and cyclic variation of heart rate).
 
-**Models.** Gradient boosting (scikit-learn `HistGradientBoostingClassifier`)
-and logistic regression; no deep learning. Stages map to Wake, REM,
-light = S1 + S2 and deep = S3 + S4. Artifact or indeterminate epochs are dropped.
+**Models.** v1: gradient boosting (scikit-learn
+`HistGradientBoostingClassifier`) and logistic regression, gradient boosting
+primary; no deep learning. v2 staging: `gb|cw=balanced|hmm_viterbi|v1+extra`, that is
+gradient boosting with balanced class weights, the extra features, and a
+hidden Markov model (Viterbi decoding) over the whole night whose transition
+probabilities come from the training labels. v2 apnea:
+`ensemble_mean|cw=None|v1+extra|train=apnea-ecg`, the mean of gradient boosting and logistic regression
+probabilities, trained on Apnea-ECG. Stages map to Wake, REM,
+light = S1 + S2 (N1 + N2) and deep = S3 + S4 (N3). Artifact or indeterminate
+epochs are dropped.
 
 **Same code in the browser.** The demo reimplements RR cleaning, every
-feature, tree inference and the report in JavaScript. Parity tests check it
-against the Python reference: features agree to about 1e-9 relative, class
-probabilities to about 1e-16 on non-boundary rows, and per-epoch labels and
-night metrics are identical on all three sample nights.
+feature, tree inference, the v2 smoothing and the report in JavaScript.
+Parity tests check both versions against the Python reference: for v1,
+features agree to about 1e-9 relative, class probabilities to about 1e-16 on
+non-boundary rows, and per-epoch labels and night metrics are identical on
+every sample night; for v2, per-epoch labels are identical and night metrics
+and probabilities agree to about 1e-9 on every sample night.
 
 ## 3. Evaluation
+
+### 3.1 v1: first look at UCDDB
 
 The protocol was written ([`docs/evaluation.md`](evaluation.md)) and the
 evaluation code tested before any model was trained, and a five-lens
@@ -87,16 +113,14 @@ was fixed before the single test run.
   repeated recordings of one person together.
 - **Thresholds on training data only.** The sleep/wake and apnea thresholds
   maximise epoch kappa on out-of-fold training predictions.
-- **One look at the test set.** UCDDB was predicted once. The primary model
-  (gradient boosting) was fixed by internal cross-validation before test
-  numbers were read.
+- **One look at the test set.** UCDDB was predicted once (git tag
+  `v1-results`). The primary model (gradient boosting) was fixed by internal
+  cross-validation before test numbers were read.
 - **Baselines** on the same epochs: (a) asleep from lights-off; (b) the
   training majority class. For sleep/wake these two are identical (the
   majority class is sleep).
 - **Statistics.** Record-level bootstrap (25 records, 2000 resamples) for
   95 % CIs; Bland-Altman bias and limits of agreement.
-
-### Results on UCDDB (external)
 
 | Metric | Gradient boosting (primary) | Logistic regression | Asleep from lights-off |
 |---|---|---|---|
@@ -116,28 +140,162 @@ Bland-Altman for total sleep time (gradient boosting): bias
 -119 to 144 min
 ([`results/figures/`](../results/figures/)).
 
-**What the numbers say.**
+**What the v1 numbers say.**
 
 - On average, the model gets a night's total sleep time much closer than the
   trivial rule (which assumes no wake at all), and its group-level bias is
-  small. For a single night, however, the error can exceed two hours. The
-  report is a rough first look, not a measurement.
+  small. For a single night, however, the error can exceed two hours.
 - Wake detection is the weak point: the model finds about
-  45 % of wake epochs. That is why wake-bout counts are least reliable.
+  45 % of wake epochs.
 - Logistic regression beat gradient boosting on this test set for total
   sleep time, although gradient boosting was clearly better in internal
   cross-validation (kappa 0.47 vs
-  0.35). We keep the model chosen before the test was
-  run and report both. The gap suggests gradient boosting partly fits
-  dataset-specific patterns that do not transfer.
+  0.35). We kept the model chosen before the test was
+  run. The gap suggested that internal cross-validation, which mixed the
+  training databases, overstated transfer; v2 therefore selects by
+  cross-dataset validation instead.
 - Apnea minutes transfer poorly. Internal cross-validation kappa
   0.60 drops to
   0.25 on UCDDB. Part of this is model error and
   part is that the two databases define an "apnea minute" differently.
-- Three- and four-stage results are reported as they came out. They are
-  clearly above chance but far from clinical staging (REM recall
+- Three- and four-stage results are clearly above chance but far from
+  clinical staging (REM recall
   0.31, deep-sleep recall
-  0.50), so the demo labels them experimental.
+  0.50).
+
+### 3.2 v2: selection on training data, one test on HMC
+
+**Protocol.** [`docs/v2_protocol.md`](v2_protocol.md) was written before any
+v2 experiment. It fixed the test sets (HMC, never used before, as the primary
+test; UCDDB as a labeled second look), the candidate changes (more CAP
+records, longer-context features, temporal smoothing, ensembles, class
+weighting, event-derived apnea labels from MIT-BIH) and the selection rule:
+
+- Candidates are compared **only on the training databases**, by
+  cross-dataset cross-validation (train on CAP, evaluate on MIT-BIH; and the
+  reverse). This is a closer proxy for a new hospital than v1's mixed folds.
+- Staging metric: mean cross-dataset sleep/wake kappa. A candidate is only
+  accepted if its cross-dataset total-sleep-time error is at most
+  1.1 times v1's; candidates within 0.01 kappa of the best go to the
+  simplest. The same specification is used for 3 and 4 classes.
+- Apnea: the same scheme between Apnea-ECG and MIT-BIH event-derived minute
+  labels, with apnea-minute error as the guard.
+
+**Selection result (training data only;
+[`docs/v2_selection.md`](v2_selection.md)).** 36 staging specifications
+(including the v1 reference) and 24 apnea specifications were scored.
+
+| | v2 choice | v1 reference |
+|---|---|---|
+| Staging specification | `gb|cw=balanced|hmm_viterbi|v1+extra` | `v1_reference` |
+| Cross-dataset sleep/wake kappa | 0.236 | 0.149 |
+| Cross-dataset total sleep time MAE (min) | 66.5 | 83.1 |
+| Cross-dataset wake-bout MAE | 6.3 | 17.9 |
+| Cross-dataset 3-class / 4-class kappa | 0.213 / 0.207 | 0.176 / 0.141 |
+| Apnea specification | `ensemble_mean|cw=None|v1+extra|train=apnea-ecg` | `v1_reference` |
+| Cross-dataset apnea minute kappa | 0.381 | 0.298 |
+| Cross-dataset apnea-minute MAE (min) | 93.9 | 103.2 |
+
+Training on all 106 usable CAP records instead of 49 was then judged on
+the CAP-to-MIT-BIH fold alone, as the protocol's clarification requires, and
+accepted (fold kappa 0.212 with 49 records, 0.223
+with 106; [`docs/v2_final_spec.md`](v2_final_spec.md)). The specification was
+then committed and tagged `v2-frozen` before any test-set prediction.
+
+**The single test run.** `scripts/train_eval_v2.py --final` trained the
+frozen v2 and predicted HMC and UCDDB once, scoring v1 on the same epochs at
+the same time. Statistics are as in v1 (record-level bootstrap 95 % CIs,
+Bland-Altman).
+
+**HMC exclusion rule.** Before any HMC prediction, two recordings were found
+to have almost no usable ECG. The protocol was amended then, using only the
+RR series (never labels or predictions): the primary analysis excludes
+records in which fewer than half of the epochs have adequate RR coverage, and
+an all-records analysis is reported too. The rule excluded
+5 recordings: SN001, SN036, SN098, SN111, SN130, leaving
+146 of 151. No UCDDB record met the rule (25 of 25 kept).
+
+**Record count.** The downloaded HMC release 1.1 contains
+151 recordings; its RECORDS list, checksums and demographics file agree. The
+project page's release notes say three recordings (SN014, SN064, SN135) were
+removed in version 1.1, which would imply 148 if the page's total predated
+that removal, while the page abstract also says 151. We evaluate what the
+release contains and report the discrepancy rather than resolve it.
+
+#### Results on HMC (new test set)
+
+| Metric | v2, primary (146 records) | v1, primary | Asleep from lights-off, primary | v2, all records (151) | v1, all records |
+|---|---|---|---|---|---|
+| Total sleep time MAE (min) | 46.1 (95% CI 39.5 to 52.8) | 45.0 (95% CI 37.9 to 52.8) | 79.4 | 52.5 | 51.7 |
+| Total sleep time bias (min) | -6.0 (-16.1 to 4.1) | +2.4 (-7.9 to 13.0) | +79.4 | -13.7 | -5.9 |
+| Sleep efficiency MAE (pct. points) | 10.2 (95% CI 8.8 to 11.6) | 10.0 (95% CI 8.4 to 11.6) | 17.4 | 11.8 | 11.7 |
+| Wake bouts MAE (count) | 7.6 (95% CI 6.6 to 8.7) | 7.3 (95% CI 6.2 to 8.5) | 11.2 | 7.5 | 7.5 |
+| Wake bouts bias (count) | -7.2 | +3.8 | -11.2 | -7.2 | +4.0 |
+| Sleep/wake epoch kappa | 0.43 (95% CI 0.39 to 0.46) | 0.39 (95% CI 0.36 to 0.43) | 0.00 | 0.40 | 0.36 |
+| Wake epochs detected (sensitivity) | 0.55 | 0.49 | 0.00 | 0.56 | 0.50 |
+| 3-stage kappa, experimental | 0.42 (95% CI 0.39 to 0.45) | 0.36 (95% CI 0.33 to 0.39) | 0.00 | 0.41 | 0.34 |
+| REM minutes MAE, 3-stage (min) | 40.2 (95% CI 34.4 to 46.1) | 29.2 (95% CI 25.6 to 32.8) | 70.4 | 40.2 | 30.0 |
+| 4-stage kappa, experimental | 0.38 (95% CI 0.36 to 0.41) | 0.31 (95% CI 0.29 to 0.33) | 0.00 | 0.37 | 0.30 |
+| Deep-sleep recall, 4-stage | 0.63 | 0.38 | 0.00 | 0.62 | 0.37 |
+
+Bland-Altman for total sleep time, v2 on HMC (primary): bias
+-6.0 min, 95 % limits of agreement -127 to
+115 min (v1: -123 to 127 min).
+
+#### UCDDB (second look) and apnea
+
+| Metric | v2 | v1 | Trivial baseline |
+|---|---|---|---|
+| Total sleep time MAE (min) | 48.6 (95% CI 35.3 to 64.1) | 50.9 (95% CI 35.2 to 68.9) | 94.1 |
+| Sleep efficiency MAE (pct. points) | 11.8 (95% CI 8.4 to 15.6) | 12.1 (95% CI 8.4 to 16.3) | 22.8 |
+| Wake bouts MAE (count) | 10.2 (95% CI 7.6 to 13.0) | 5.2 (95% CI 3.6 to 7.1) | 14.2 |
+| Wake bouts bias (count) | -10.2 | -0.2 | -14.2 |
+| Sleep/wake epoch kappa | 0.41 (95% CI 0.33 to 0.48) | 0.34 (95% CI 0.26 to 0.41) | 0.00 |
+| 3-stage kappa, experimental | 0.40 (95% CI 0.32 to 0.48) | 0.33 (95% CI 0.26 to 0.40) | 0.00 |
+| 4-stage kappa, experimental | 0.38 (95% CI 0.32 to 0.43) | 0.29 (95% CI 0.24 to 0.35) | 0.00 |
+| Apnea minutes MAE (min) | 66.9 (95% CI 45.7 to 90.6) | 78.2 (95% CI 55.0 to 104.6) | 111.2 (no apnea) |
+| Apnea minutes bias (min) | -23.8 (-59.1 to 8.7) | +0.6 | -111.2 |
+| Apnea minute kappa | 0.29 (95% CI 0.21 to 0.37) | 0.25 (95% CI 0.15 to 0.34) | 0.00 |
+| Apnea minutes detected (sensitivity) | 0.41 | 0.45 | 0.00 |
+
+The v1 numbers in this table are identical to section 3.1; they were
+recomputed by the same run. All 25 UCDDB records are in the primary analysis.
+
+**What the v2 numbers say.**
+
+- **Epoch agreement improved on the new test set.** On HMC, sleep/wake kappa
+  rose from 0.39 to 0.43, with overlapping intervals, so this
+  gain alone is not conclusive. The 3-stage (0.36 to
+  0.42) and 4-stage (0.31 to 0.38) gains have
+  clearly separated intervals, driven by much better REM and deep-sleep
+  recall. The direction matches the training-data selection and holds in the
+  all-records analysis.
+- **The night-level numbers did not improve.** Total sleep time error
+  (45.0 vs 46.1 min), sleep efficiency error
+  (10.0 vs 10.2 points) and wake-bout error (7.3 vs
+  7.6) are essentially unchanged on HMC. Better epoch agreement
+  did not translate into better totals for a single night; the per-night
+  limits of agreement remain about two hours wide on each side.
+- **What got worse.** v1 slightly overcounted wake bouts on HMC (bias
+  +3.8); v2 undercounts them (-7.2), consistent with the whole-night
+  HMM smoothing merging short awakenings. On UCDDB this doubled the wake-bout
+  error (5.2 to 10.2). In the training-data selection the
+  smoothing had reduced the cross-dataset wake-bout error, so this is a
+  result that did not transfer. REM minutes became less accurate on HMC
+  (29.2 to 40.2 min): v1 underestimated REM
+  (-15.3 min), v2 overestimates it (+28.1 min).
+- **UCDDB second look.** Kappa improved for all three staging tasks, in line
+  with HMC; total sleep time and sleep efficiency errors are again similar
+  to v1. Because v1's UCDDB result was known when v2 was designed, these
+  numbers are weaker evidence than HMC.
+- **Apnea.** Minute kappa (0.25 to 0.29) and apnea-minute error
+  (78.2 to 66.9 min) improved with overlapping intervals, by
+  raising specificity. v2 detects a slightly smaller share of apnea minutes
+  (sensitivity 0.45 to 0.41) and underestimates them on average
+  (bias -23.8 min), which moves its errors toward false reassurance
+  (section 4). Apnea was tested only on UCDDB, a second look.
+- **Still far from PSG.** v2's 4-stage kappa of 0.38 is well below
+  agreement between human scorers; 3- and 4-stage output stays experimental.
 
 ## 4. Who benefits, and who could be harmed
 
@@ -147,25 +305,32 @@ Bland-Altman for total sleep time (gradient boosting): bias
   cardiology cohorts) can get a reproducible, documented sleep estimate
   without a PSG, together with its expected error.
 - Clinicians and students get a transparent example of what heart rhythm
-  alone can and cannot say about sleep.
+  alone can and cannot say about sleep, including a second model version
+  whose gains and losses are both reported.
 - Everything runs in the browser, so no data is uploaded. This removes one
   privacy barrier to trying it.
 
 **Who could be harmed, and how we try to limit it.**
 
 - **False reassurance.** Someone with significant sleep apnea could see a low
-  apnea-minute estimate and skip a sleep study. The model misses many apnea
-  minutes on the external test set. The report says on every screen that it
-  is not a diagnostic tool, and the apnea output is labeled a screening hint.
+  apnea-minute estimate and skip a sleep study. Both versions miss many apnea
+  minutes on UCDDB, and v2 on average reports fewer apnea minutes than the
+  reference. The report says on every screen that it is not a diagnostic
+  tool, and the apnea output is labeled a screening hint.
+- **Misleading wake-bout counts.** v2 undercounts wake bouts. A report of a
+  smooth, unbroken night may hide fragmented sleep.
 - **Needless worry.** A noisy recording or an unusual heart rhythm (for
   example atrial fibrillation, frequent ectopic beats, pacemakers or
   beta-blockers) can produce false wake or apnea minutes. The report flags
   low-quality stretches, but it does not detect arrhythmias.
-- **Unequal accuracy.** The training and test data are mostly sleep-clinic
-  patients, mostly men. MIT-BIH is all male, and UCDDB is 21 of 25 men. There
-  are no children, and the databases do not report ethnicity. Errors for
-  women, younger adults, healthy sleepers, children and under-represented
-  groups are unknown and may be larger.
+- **Unequal accuracy.** All test data come from clinical referrals. HMC adds
+  66 women among its 151 recordings (from the dataset page and its demographics
+  file), which reduces the male skew of v1's data (MIT-BIH all male, UCDDB
+  21 of 25 men), but there is still no population sample of healthy sleepers,
+  children are absent or cannot be identified (HMC reports only a mean age),
+  and no database reports ethnicity. We did not report
+  errors by sex or age. Errors for under-represented groups are unknown and
+  may be larger.
 - **Overtrust in wearables.** Accuracy on consumer chest straps, watches or
   rings has not been tested. We do not claim it, and the demo says so.
 - **Privacy.** Heartbeat recordings are health data. The demo never sends the
@@ -174,48 +339,66 @@ Bland-Altman for total sleep time (gradient boosting): bias
 
 ## 5. Limitations
 
-- Small external test set (25 nights from one hospital); every confidence interval
-  is wide.
-- Mostly clinical populations; MIT-BIH contributes 16 subjects, all male;
-  CAP's healthy controls are 15 of 49 records.
+- Test sets are clinical: UCDDB (25 nights, one hospital) and HMC
+  (151 recordings, one hospital, retrospective referrals for a range of sleep
+  disorders). Ethnicity is not reported in any database.
+- UCDDB has now been used twice: once for v1 and once, as a labeled second
+  look, for v2. Its v2 numbers are not an independent test.
+- v2 was selected on training data only, but the selection still compared
+  36 staging specifications on sleep/wake, 3- and 4-class tasks and
+  24 apnea specifications. Choosing the best of many candidates on two
+  training databases can overfit those databases; HMC is the check on that,
+  and it confirms the kappa gains but not better night-level totals.
+- v2's 3- and 4-stage agreement is still far from PSG.
+- 5 HMC recordings were excluded from the primary analysis for poor ECG
+  (rule fixed before prediction); the all-records analysis is reported
+  alongside; it has lower kappa and larger total-sleep-time error for both versions.
+- HMC record count: the release contains 151 recordings while the project
+  page's release notes imply 148 (section 3.2).
+- Mostly clinical training populations; MIT-BIH contributes 16 subjects,
+  all male; CAP's healthy controls are 15 of 49 v1 records.
 - ECG recorded in hospitals; R-peaks were detected by our own detector, not
   by a wearable. No home-wearable validation.
-- Time in bed is taken as the scored span, because the databases have no
-  lights-off markers; the demo uses lights-off/on only if the user enters them.
+- Time in bed is taken as the scored span, because UCDDB and the training
+  databases have no lights-off markers; the demo uses lights-off/on only if
+  the user enters them.
 - Apnea labels differ between Apnea-ECG (training) and UCDDB (test), so
   external apnea errors mix model error with label mismatch.
 - MIT-BIH records slp01a/b and slp02a/b are halves of two nights and are
   normalized per half.
-- The test set was used once for the numbers above. Any later change will be
-  reported as a new, separately labeled result.
+- Both test sets have now been used for the numbers above. Any later change
+  will need a new test set or will be reported as a further look.
 
 ## 6. If we had another month
 
 1. **Validate on wearable data.** Run the pipeline on a public dataset with
    simultaneous PSG and a chest strap or watch, and report the drop in
    accuracy honestly before making any claim about home use.
-2. **A larger and more diverse test set.** Use additional PSG databases with
-   more women, younger and healthy sleepers. Report errors per subgroup (sex,
-   age, AHI) instead of only overall.
-3. **Fix the apnea label mismatch.** Derive per-minute apnea labels for a
-   training database from scored events, the same way as the test set. Add
-   ECG-derived respiration features (QRS amplitude modulation), which are
-   known to help apnea detection.
-4. **Arrhythmia and quality screening.** Detect atrial fibrillation and
+2. **Report errors per subgroup.** HMC now gives enough women to report
+   errors by sex, age and AHI instead of only overall; this should be
+   pre-registered before it is computed.
+3. **Night-level targets.** v2 improved epoch kappa but not total sleep time
+   or wake bouts. Select and calibrate directly on night-level error, and
+   fix the wake-bout undercount (for example a minimum-duration rule tuned
+   on training data only).
+4. **Fix the apnea label mismatch.** Derive per-minute apnea labels for every
+   database from scored events, the same way as the test set, and add
+   ECG-derived respiration features (QRS amplitude modulation).
+5. **Arrhythmia and quality screening.** Detect atrial fibrillation and
    frequent ectopy in the RR series and refuse or flag those nights instead
    of producing a confident report.
-5. **Calibrated uncertainty per night.** Show a per-night interval for total
+6. **Calibrated uncertainty per night.** Show a per-night interval for total
    sleep time (for example from conformal prediction on training nights)
    instead of only the population-level error.
-6. **Sequence models within the no-deep-learning rule.** Use hidden Markov or
-   conditional random field smoothing of epoch probabilities to improve wake
-   bouts and REM continuity.
 
 ## Data and acknowledgements
 
 Data: UCDDB (doi:10.13026/C26C7D), CAP Sleep Database (Terzano et al., Sleep
 Med 2001), MIT-BIH Polysomnographic Database (Ichimaru and Moody, 1999;
-doi:10.13026/C23K5S) and Apnea-ECG (Penzel et al., Computers in Cardiology
-2000), all distributed by PhysioNet (Pollard et al., Nature Health 2026) under
-the Open Data Commons Attribution License v1.0. Full attribution:
+doi:10.13026/C23K5S), Apnea-ECG (Penzel et al., Computers in Cardiology
+2000), under the Open Data Commons Attribution License v1.0, and the
+Haaglanden Medisch Centrum sleep staging database (Alvarez-Estevez and
+Rijsman, version 1.1, doi:10.13026/t79q-fr32; Alvarez-Estevez and Rijsman,
+PLoS ONE 2021), under Creative Commons Attribution 4.0; all distributed by
+PhysioNet (Pollard et al., Nature Health 2026). Full attribution:
 [`SOURCES.md`](../SOURCES.md).

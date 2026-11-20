@@ -84,7 +84,7 @@ export function searchsortedLeft(arr, key) {
 }
 
 /** np.median of a finite vector (sorts a copy). */
-function npMedian(x) {
+export function npMedian(x) {
   const n = x.length;
   if (n === 0) return NaN;
   const s = Float64Array.from(x).sort();
@@ -123,7 +123,7 @@ function scratch(n) {
   return SCR;
 }
 
-function windowStats(t, rr, valid, a, b, out) {
+export function windowStats(t, rr, valid, a, b, out) {
   const i0 = searchsortedLeft(t, a);
   const i1 = searchsortedLeft(t, b);
   const S = scratch(Math.max(0, i1 - i0));
@@ -306,7 +306,7 @@ export function baseFeatures(t, rr, valid, epochStarts, epochLen) {
 
 // ---------------------------------------------------------------- per-record normalisation
 
-function nanmedian(x) {
+export function nanmedian(x) {
   const f = finiteOnly(x);
   return f.length ? npMedian(f) : NaN;
 }
@@ -320,7 +320,7 @@ function nanpct(x, q) {
 }
 
 /** IQR, else 1.4826 x MAD, else SD, else 1.0 (degenerate features such as an all-zero pNN50). */
-function robustScale(ref, med) {
+export function robustScale(ref, med) {
   const iqr = nanpct(ref, 0.75) - nanpct(ref, 0.25);
   if (Number.isFinite(iqr) && iqr > 1e-9) return iqr;
   const dev = new Float64Array(ref.length);
@@ -352,7 +352,7 @@ function rollingNanmean(x, win) {
   return out;
 }
 
-function clip(v, lo, hi) {
+export function clip(v, lo, hi) {
   return v !== v ? v : Math.min(Math.max(v, lo), hi);
 }
 

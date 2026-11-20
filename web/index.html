@@ -84,7 +84,7 @@
     </div>
 
     <section class="samples" id="samples" aria-labelledby="samples-title" tabindex="-1">
-      <h2 id="samples-title">Three samples</h2>
+      <h2 id="samples-title">Sample nights</h2>
       <p class="body-muted small">Real overnight recordings from open research datasets. Choose one to see a full report.</p>
       <div class="sample-grid" id="sample-grid">
         <p class="body-muted small" id="samples-status">Loading samples…</p>
@@ -106,7 +106,7 @@
       <ol class="steps" id="steps" aria-live="polite">
         <li data-step="read"><span>Reading the file</span><span class="step-status">Waiting</span></li>
         <li data-step="beats"><span>Finding usable heartbeats</span><span class="step-status">Waiting</span></li>
-        <li data-step="features"><span>Computing 30-second features</span><span class="step-status">Waiting</span></li>
+        <li data-step="features"><span>Computing 30-second and 10-minute features</span><span class="step-status">Waiting</span></li>
         <li data-step="report"><span>Building the report</span><span class="step-status">Waiting</span></li>
       </ol>
       <button type="button" class="btn btn-secondary" id="btn-cancel">Cancel</button>
@@ -121,6 +121,15 @@
         <span class="caption">File: <span class="file-name" data-bind="report-file"></span></span>
         <a class="btn btn-secondary btn-small" href="#/">Try another file</a>
       </div>
+    </div>
+
+    <div class="model-row">
+      <p class="model-label" id="model-label">Model: —</p>
+      <div class="segmented segmented-model" role="group" aria-label="Model used for this report">
+        <button type="button" class="seg seg-model" data-model="v2" aria-pressed="true">v2</button>
+        <button type="button" class="seg seg-model" data-model="v1" aria-pressed="false">v1</button>
+      </div>
+      <p class="caption model-help">Switching recomputes this report in your browser with the other model.</p>
     </div>
 
     <div class="card disclaimer">
@@ -184,10 +193,14 @@
         <h2>How far can you trust this?</h2>
         <p class="body-muted small" id="trust-intro">Errors against hospital sleep studies, measured on recordings the model never saw during training.</p>
         <div id="trust-table"></div>
+        <h3 class="minor-title">Side by side on the same nights: v2, v1 and a trivial rule</h3>
+        <div id="trust-compare"></div>
+        <div id="trust-honest"></div>
+        <div id="trust-other"></div>
         <a class="text-link" href="#/method">See full method &amp; evaluation</a>
-        <h3 class="minor-title">Total sleep time: estimate vs. sleep study</h3>
+        <h3 class="minor-title" id="trust-ba-title">Total sleep time: estimate vs. sleep study</h3>
         <div class="chart-box" id="trust-ba"></div>
-        <h3 class="minor-title">Compared with a trivial rule (asleep from lights off)</h3>
+        <h3 class="minor-title">Total sleep time error: v2, v1 and a trivial rule (asleep from lights off)</h3>
         <div class="chart-box" id="trust-bars"></div>
         <p class="caption" id="trust-bars-note"></p>
       </div>
@@ -217,8 +230,8 @@
       <h2>Pipeline</h2>
       <ol class="pipeline">
         <li><strong>1. RR intervals</strong><span>Time between heartbeats, from your CSV, cleaned of implausible values and artifacts</span></li>
-        <li><strong>2. 30-second epochs</strong><span>Mean, variability and change versus neighbouring epochs</span></li>
-        <li><strong>3. Classifier</strong><span>Gradient boosting and logistic regression, no deep nets</span></li>
+        <li><strong>2. 30-second epochs</strong><span>Mean, variability and change versus neighbouring epochs; v2 adds 10-minute windows around each epoch</span></li>
+        <li><strong>3. Classifier</strong><span>Gradient boosting and logistic regression, no deep nets; v2 smooths stages over the whole night</span></li>
         <li><strong>4. Report</strong><span>Sleep time, efficiency, wake bouts, apnea minutes</span></li>
       </ol>
     </div>
@@ -230,7 +243,7 @@
     </div>
 
     <div class="card method-block">
-      <h2>Evaluation design</h2>
+      <h2>Evaluation design (v1)</h2>
       <ul class="bullets">
         <li>Splits are by recording and by subject, so one person never appears on both sides.</li>
         <li>Stage models train on CAP and MIT-BIH and are tested on UCDDB; the apnea model trains on Apnea-ECG and is tested on UCDDB.</li>
@@ -243,16 +256,37 @@
     </div>
 
     <div class="card method-block">
-      <h2>Results</h2>
+      <h2>v2: chosen on training data, frozen, tested once</h2>
+      <div id="method-v2-story"></div>
+      <h3 class="minor-title">v2 and v1 on the test sets</h3>
+      <div id="method-v2-results"></div>
+      <h3 class="minor-title">Suspected apnea minutes</h3>
+      <div id="method-v2-apnea"></div>
+      <h3 class="minor-title">Excluded recordings</h3>
+      <div id="method-v2-excluded"></div>
+      <div class="ba-grid">
+        <div>
+          <h3 class="minor-title">v2 total sleep time on HMC, primary (Bland–Altman)</h3>
+          <div class="chart-box" id="method-v2-ba-tst"></div>
+        </div>
+        <div>
+          <h3 class="minor-title">v2 suspected apnea minutes on UCDDB (Bland–Altman)</h3>
+          <div class="chart-box" id="method-v2-ba-apnea"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card method-block">
+      <h2>v1 results, first look (UCDDB)</h2>
       <p class="body-muted small" id="method-results-intro">External test on UCDDB. Lower error is better; higher kappa is better.</p>
       <div id="method-results"></div>
       <div class="ba-grid">
         <div>
-          <h3 class="minor-title">Total sleep time (Bland–Altman)</h3>
+          <h3 class="minor-title">v1 total sleep time (Bland–Altman)</h3>
           <div class="chart-box" id="method-ba-tst"></div>
         </div>
         <div>
-          <h3 class="minor-title">Suspected apnea minutes (Bland–Altman)</h3>
+          <h3 class="minor-title">v1 suspected apnea minutes (Bland–Altman)</h3>
           <div class="chart-box" id="method-ba-apnea"></div>
         </div>
       </div>

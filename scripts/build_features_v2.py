@@ -14,6 +14,20 @@ Outputs (data/cache/v2, gzip mtime 0)
     apnea_features_extra.csv.gz   keys (dataset, record, minute) + v2 columns, 60 s minutes
 Running with a subset of --datasets replaces only those datasets' rows in existing outputs.
 
+Output options (they choose files only; feature values are the same):
+    --stage-out / --apnea-out PATH   output files (default: the two paths above); --apnea-out none
+                                     writes no apnea table
+    --stage-base / --apnea-base PATH table whose rows of the other datasets are kept (default: the
+                                     output file itself, if it exists); 'none' starts empty
+    --stage-gzip-name NAME           file name stored in the gzip header of the stage output (default:
+                                     the output name). The frozen v2 caches stage_features_extra_cap106
+                                     and _test were written as stage_features_extra.csv.gz and renamed,
+                                     so their recorded SHA-256 needs NAME = stage_features_extra.csv.gz
+    --v1-grids-only                  epoch/minute grids from the v1 caches only (as when
+                                     stage_features_extra.csv.gz was built: CAP = the 49 v1 records)
+    --records ID ...                 only these record ids (quick checks)
+scripts/v2_build_extras.py runs the exact sequence that produced the v2 caches.
+
 This script computes features only (per record, unsupervised); it fits nothing and reads no labels.
 """
 
@@ -21,6 +35,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import tempfile
 import time
 import tomllib
 from concurrent.futures import ProcessPoolExecutor
@@ -47,10 +62,11 @@ def _keys(path: Path, cols: list[str]) -> pd.DataFrame:
     return pd.read_csv(path, usecols=cols)  # key columns only: labels are never loaded
 
 
-def load_grids() -> tuple[dict, dict]:
+def load_grids(v1_only: bool = False) -> tuple[dict, dict]:
     """{(dataset, record): (epoch_idx, start_s)} for staging and apnea grids; v1 first."""
     stage, apnea = {}, {}
-    for cache, name in ((V1_CACHE, "stage_features"), (V2_CACHE, "stage_features"), (V2_CACHE, "hmc_stage_features")):
+    sources = ((V1_CACHE, "stage_features"), (V2_CACHE, "stage_features"), (V2_CACHE, "hmc_stage_features"))
+    for cache, name in sources[:1] if v1_only else sources:
         s = _keys(cache / f"{name}.csv.gz", ["dataset", "record", "epoch", "epoch_start_s"])
         for (d, r), g in s.groupby(["dataset", "record"], sort=False):
             stage.setdefault((d, r), (g["epoch"].to_numpy(), g["epoch_start_s"].to_numpy(float)))
@@ -109,16 +125,31 @@ def process(job: tuple) -> dict:
         raise RuntimeError(f"{dataset}/{rid}: {e!r}") from e
 
 
-def write(path: Path, frames: list[pd.DataFrame], done: set[str], key: str) -> pd.DataFrame | None:
-    if not frames and not path.exists():
+def write(path: Path, frames: list[pd.DataFrame], done: set[str], key: str,
+          base: Path | None = None, gzip_name: str | None = None) -> pd.DataFrame | None:
+    """Rows of `base` (default: `path`) for datasets not in `done`, plus `frames`, sorted, to `path`.
+
+    gzip_name: file name to store in the gzip header (pandas stores the name it writes to); the
+    table is then written under that name in a temporary directory next to `path` and moved."""
+    base = path if base is None else base
+    base = None if str(base) == "none" else Path(base)
+    has_base = base is not None and base.exists()
+    if not frames and not has_base:
         return None
     new = pd.concat(frames, ignore_index=True) if frames else None
-    if path.exists():
-        old = pd.read_csv(path)
+    if has_base:
+        old = pd.read_csv(base)
         old = old[~old["dataset"].isin(done)]
         new = old if new is None else pd.concat([old, new], ignore_index=True)
     new = new.sort_values(["dataset", "record", key], kind="stable").reset_index(drop=True)
-    new.to_csv(path, index=False, compression=GZIP)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if gzip_name and gzip_name != path.name:
+        with tempfile.TemporaryDirectory(dir=path.parent) as tmp:
+            staged = Path(tmp) / gzip_name
+            new.to_csv(staged, index=False, compression=GZIP)
+            staged.replace(path)
+    else:
+        new.to_csv(path, index=False, compression=GZIP)
     return new
 
 
@@ -128,10 +159,17 @@ def main() -> int:
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--datasets", nargs="*", default=DEFAULT_DATASETS + ["hmc"],
                     help="any of cap slpdb apnea-ecg ucddb hmc (hmc is skipped if not available)")
+    ap.add_argument("--stage-out", type=Path, default=STAGE_OUT)
+    ap.add_argument("--apnea-out", default=str(APNEA_OUT), help="'none': write no apnea table")
+    ap.add_argument("--stage-base", default=None, help="default: --stage-out; 'none': start empty")
+    ap.add_argument("--apnea-base", default=None, help="default: --apnea-out; 'none': start empty")
+    ap.add_argument("--stage-gzip-name", default=None)
+    ap.add_argument("--v1-grids-only", action="store_true")
+    ap.add_argument("--records", nargs="*", default=None)
     a = ap.parse_args()
     cfg = tomllib.loads(Path(a.config).read_text())
     t_start = time.time()
-    stage_g, apnea_g = load_grids()
+    stage_g, apnea_g = load_grids(a.v1_grids_only)
     jobs, skipped = [], []
     for d in a.datasets:
         if d == "hmc":
@@ -142,6 +180,8 @@ def main() -> int:
         else:
             recs = sorted({r for (dd, r) in list(stage_g) + list(apnea_g) if dd == d})
         for r in recs:
+            if a.records is not None and r not in a.records:
+                continue
             p = rr_path(d, r)
             if p is None:
                 skipped.append(f"{d}/{r}")
@@ -161,9 +201,8 @@ def main() -> int:
                 stage.append(res["stage"])
             if na:
                 apnea.append(res["apnea"])
-    V2_CACHE.mkdir(parents=True, exist_ok=True)
-    s = write(STAGE_OUT, stage, done, "epoch")
-    m = write(APNEA_OUT, apnea, done, "minute")
+    s = write(a.stage_out, stage, done, "epoch", a.stage_base, a.stage_gzip_name)
+    m = None if a.apnea_out == "none" else write(Path(a.apnea_out), apnea, done, "minute", a.apnea_base)
     for name, df in (("stage epochs", s), ("apnea minutes", m)):
         if df is not None:
             counts = df.groupby("dataset").agg(records=("record", "nunique"), rows=("record", "size"))
