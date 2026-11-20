@@ -329,4 +329,8 @@ def test_web_models_v2_json_matches_its_pickles():
     if m["source"]["dry_run"] and all((final / f"{t}.pkl").exists() for t in ALL_TASKS):
         pytest.fail("web/data/models_v2.json was exported from the dry-run models but the final models exist: "
                     "run scripts/export_web_v2.py")
+    if not all((mdir / f"{t}.pkl").exists() for t in ALL_TASKS):
+        # A fresh clone has the committed web model but not the (git-ignored) trained pickles;
+        # `make reproduce` runs this test again after `make v2` has rebuilt them.
+        pytest.skip(f"trained v2 models not present in {mdir.relative_to(ROOT)} yet (run `make v2`)")
     check_against_pickles(m, mdir)
