@@ -5,6 +5,10 @@ Writes (see docs/web_contract.md):
     web/data/results.json    subset of results/*.json (no per-epoch data)
     web/data/samples.json    sample metadata + attribution
     web/data/samples/*.csv   three sample RR files copied from data/cache/rr
+    web/data/samples/*_reference.json
+                             expert reference labels (stages per 30 s epoch, apnea per
+                             minute) for the UCDDB samples; public PhysioNet annotations,
+                             never a model prediction
     web/assets/*.svg         brand assets copied unmodified (favicon = mark)
 
 Nothing here retrains or re-evaluates a model: the pickles in results/models
@@ -319,11 +323,99 @@ def select_samples(cfg: dict) -> list[dict]:
     ]
 
 
-def export_samples(cfg: dict, web: Path) -> list[dict]:
+# ---------------------------------------------------------------- reference labels
+
+REFERENCE_SCHEMA = 1
+REFERENCE_MODES = ("sleep_wake", "wake_nrem_rem", "four_class")
+
+
+def stage_key_map(cfg: dict) -> dict[str, str]:
+    """Common stage vocabulary (W, R, S1..S4) -> four_class label, from config [stages]."""
+    out = {}
+    for key in ("wake", "rem", "light", "deep"):
+        for code in cfg["stages"][key]:
+            out[code] = key
+    return out
+
+
+def mode_label(four: str | None, mode: str) -> str | None:
+    """four_class label -> label of a display mode (same vocabulary as the models)."""
+    if four is None:
+        return None
+    if mode == "four_class":
+        return four
+    if mode == "wake_nrem_rem":
+        return "nrem" if four in ("light", "deep") else four
+    return "wake" if four == "wake" else "sleep"
+
+
+def last_beat_s(csv_path: Path) -> float:
+    lines = [l for l in csv_path.read_text().splitlines() if l.strip()]
+    header = [h.strip().lower() for h in lines[0].split(",")]
+    return float(lines[-1].split(",")[header.index("time_s")])
+
+
+def reference_json(cfg: dict, rid: str, sample_csv: Path) -> dict:
+    """Reference arrays on the demo grid that starts at 0 (no lights-off/on).
+
+    n_epochs = floor(last beat / 30), n_minutes = floor(last beat / 60), exactly as the
+    report grid of web/js/report.js without clock inputs. Epoch k covers [30 k, 30 k + 30)
+    s, minute m covers [60 m, 60 m + 60) s. Unscored epochs and epochs or minutes beyond
+    the annotation are null.
+    """
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from somnibeat.datasets import load_ucddb
+
+    rec = load_ucddb(ROOT / "data" / "raw" / "ucddb", rid, cfg.get("apnea"))
+    end_s = last_beat_s(sample_csv)
+    epoch_s = int(cfg["epochs"]["length_s"])
+    n_epochs = int(math.floor(end_s / epoch_s))
+    n_min = int(math.floor(end_s / 60))
+    if not np.array_equal(rec.epoch_start_s, np.arange(len(rec.stages)) * float(epoch_s)):
+        raise SystemExit(f"{rid}: reference epochs are not on the {epoch_s} s grid from 0.")
+    keys = stage_key_map(cfg)
+    four = [keys.get(s) if s is not None else None for s in rec.stages]
+    four = (four + [None] * n_epochs)[:n_epochs]
+    ap = [int(v) if int(v) in (0, 1) else None for v in rec.apnea_minutes]
+    ap = (ap + [None] * n_min)[:n_min]
+    return {
+        "schema": REFERENCE_SCHEMA,
+        "record": rid,
+        "kind": "expert reference (polysomnography), not a model output",
+        "source": {"dataset": DATASETS["ucddb"]["name"], "url": DATASETS["ucddb"]["url"],
+                   "doi": DATASETS["ucddb"]["doi"], "license": LICENSE_SHORT, "license_url": LICENSE_URL,
+                   "files": [f"{rid}_stage.txt", f"{rid}_respevt.txt"]},
+        "grid": {"start_s": 0, "epoch_s": epoch_s, "n_epochs": n_epochs, "minute_s": 60, "n_minutes": n_min},
+        "stage_mapping": {k: list(cfg["stages"][k]) for k in ("wake", "rem", "light", "deep")},
+        "apnea_rule": {"event_prefixes": list(cfg["apnea"]["ucddb_event_prefixes"]),
+                       "exclude_types": list(cfg["apnea"]["ucddb_exclude_types"])},
+        "stages": {mode: [mode_label(v, mode) for v in four] for mode in REFERENCE_MODES},
+        "apnea": ap,
+    }
+
+
+def export_references(cfg: dict, web: Path, samples: list[dict]) -> None:
+    """Write <stem>_reference.json for samples with a stage reference; set sample['reference']."""
+    for s in samples:
+        s.pop("reference", None)
+        if not s.get("has_stage_reference"):
+            continue
+        csv_path = web / "data" / s["file"]
+        rel = s["file"].rsplit(".", 1)[0] + "_reference.json"
+        ref = reference_json(cfg, s["source"]["record"], csv_path)
+        (web / "data" / rel).write_text(dump_compact(ref) + "\n", encoding="utf-8")
+        s["reference"] = rel
+
+
+def export_samples(cfg: dict, web: Path, copy_csv: bool = True) -> list[dict]:
     samples = select_samples(cfg)
     (web / "data" / "samples").mkdir(parents=True, exist_ok=True)
     for s in samples:
-        shutil.copyfile(ROOT / s.pop("cache_file"), web / "data" / s["file"])
+        src = s.pop("cache_file")
+        if copy_csv:
+            shutil.copyfile(ROOT / src, web / "data" / s["file"])
+    export_references(cfg, web, samples)
     (web / "data" / "samples.json").write_text(dump_pretty(samples), encoding="utf-8")
     return samples
 
@@ -338,15 +430,23 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--config", default=str(ROOT / "config" / "default.toml"))
     ap.add_argument("--web", default=str(ROOT / "web"))
+    ap.add_argument("--reference-only", action="store_true",
+                    help="only write the sample reference JSON files and samples.json "
+                         "(models.json, results.json, sample CSVs and assets stay untouched)")
     args = ap.parse_args(argv)
     cfg = tomllib.loads(Path(args.config).read_text())
     web = Path(args.web)
     (web / "data").mkdir(parents=True, exist_ok=True)
+    if args.reference_only:
+        samples = export_samples(cfg, web, copy_csv=False)
+        for p in ["data/samples.json"] + [f"data/{s['reference']}" for s in samples if s.get("reference")]:
+            print(f"wrote web/{p} ({(web / p).stat().st_size} bytes)")
+        return 0
     export_models(cfg, web / "data" / "models.json")
     export_results(cfg, web / "data" / "results.json")
     export_samples(cfg, web)
     export_assets(web)
-    for p in ["data/models.json", "data/results.json", "data/samples.json"]:
+    for p in ["data/models.json", "data/results.json", "data/samples.json"]:  # + *_reference.json
         print(f"wrote web/{p} ({(web / p).stat().st_size} bytes)")
     return 0
 

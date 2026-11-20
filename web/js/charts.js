@@ -123,7 +123,10 @@ function pct(part, whole) {
  *        animate, idPrefix}
  */
 export function hypnogramSvg(opts) {
-  const { report, mode = 'sleep_wake', width = 800, clockStartS = null, animate = false, idPrefix = 'hyp' } = opts;
+  const {
+    report, mode = 'sleep_wake', width = 800, clockStartS = null, animate = false, idPrefix = 'hyp',
+    subject = 'Sleep stage chart', apneaTitle = 'Suspected apnea', apneaPhrase = 'minutes of suspected apnea',
+  } = opts;
   const modeDef = STAGE_MODES[mode] || STAGE_MODES.sleep_wake;
   const labels = (report.stages && report.stages[mode]) || [];
   const lowQ = report.lowQuality || [];
@@ -210,7 +213,7 @@ export function hypnogramSvg(opts) {
     apneaMinutes += r.end - r.start;
     const x0 = xOf(r.start * minuteS);
     const x1 = xOf(r.end * minuteS);
-    data.push(`<rect x="${x0.toFixed(2)}" y="${apneaY}" width="${Math.max(1, x1 - x0).toFixed(2)}" height="${apneaH}" rx="1.5" fill="${COLORS.apnea}"><title>Suspected apnea</title></rect>`);
+    data.push(`<rect x="${x0.toFixed(2)}" y="${apneaY}" width="${Math.max(1, x1 - x0).toFixed(2)}" height="${apneaH}" rx="1.5" fill="${COLORS.apnea}"><title>${esc(apneaTitle)}</title></rect>`);
   }
 
   // Time axis: hourly ticks from the grid start (clock times when known).
@@ -230,15 +233,19 @@ export function hypnogramSvg(opts) {
 
   // Accessible summary computed from the drawn data.
   const totalMin = (nEpochs * epochS) / 60;
+  // Epochs without a label (null: not scored) are gaps and are left out of the shares.
+  const nGaps = labels.filter((v) => v === null || v === undefined).length;
+  const nLabelled = nEpochs - nGaps;
   const shares = Object.entries(modeDef.stages)
-    .map(([key, def]) => `${def.name} ${pct(counts[key] || 0, nEpochs)}%`)
+    .map(([key, def]) => `${def.name} ${pct(counts[key] || 0, nLabelled)}%`)
     .join(', ');
   const axisNote = clockStartS !== null
     ? `from ${fmtClock(clockStartS + startS)} to ${fmtClock(clockStartS + startS + nEpochs * epochS)}`
     : `over ${fmtHM(totalMin)}`;
-  const summary = `Sleep stage chart, ${modeDef.title}, ${axisNote}. ${shares}. ` +
-    `${apneaMinutes} minutes of suspected apnea. ` +
-    `${lowCount} of ${nEpochs} epochs marked as not enough usable data.`;
+  const summary = `${subject}, ${modeDef.title}, ${axisNote}. ${shares}. ` +
+    (nGaps ? `${nGaps} of ${nEpochs} epochs not scored (gaps). ` : '') +
+    `${apneaMinutes} ${apneaPhrase}. ` +
+    (lowQ.length ? `${lowCount} of ${nEpochs} epochs marked as not enough usable data.` : '');
 
   return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(summary)}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" class="chart-svg">` +
     parts.join('') +
@@ -359,4 +366,76 @@ export function comparisonBarsSvg({ items, width = 560, unit = 'min', digits = 0
   });
   const summary = `${title}: ` + valid.map((it) => `${it.label} ${fmtNum(it.value, digits)} ${unit}`).join(', ') + '.';
   return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(summary)}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" class="chart-svg">${parts.join('')}</svg>`;
+}
+
+// ---------------------------------------------------------------------------
+// Sleep lab comparison (pure functions; the UI calls them with the loaded arrays).
+
+/**
+ * Cut reference arrays (exported on a grid that starts at 0 s) to the report grid.
+ * Returns {stages: {mode: labels}, apnea: labels} with the report's lengths, or null
+ * when the report grid does not start on a whole reference epoch and minute.
+ */
+export function alignReference(reference, report) {
+  if (!reference || !report || !reference.stages) return null;
+  const rg = reference.grid || {};
+  const epochS = (report.grid && report.grid.epoch_s) || 30;
+  const minuteS = (report.apnea && report.apnea.minute_s) || 60;
+  if ((rg.epoch_s || 30) !== epochS || (rg.minute_s || 60) !== minuteS) return null;
+  const startS = ((report.grid && report.grid.start_s) || 0) - (rg.start_s || 0);
+  const k0 = startS / epochS;
+  const m0 = startS / minuteS;
+  if (!Number.isInteger(k0) || !Number.isInteger(m0) || k0 < 0) return null;
+  const cut = (arr, from, n) => {
+    const out = new Array(n);
+    for (let i = 0; i < n; i++) {
+      const v = arr && from + i < arr.length ? arr[from + i] : null;
+      out[i] = v === undefined ? null : v;
+    }
+    return out;
+  };
+  const stages = {};
+  for (const mode of Object.keys(STAGE_MODES)) {
+    const n = (report.stages && report.stages[mode] && report.stages[mode].length) || 0;
+    stages[mode] = cut(reference.stages[mode] || [], k0, n);
+  }
+  const nMin = (report.apnea && report.apnea.labels && report.apnea.labels.length) || 0;
+  return { stages, apnea: cut(reference.apnea || [], m0, nMin) };
+}
+
+/**
+ * Agreement of one night between the model report and the aligned reference.
+ * Epoch agreement counts only epochs the lab scored. Total sleep time uses the
+ * wake/sleep labels (sleep epochs x epoch length). Apnea minutes: the model counts
+ * every minute of its grid, the lab every minute it labelled.
+ */
+export function compareNight(report, aligned, mode = 'sleep_wake') {
+  const epochS = (report.grid && report.grid.epoch_s) || 30;
+  const modelLab = (report.stages && report.stages[mode]) || [];
+  const refLab = aligned.stages[mode] || [];
+  let scored = 0;
+  let agree = 0;
+  for (let i = 0; i < modelLab.length; i++) {
+    const r = refLab[i];
+    if (r === null || r === undefined) continue;
+    scored++;
+    if (modelLab[i] === r) agree++;
+  }
+  const sleepMin = (arr) => arr.filter((v) => v === 'sleep').length * (epochS / 60);
+  const modelSw = (report.stages && report.stages.sleep_wake) || [];
+  const refSw = aligned.stages.sleep_wake || [];
+  const mAp = (report.apnea && report.apnea.labels) || [];
+  const rAp = aligned.apnea || [];
+  return {
+    mode,
+    nEpochs: modelLab.length,
+    nScored: scored,
+    agreementPct: scored ? (100 * agree) / scored : NaN,
+    tstModelMin: sleepMin(modelSw),
+    tstLabMin: sleepMin(refSw),
+    apneaModelMin: mAp.filter((v) => Number(v) === 1).length,
+    apneaLabMin: rAp.filter((v) => v !== null && Number(v) === 1).length,
+    nMinutes: mAp.length,
+    nMinutesLabelled: rAp.filter((v) => v !== null && v !== undefined).length,
+  };
 }

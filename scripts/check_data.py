@@ -269,10 +269,15 @@ def check_cap(root: Path, records: list[str] | None = None) -> dict:
               r["first_stage_offset_s"], float(r["first_stage_offset_s"]).is_integer())
         overrun = r["last_stage_end_offset_s"] - info["duration_s"]
         r["epochs_past_ecg_end_dropped"] = max(0, int(np.ceil(overrun / EPOCH_S)))
-        check("CAP", f"{rid} stages inside EDF", "first >= 0; at most 3 epochs past ECG end (dropped)",
+        r["epochs_before_ecg_start_dropped"] = max(0, int(np.ceil(-offs[0] / EPOCH_S)))
+        n_out = r["epochs_past_ecg_end_dropped"] + r["epochs_before_ecg_start_dropped"]
+        # A few epochs outside the ECG are dropped by the loader. More than 5 means the clocks of
+        # the hypnogram and the EDF cannot be trusted, and the record must be left out.
+        check("CAP", f"{rid} stages inside EDF", "at most 5 epochs outside the ECG (dropped)",
               [r["first_stage_offset_s"], r["last_stage_end_offset_s"], info["duration_s"]],
-              offs[0] >= 0 and overrun <= 3 * EPOCH_S,
-              f"{r['epochs_past_ecg_end_dropped']} trailing epochs extend past the ECG and are dropped")
+              n_out <= 5,
+              f"{r['epochs_before_ecg_start_dropped']} leading and {r['epochs_past_ecg_end_dropped']} "
+              "trailing epochs fall outside the ECG and are dropped")
     return out
 
 

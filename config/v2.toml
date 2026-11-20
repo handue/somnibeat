@@ -1,0 +1,68 @@
+# Somnibeat v2 configuration (see docs/v2_protocol.md). v1 stays in config/default.toml.
+# Somnibeat pipeline configuration. Every number in results/*.json is
+# produced from this file plus the raw PhysioNet downloads.
+
+seed = 20261204
+
+[paths]
+raw = "data/raw"
+cache = "data/cache/v2"
+results = "results/v2"
+
+[datasets.cap]
+# v2: every CAP record with an ECG channel (n16 has none), including NFLE, except nfle27:
+# its hypnogram starts 48 min before the EDF, so the clock alignment cannot be verified.
+records = [
+  "brux1", "brux2", "ins1", "ins2", "ins3", "ins4", "ins5", "ins6", "ins7", "ins8", "ins9", "n1",
+  "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11", "n12", "n13",
+  "n14", "n15", "narco1", "narco2", "narco3", "narco4", "narco5", "nfle1", "nfle2", "nfle3", "nfle4", "nfle5",
+  "nfle6", "nfle7", "nfle8", "nfle9", "nfle10", "nfle11", "nfle12", "nfle13", "nfle14", "nfle15", "nfle16", "nfle17",
+  "nfle18", "nfle19", "nfle20", "nfle21", "nfle22", "nfle23", "nfle24", "nfle25", "nfle26", "nfle28", "nfle29",
+  "nfle30", "nfle31", "nfle32", "nfle33", "nfle34", "nfle35", "nfle36", "nfle37", "nfle38", "nfle39", "nfle40", "plm1",
+  "plm2", "plm3", "plm4", "plm5", "plm6", "plm7", "plm8", "plm9", "plm10", "rbd1", "rbd2", "rbd3",
+  "rbd4", "rbd5", "rbd6", "rbd7", "rbd8", "rbd9", "rbd10", "rbd11", "rbd12", "rbd13", "rbd14", "rbd15",
+  "rbd16", "rbd17", "rbd18", "rbd19", "rbd20", "rbd21", "rbd22", "sdb1", "sdb2", "sdb3", "sdb4",
+]
+
+[epochs]
+length_s = 30
+
+[stages]
+# Stage mapping (applied to every dataset). Anything not listed is dropped.
+# UCDDB code 8 is undocumented on PhysioNet (seen in ucddb008, ucddb024): dropped as unscored.
+wake = ["W"]
+rem = ["R"]
+light = ["S1", "S2"]
+deep = ["S3", "S4"]
+
+[rr]
+# RR cleaning rules (documented in docs/rr_rules.md). R-peaks are detected at each dataset's native rate.
+# Long gaps need no extra rule: an interval > max_rr_ms is invalid (R1) and lowers window coverage.
+min_rr_ms = 300
+max_rr_ms = 2000
+max_relative_jump = 0.30      # |RR - local median| / local median above this -> artifact
+local_median_beats = 11
+min_epoch_coverage = 0.70     # fraction of the epoch covered by valid RR, else epoch marked low-quality
+
+[features]
+neighbor_offsets = [-4, -2, -1, 1, 2, 4]
+rolling_windows_epochs = [5, 11, 21]
+
+[apnea]
+# UCDDB per-minute reference: a minute is "apnea" if any APNEA-* or HYP-* event overlaps it.
+# POSSIBLE events are excluded. Apnea-ECG labels already count hypopnea minutes as apnea.
+ucddb_event_prefixes = ["APNEA", "HYP"]
+ucddb_exclude_types = ["POSSIBLE"]
+
+[models]
+# Primary model for the demo and write-up, fixed by internal CV kappa before reading UCDDB results
+# (decided 2026-11-19). Logistic regression is always reported alongside.
+primary = "gradient_boosting"
+gb = { max_iter = 300, learning_rate = 0.05, max_leaf_nodes = 31, l2_regularization = 1.0, early_stopping = false }
+lr = { C = 1.0, max_iter = 2000 }
+
+[evaluation]
+bootstrap_resamples = 2000
+ci = 0.95
+# Decision thresholds are picked on out-of-fold training predictions only.
+inner_folds = 5

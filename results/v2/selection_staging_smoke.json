@@ -1,0 +1,775 @@
+{
+  "protocol": "docs/v2_protocol.md",
+  "selection_metric": "cross_dataset.mean.sleep_wake.kappa_pooled",
+  "guard": "cross_dataset.mean.sleep_wake.tst_mae_min not worse than v1_reference by > 10 %",
+  "datasets_loaded": [
+    "cap",
+    "slpdb"
+  ],
+  "records": {
+    "cap": [
+      "brux1",
+      "brux2",
+      "ins1",
+      "ins2",
+      "ins3",
+      "ins4",
+      "ins5",
+      "ins6",
+      "ins7",
+      "ins8",
+      "ins9",
+      "n1",
+      "n10",
+      "n11",
+      "n12",
+      "n13",
+      "n14",
+      "n15",
+      "n2",
+      "n3",
+      "n4",
+      "n5",
+      "n6",
+      "n7",
+      "n8",
+      "n9",
+      "narco1",
+      "narco2",
+      "narco3",
+      "narco4",
+      "narco5",
+      "plm1",
+      "plm10",
+      "plm2",
+      "plm3",
+      "plm4",
+      "plm5",
+      "plm6",
+      "plm7",
+      "plm8",
+      "plm9",
+      "rbd1",
+      "rbd2",
+      "rbd3",
+      "rbd4",
+      "sdb1",
+      "sdb2",
+      "sdb3",
+      "sdb4"
+    ],
+    "slpdb": [
+      "slp01a",
+      "slp01b",
+      "slp02a",
+      "slp02b",
+      "slp03",
+      "slp04",
+      "slp14",
+      "slp16",
+      "slp32",
+      "slp37",
+      "slp41",
+      "slp45",
+      "slp48",
+      "slp59",
+      "slp60",
+      "slp61",
+      "slp66",
+      "slp67x"
+    ]
+  },
+  "features_path": "data/cache/stage_features.csv.gz",
+  "features_sha256": "3116e48865ecb9b07227e1a8c50bb04c11e1f12bb8b8bcf31b5d3b8c472b7938",
+  "extra_features_path": null,
+  "extra_features_sha256": null,
+  "n_v1_features": 119,
+  "n_extra_features": 0,
+  "v1_config_sha256": "15851d18951dd8229bca5e81f4c602180ff242f0ea04e7cde5c077e9714c6b93",
+  "hyperparameters": {
+    "seed": 20261204,
+    "gb": {
+      "max_iter": 300,
+      "learning_rate": 0.05,
+      "max_leaf_nodes": 31,
+      "l2_regularization": 1.0,
+      "early_stopping": false
+    },
+    "lr": {
+      "C": 1.0,
+      "max_iter": 2000
+    },
+    "inner_folds": 5
+  },
+  "bootstrap_resamples": 200,
+  "candidates": [
+    {
+      "spec": {
+        "class_weight": null,
+        "smoothing": "none",
+        "feature_set": "v1",
+        "name": "v1_reference",
+        "model": "gb"
+      },
+      "tasks": {
+        "sleep_wake": {
+          "cross_dataset": {
+            "train_cap_eval_slpdb": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "sleep_wake": {
+                "kappa_pooled": {
+                  "point": 0.12865407295333808,
+                  "ci_low": 0.04630938819160213,
+                  "ci_high": 0.22727205952608678
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.1806547495574656,
+                  "ci_low": 0.11185035448849752,
+                  "ci_high": 0.25993365544155644
+                },
+                "accuracy": {
+                  "point": 0.6408014929771142,
+                  "ci_low": 0.5803254110983244,
+                  "ci_high": 0.6937622948568712
+                },
+                "wake_sensitivity": {
+                  "point": 0.36051364365971106,
+                  "ci_low": 0.27587434225759394,
+                  "ci_high": 0.45579637139230667
+                },
+                "sleep_sensitivity": {
+                  "point": 0.7643645626945939,
+                  "ci_low": 0.6550961860426097,
+                  "ci_high": 0.8757351698705842
+                },
+                "tst_bias_min": {
+                  "point": 9.083333333333334,
+                  "ci_low": -21.37865497076023,
+                  "ci_high": 48.347380514705904
+                },
+                "tst_mae_min": {
+                  "point": 62.80555555555556,
+                  "ci_low": 47.094362745098046,
+                  "ci_high": 82.70054824561404
+                },
+                "se_bias_pctpt": {
+                  "point": 0.05526909623979906,
+                  "ci_low": -14.06202169257965,
+                  "ci_high": 15.919792079930993
+                },
+                "se_mae_pctpt": {
+                  "point": 24.21701634434279,
+                  "ci_low": 15.871507043727545,
+                  "ci_high": 33.57037661572588
+                },
+                "awakenings_bias": {
+                  "point": -2.5,
+                  "ci_low": -5.783333333333332,
+                  "ci_high": 0.6475490196078433
+                },
+                "awakenings_mae": {
+                  "point": 6.611111111111111,
+                  "ci_low": 4.419736842105264,
+                  "ci_high": 9.16985294117647
+                }
+              }
+            },
+            "train_slpdb_eval_cap": {
+              "n_records": 49,
+              "n_epochs": 49451,
+              "sleep_wake": {
+                "kappa_pooled": {
+                  "point": 0.16839255399002784,
+                  "ci_low": 0.09360785060235557,
+                  "ci_high": 0.23155086752931842
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.16598089184643203,
+                  "ci_low": 0.11748254248974459,
+                  "ci_high": 0.2136623565624559
+                },
+                "accuracy": {
+                  "point": 0.6610179773917615,
+                  "ci_low": 0.6153456316528263,
+                  "ci_high": 0.7103562757870845
+                },
+                "wake_sensitivity": {
+                  "point": 0.4954719447297171,
+                  "ci_low": 0.42324002360237917,
+                  "ci_high": 0.5723634832379315
+                },
+                "sleep_sensitivity": {
+                  "point": 0.7067888487351575,
+                  "ci_low": 0.6388352832390212,
+                  "ci_high": 0.762430953445977
+                },
+                "tst_bias_min": {
+                  "point": -60.765306122448976,
+                  "ci_low": -102.94158163265305,
+                  "ci_high": -26.77780612244897
+                },
+                "tst_mae_min": {
+                  "point": 103.29591836734694,
+                  "ci_low": 79.93163265306123,
+                  "ci_high": 136.15892857142856
+                },
+                "se_bias_pctpt": {
+                  "point": -13.247101995867691,
+                  "ci_low": -20.981208623299985,
+                  "ci_high": -7.0791567736488545
+                },
+                "se_mae_pctpt": {
+                  "point": 20.29073593911084,
+                  "ci_low": 16.211238427013786,
+                  "ci_high": 25.666533245316582
+                },
+                "awakenings_bias": {
+                  "point": 29.244897959183675,
+                  "ci_low": 24.855102040816327,
+                  "ci_high": 32.91275510204082
+                },
+                "awakenings_mae": {
+                  "point": 29.285714285714285,
+                  "ci_low": 24.97448979591837,
+                  "ci_high": 32.91377551020409
+                }
+              }
+            },
+            "mean": {
+              "sleep_wake": {
+                "kappa_pooled": 0.14852331347168296,
+                "kappa_mean_per_record": 0.17331782070194882,
+                "tst_mae_min": 83.05073696145125,
+                "tst_bias_min": -25.84098639455782,
+                "se_mae_pctpt": 22.253876141726813,
+                "awakenings_mae": 17.948412698412696,
+                "wake_sensitivity": 0.4279927941947141,
+                "sleep_sensitivity": 0.7355767057148757
+              }
+            }
+          },
+          "thresholds": {
+            "A": 0.4,
+            "B": 0.47,
+            "S0": 0.34,
+            "S1": 0.33,
+            "S2": 0.35,
+            "S3": 0.33,
+            "S4": 0.34
+          },
+          "subject_cv": {
+            "n_records": 67,
+            "n_epochs": 59632,
+            "sleep_wake": {
+              "kappa_pooled": {
+                "point": 0.46459599987834593,
+                "ci_low": 0.39223621372266604,
+                "ci_high": 0.5279706781851249
+              },
+              "kappa_mean_per_record": {
+                "point": 0.4345959746218023,
+                "ci_low": 0.385470662705321,
+                "ci_high": 0.48403046851900455
+              },
+              "accuracy": {
+                "point": 0.8061946605849208,
+                "ci_low": 0.7722523445924904,
+                "ci_high": 0.8392511964311344
+              },
+              "wake_sensitivity": {
+                "point": 0.6053088384203674,
+                "ci_low": 0.5373185254127333,
+                "ci_high": 0.6675036127408494
+              },
+              "sleep_sensitivity": {
+                "point": 0.8668296729686067,
+                "ci_low": 0.8271291724045963,
+                "ci_high": 0.897357734889033
+              },
+              "tst_bias_min": {
+                "point": -4.798507462686567,
+                "ci_low": -23.231413952962455,
+                "ci_high": 12.238208955223882
+              },
+              "tst_mae_min": {
+                "point": 52.38059701492537,
+                "ci_low": 40.50004180602007,
+                "ci_high": 67.54242424242425
+              },
+              "se_bias_pctpt": {
+                "point": -2.5952157526041564,
+                "ci_low": -7.06096899811541,
+                "ci_high": 1.607499432831881
+              },
+              "se_mae_pctpt": {
+                "point": 13.185354594167475,
+                "ci_low": 9.7258085405889,
+                "ci_high": 17.431108512813633
+              },
+              "awakenings_bias": {
+                "point": 6.955223880597015,
+                "ci_low": 4.803513203214696,
+                "ci_high": 9.016512148337597
+              },
+              "awakenings_mae": {
+                "point": 9.134328358208956,
+                "ci_low": 7.528810160427808,
+                "ci_high": 10.75769230769231
+              }
+            }
+          },
+          "v1_protocol_check": {
+            "threshold_p_wake": 0.39,
+            "kappa_pooled": 0.4673528688335014,
+            "tst_mae_min": 51.365671641791046
+          },
+          "seconds": 550.7
+        }
+      }
+    },
+    {
+      "spec": {
+        "class_weight": null,
+        "smoothing": "hmm_forward_backward",
+        "feature_set": "v1",
+        "name": "gb_hmm_fb",
+        "model": "gb"
+      },
+      "tasks": {
+        "sleep_wake": {
+          "cross_dataset": {
+            "train_cap_eval_slpdb": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "sleep_wake": {
+                "kappa_pooled": {
+                  "point": 0.0968732114593583,
+                  "ci_low": 0.017838860845128562,
+                  "ci_high": 0.2125965485911534
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.15559046902667423,
+                  "ci_low": 0.08402231555257271,
+                  "ci_high": 0.24296060627737268
+                },
+                "accuracy": {
+                  "point": 0.6157548374422944,
+                  "ci_low": 0.5526507666239131,
+                  "ci_high": 0.6757451455133667
+                },
+                "wake_sensitivity": {
+                  "point": 0.3752808988764045,
+                  "ci_low": 0.2854160685499089,
+                  "ci_high": 0.46280308089761035
+                },
+                "sleep_sensitivity": {
+                  "point": 0.7217662043589018,
+                  "ci_low": 0.6088840077686503,
+                  "ci_high": 0.85089213942528
+                },
+                "tst_bias_min": {
+                  "point": -0.5555555555555556,
+                  "ci_low": -33.71934523809524,
+                  "ci_high": 42.878722426470596
+                },
+                "tst_mae_min": {
+                  "point": 64.05555555555556,
+                  "ci_low": 46.6875,
+                  "ci_high": 90.48333333333335
+                },
+                "se_bias_pctpt": {
+                  "point": -3.1268780154587748,
+                  "ci_low": -17.71728764273266,
+                  "ci_high": 13.603172921067886
+                },
+                "se_mae_pctpt": {
+                  "point": 24.949725324805836,
+                  "ci_low": 15.050571654330922,
+                  "ci_high": 35.13750644703291
+                },
+                "awakenings_bias": {
+                  "point": -8.555555555555555,
+                  "ci_low": -11.649632352941175,
+                  "ci_high": -6.051785714285713
+                },
+                "awakenings_mae": {
+                  "point": 8.555555555555555,
+                  "ci_low": 6.051785714285715,
+                  "ci_high": 11.649632352941177
+                }
+              }
+            },
+            "train_slpdb_eval_cap": {
+              "n_records": 49,
+              "n_epochs": 49451,
+              "sleep_wake": {
+                "kappa_pooled": {
+                  "point": 0.16184123001227876,
+                  "ci_low": 0.07543537425037848,
+                  "ci_high": 0.22513465218114295
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.15825286645128822,
+                  "ci_low": 0.10428394535659477,
+                  "ci_high": 0.20782971294687644
+                },
+                "accuracy": {
+                  "point": 0.6222927746658308,
+                  "ci_low": 0.569705097644661,
+                  "ci_high": 0.674682416173043
+                },
+                "wake_sensitivity": {
+                  "point": 0.5812715899542527,
+                  "ci_low": 0.5011269541526416,
+                  "ci_high": 0.6719158874244566
+                },
+                "sleep_sensitivity": {
+                  "point": 0.6336344863190501,
+                  "ci_low": 0.5566403785504361,
+                  "ci_high": 0.7013142731691208
+                },
+                "tst_bias_min": {
+                  "point": -99.06122448979592,
+                  "ci_low": -143.2829081632653,
+                  "ci_high": -61.84438775510204
+                },
+                "tst_mae_min": {
+                  "point": 129.3265306122449,
+                  "ci_low": 102.7170918367347,
+                  "ci_high": 166.68520408163266
+                },
+                "se_bias_pctpt": {
+                  "point": -20.926583034839485,
+                  "ci_low": -28.831584580484925,
+                  "ci_high": -13.70292585820352
+                },
+                "se_mae_pctpt": {
+                  "point": 25.973831728395805,
+                  "ci_low": 20.889779501622773,
+                  "ci_high": 32.6302721349513
+                },
+                "awakenings_bias": {
+                  "point": 7.591836734693878,
+                  "ci_low": 5.8153061224489795,
+                  "ci_high": 9.270408163265307
+                },
+                "awakenings_mae": {
+                  "point": 8.16326530612245,
+                  "ci_low": 6.731632653061225,
+                  "ci_high": 9.676020408163266
+                }
+              }
+            },
+            "mean": {
+              "sleep_wake": {
+                "kappa_pooled": 0.12935722073581854,
+                "kappa_mean_per_record": 0.15692166773898122,
+                "tst_mae_min": 96.69104308390024,
+                "tst_bias_min": -49.80839002267574,
+                "se_mae_pctpt": 25.46177852660082,
+                "awakenings_mae": 8.359410430839002,
+                "wake_sensitivity": 0.47827624441532857,
+                "sleep_sensitivity": 0.6777003453389759
+              }
+            }
+          },
+          "thresholds": {
+            "A": 0.91,
+            "B": 0.72,
+            "S0": 0.78,
+            "S1": 0.87,
+            "S2": 0.87,
+            "S3": 0.95,
+            "S4": 0.87
+          },
+          "subject_cv": {
+            "n_records": 67,
+            "n_epochs": 59632,
+            "sleep_wake": {
+              "kappa_pooled": {
+                "point": 0.4799174187743781,
+                "ci_low": 0.4048027468552587,
+                "ci_high": 0.5451530929708654
+              },
+              "kappa_mean_per_record": {
+                "point": 0.44672130635995794,
+                "ci_low": 0.38840412790649415,
+                "ci_high": 0.4955494370244769
+              },
+              "accuracy": {
+                "point": 0.8110578213039978,
+                "ci_low": 0.7719053138225558,
+                "ci_high": 0.8440244909229134
+              },
+              "wake_sensitivity": {
+                "point": 0.6210762331838565,
+                "ci_low": 0.5508532959023081,
+                "ci_high": 0.6843047834356162
+              },
+              "sleep_sensitivity": {
+                "point": 0.8684015194516003,
+                "ci_low": 0.821641028026451,
+                "ci_high": 0.9007625129784023
+              },
+              "tst_bias_min": {
+                "point": -5.888059701492537,
+                "ci_low": -26.102846320346316,
+                "ci_high": 10.139575791855219
+              },
+              "tst_mae_min": {
+                "point": 53.559701492537314,
+                "ci_low": 41.09598155467721,
+                "ci_high": 68.62254918588873
+              },
+              "se_bias_pctpt": {
+                "point": -3.216482254124236,
+                "ci_low": -8.540855910474901,
+                "ci_high": 1.3016969252641528
+              },
+              "se_mae_pctpt": {
+                "point": 13.839802138662957,
+                "ci_low": 9.778887412179065,
+                "ci_high": 18.572053609642737
+              },
+              "awakenings_bias": {
+                "point": -2.671641791044776,
+                "ci_low": -4.395075757575757,
+                "ci_high": -1.3454647435897433
+              },
+              "awakenings_mae": {
+                "point": 4.731343283582089,
+                "ci_low": 3.651381118881119,
+                "ci_high": 6.093113975576663
+              }
+            }
+          },
+          "seconds": 2.6
+        }
+      }
+    },
+    {
+      "spec": {
+        "class_weight": "balanced",
+        "smoothing": "hmm_viterbi",
+        "feature_set": "v1",
+        "name": "ens_balanced_viterbi",
+        "model": "ensemble_mean"
+      },
+      "tasks": {
+        "sleep_wake": {
+          "cross_dataset": {
+            "train_cap_eval_slpdb": {
+              "n_records": 18,
+              "n_epochs": 10181,
+              "sleep_wake": {
+                "kappa_pooled": {
+                  "point": 0.12050436468002121,
+                  "ci_low": 0.025871833187625603,
+                  "ci_high": 0.2414653291443819
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.17500056258709631,
+                  "ci_low": 0.10954944417124313,
+                  "ci_high": 0.26912063689180593
+                },
+                "accuracy": {
+                  "point": 0.6354974953344465,
+                  "ci_low": 0.5844224796744328,
+                  "ci_high": 0.6903302419086739
+                },
+                "wake_sensitivity": {
+                  "point": 0.3611556982343499,
+                  "ci_low": 0.27317529323330814,
+                  "ci_high": 0.4666682612662893
+                },
+                "sleep_sensitivity": {
+                  "point": 0.7564392867251627,
+                  "ci_low": 0.6558035738454957,
+                  "ci_high": 0.8572248896657058
+                },
+                "tst_bias_min": {
+                  "point": 7.472222222222222,
+                  "ci_low": -23.883978328173374,
+                  "ci_high": 43.370312500000004
+                },
+                "tst_mae_min": {
+                  "point": 58.69444444444444,
+                  "ci_low": 44.99477554179567,
+                  "ci_high": 77.3013480392157
+                },
+                "se_bias_pctpt": {
+                  "point": 0.11012204989248175,
+                  "ci_low": -14.166002249048463,
+                  "ci_high": 14.108936282891715
+                },
+                "se_mae_pctpt": {
+                  "point": 22.460138695802673,
+                  "ci_low": 14.59243174391307,
+                  "ci_high": 31.09029880067444
+                },
+                "awakenings_bias": {
+                  "point": -10.0,
+                  "ci_low": -13.168055555555554,
+                  "ci_high": -7.409365325077399
+                },
+                "awakenings_mae": {
+                  "point": 10.0,
+                  "ci_low": 7.4093653250774,
+                  "ci_high": 13.168055555555556
+                }
+              }
+            },
+            "train_slpdb_eval_cap": {
+              "n_records": 49,
+              "n_epochs": 49451,
+              "sleep_wake": {
+                "kappa_pooled": {
+                  "point": 0.19196132923345213,
+                  "ci_low": 0.11571472381921429,
+                  "ci_high": 0.25591544759846035
+                },
+                "kappa_mean_per_record": {
+                  "point": 0.1816739035576473,
+                  "ci_low": 0.11329189807869432,
+                  "ci_high": 0.22941369408806134
+                },
+                "accuracy": {
+                  "point": 0.6487027562637763,
+                  "ci_low": 0.6082067884783233,
+                  "ci_high": 0.6885144585746276
+                },
+                "wake_sensitivity": {
+                  "point": 0.5775371113808234,
+                  "ci_low": 0.5035239097624911,
+                  "ci_high": 0.6525968421658028
+                },
+                "sleep_sensitivity": {
+                  "point": 0.6683789364997419,
+                  "ci_low": 0.6194781867809536,
+                  "ci_high": 0.71077312941733
+                },
+                "tst_bias_min": {
+                  "point": -84.91836734693878,
+                  "ci_low": -116.36811224489796,
+                  "ci_high": -56.433673469387756
+                },
+                "tst_mae_min": {
+                  "point": 110.24489795918367,
+                  "ci_low": 92.91836734693878,
+                  "ci_high": 136.88826530612246
+                },
+                "se_bias_pctpt": {
+                  "point": -17.83783077017016,
+                  "ci_low": -23.912240734969135,
+                  "ci_high": -12.530842989256557
+                },
+                "se_mae_pctpt": {
+                  "point": 22.347424587190165,
+                  "ci_low": 18.859506373513362,
+                  "ci_high": 26.863823080413447
+                },
+                "awakenings_bias": {
+                  "point": 1.2653061224489797,
+                  "ci_low": -0.08775510204081532,
+                  "ci_high": 2.6770408163265316
+                },
+                "awakenings_mae": {
+                  "point": 4.285714285714286,
+                  "ci_low": 3.589285714285715,
+                  "ci_high": 5.145408163265307
+                }
+              }
+            },
+            "mean": {
+              "sleep_wake": {
+                "kappa_pooled": 0.15623284695673667,
+                "kappa_mean_per_record": 0.17833723307237181,
+                "tst_mae_min": 84.46967120181407,
+                "tst_bias_min": -38.723072562358276,
+                "se_mae_pctpt": 22.40378164149642,
+                "awakenings_mae": 7.142857142857142,
+                "wake_sensitivity": 0.46934640480758666,
+                "sleep_sensitivity": 0.7124091116124522
+              }
+            }
+          },
+          "thresholds": {
+            "A": null,
+            "B": null,
+            "S0": null,
+            "S1": null,
+            "S2": null,
+            "S3": null,
+            "S4": null
+          },
+          "subject_cv": {
+            "n_records": 67,
+            "n_epochs": 59632,
+            "sleep_wake": {
+              "kappa_pooled": {
+                "point": 0.49633375717819367,
+                "ci_low": 0.42499636246958605,
+                "ci_high": 0.5586122324185329
+              },
+              "kappa_mean_per_record": {
+                "point": 0.44881107650949503,
+                "ci_low": 0.3896305157864825,
+                "ci_high": 0.5037224171322018
+              },
+              "accuracy": {
+                "point": 0.8145123423665146,
+                "ci_low": 0.7818646346110153,
+                "ci_high": 0.8424127684472162
+              },
+              "wake_sensitivity": {
+                "point": 0.6485606827715897,
+                "ci_low": 0.5845480084966731,
+                "ci_high": 0.7138964141597188
+              },
+              "sleep_sensitivity": {
+                "point": 0.8646028904510327,
+                "ci_low": 0.8244793515640138,
+                "ci_high": 0.8937103562736756
+              },
+              "tst_bias_min": {
+                "point": -10.022388059701493,
+                "ci_low": -29.11720744105558,
+                "ci_high": 8.892537313432836
+              },
+              "tst_mae_min": {
+                "point": 54.45522388059702,
+                "ci_low": 41.60496323529412,
+                "ci_high": 68.90192307692308
+              },
+              "se_bias_pctpt": {
+                "point": -3.277310324323008,
+                "ci_low": -7.581570257795309,
+                "ci_high": 0.28275874466998435
+              },
+              "se_mae_pctpt": {
+                "point": 13.27837838896149,
+                "ci_low": 9.620905678312518,
+                "ci_high": 17.155767883735148
+              },
+              "awakenings_bias": {
+                "point": -4.880597014925373,
+                "ci_low": -6.433757349615558,
+                "ci_high": -3.768010265700483
+              },
+              "awakenings_mae": {
+                "point": 5.388059701492537,
+                "ci_low": 4.31265782828283,
+                "ci_high": 6.851068521031208
+              }
+            }
+          },
+          "seconds": 168.0
+        }
+      }
+    }
+  ],
+  "n_model_fits": 56,
+  "fit_seconds": 716.5,
+  "total_seconds": 723.0
+}

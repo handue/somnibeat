@@ -1,0 +1,922 @@
+{
+  "source": "data/raw/slpdb/<record>.st (wfdb aux_note), token meanings from data/raw/slpdb/README.st",
+  "findings": {
+    "one_annotation_per_30s_epoch": true,
+    "max_offset_from_30s_grid_s": 0.004,
+    "aux_format": "stage token first (W 1 2 3 4 R MT M), then zero or more event tokens",
+    "tokens_have_durations": false,
+    "tokens_are_per_epoch_markers": true,
+    "note_durations": "Event tokens are bare labels in an epoch's aux string; no onset or duration field exists, so only presence per 30 s epoch is known.",
+    "tokens_seen_beyond_readme": [
+      "LL",
+      "LLL",
+      "LLLL"
+    ],
+    "records_without_any_event_token": [
+      "slp41",
+      "slp45"
+    ],
+    "records_without_respiratory_token": [
+      "slp41",
+      "slp45"
+    ],
+    "records_scoring_starts_after_0s": {
+      "slp14": 180.0,
+      "slp16": 780.0,
+      "slp37": 60.0,
+      "slp59": 660.0,
+      "slp61": 600.0
+    }
+  },
+  "minute_rule": {
+    "grid": "minute m = [60 m, 60 m + 60) s = 30 s grid epochs 2m and 2m+1; floor(duration / 60) minutes (as Apnea-ECG)",
+    "apnea_tokens": [
+      "CA",
+      "CAA",
+      "H",
+      "HA",
+      "OA",
+      "X"
+    ],
+    "ignored_tokens": [
+      "A",
+      "L",
+      "LA",
+      "LL",
+      "LLL",
+      "LLLL",
+      "MT"
+    ],
+    "label": "1 if an apnea token is in either epoch; 0 if both epochs annotated without one; -1 otherwise"
+  },
+  "event_token_counts_total": {
+    "A": 33,
+    "CA": 56,
+    "CAA": 181,
+    "H": 272,
+    "HA": 754,
+    "L": 299,
+    "LA": 226,
+    "LL": 5,
+    "LLL": 1,
+    "LLLL": 1,
+    "OA": 616,
+    "X": 1617
+  },
+  "minutes_total": {
+    "minutes_total": 5137,
+    "minutes_apnea": 2191,
+    "minutes_normal": 2907,
+    "minutes_unlabeled": 39
+  },
+  "records": {
+    "slp01a": {
+      "fs": 250.0,
+      "duration_s": 7200.0,
+      "n_annotations": 240,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 7170.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 1,
+        "2": 105,
+        "3": 47,
+        "4": 66,
+        "MT": 1,
+        "R": 13,
+        "W": 7
+      },
+      "event_token_counts": {
+        "H": 23,
+        "HA": 15,
+        "L": 64,
+        "LA": 150
+      },
+      "epochs_with_token": {
+        "H": 22,
+        "HA": 15,
+        "L": 53,
+        "LA": 124
+      },
+      "max_repeats_of_a_token_in_one_epoch": 3,
+      "epochs_with_respiratory_token": 37,
+      "respiratory_epoch_run_lengths": {
+        "1": 12,
+        "2": 5,
+        "3": 2,
+        "4": 1,
+        "5": 1
+      },
+      "minutes_total": 120,
+      "minutes_apnea": 30,
+      "minutes_normal": 90,
+      "minutes_unlabeled": 0
+    },
+    "slp01b": {
+      "fs": 250.0,
+      "duration_s": 10800.0,
+      "n_annotations": 360,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 10770.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 27,
+        "2": 128,
+        "R": 25,
+        "W": 180
+      },
+      "event_token_counts": {
+        "CA": 1,
+        "CAA": 4,
+        "H": 19,
+        "HA": 40,
+        "L": 9,
+        "LA": 15,
+        "X": 2
+      },
+      "epochs_with_token": {
+        "CA": 1,
+        "CAA": 4,
+        "H": 19,
+        "HA": 40,
+        "L": 9,
+        "LA": 15,
+        "X": 2
+      },
+      "max_repeats_of_a_token_in_one_epoch": 1,
+      "epochs_with_respiratory_token": 65,
+      "respiratory_epoch_run_lengths": {
+        "1": 7,
+        "2": 3,
+        "3": 2,
+        "4": 1,
+        "19": 1,
+        "23": 1
+      },
+      "minutes_total": 180,
+      "minutes_apnea": 41,
+      "minutes_normal": 139,
+      "minutes_unlabeled": 0
+    },
+    "slp02a": {
+      "fs": 250.0,
+      "duration_s": 10800.0,
+      "n_annotations": 360,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 10770.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 18,
+        "2": 206,
+        "3": 5,
+        "4": 2,
+        "MT": 8,
+        "R": 77,
+        "W": 44
+      },
+      "event_token_counts": {
+        "A": 5,
+        "H": 10,
+        "L": 12,
+        "LA": 6,
+        "X": 87
+      },
+      "epochs_with_token": {
+        "A": 5,
+        "H": 10,
+        "L": 12,
+        "LA": 6,
+        "X": 81
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 91,
+      "respiratory_epoch_run_lengths": {
+        "1": 18,
+        "2": 3,
+        "3": 3,
+        "4": 4,
+        "5": 2,
+        "8": 1,
+        "24": 1
+      },
+      "minutes_total": 180,
+      "minutes_apnea": 63,
+      "minutes_normal": 117,
+      "minutes_unlabeled": 0
+    },
+    "slp02b": {
+      "fs": 250.0,
+      "duration_s": 8100.0,
+      "n_annotations": 270,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 8070.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 14,
+        "2": 119,
+        "MT": 1,
+        "R": 29,
+        "W": 107
+      },
+      "event_token_counts": {
+        "A": 10,
+        "H": 2,
+        "L": 41,
+        "LA": 5,
+        "OA": 1,
+        "X": 40
+      },
+      "epochs_with_token": {
+        "A": 10,
+        "H": 2,
+        "L": 36,
+        "LA": 5,
+        "OA": 1,
+        "X": 39
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 42,
+      "respiratory_epoch_run_lengths": {
+        "1": 15,
+        "2": 6,
+        "3": 2,
+        "4": 1,
+        "5": 1
+      },
+      "minutes_total": 135,
+      "minutes_apnea": 32,
+      "minutes_normal": 103,
+      "minutes_unlabeled": 0
+    },
+    "slp03": {
+      "fs": 250.0,
+      "duration_s": 21600.0,
+      "n_annotations": 720,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 21570.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 105,
+        "2": 312,
+        "3": 78,
+        "R": 74,
+        "W": 151
+      },
+      "event_token_counts": {
+        "CA": 6,
+        "CAA": 6,
+        "H": 96,
+        "HA": 117,
+        "L": 5,
+        "OA": 3,
+        "X": 37
+      },
+      "epochs_with_token": {
+        "CA": 6,
+        "CAA": 5,
+        "H": 91,
+        "HA": 112,
+        "L": 3,
+        "OA": 3,
+        "X": 36
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 241,
+      "respiratory_epoch_run_lengths": {
+        "1": 34,
+        "2": 19,
+        "3": 5,
+        "4": 4,
+        "5": 2,
+        "6": 4,
+        "8": 2,
+        "9": 1,
+        "11": 1,
+        "13": 1,
+        "14": 1,
+        "18": 1,
+        "23": 1
+      },
+      "minutes_total": 360,
+      "minutes_apnea": 157,
+      "minutes_normal": 203,
+      "minutes_unlabeled": 0
+    },
+    "slp04": {
+      "fs": 250.0,
+      "duration_s": 21600.0,
+      "n_annotations": 720,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 21570.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 60,
+        "2": 442,
+        "3": 33,
+        "R": 23,
+        "W": 162
+      },
+      "event_token_counts": {
+        "A": 9,
+        "H": 1,
+        "L": 18,
+        "LA": 4,
+        "X": 350
+      },
+      "epochs_with_token": {
+        "A": 7,
+        "H": 1,
+        "L": 18,
+        "LA": 4,
+        "X": 316
+      },
+      "max_repeats_of_a_token_in_one_epoch": 3,
+      "epochs_with_respiratory_token": 317,
+      "respiratory_epoch_run_lengths": {
+        "1": 32,
+        "2": 12,
+        "3": 5,
+        "4": 3,
+        "5": 1,
+        "6": 2,
+        "9": 1,
+        "10": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "25": 1,
+        "26": 1,
+        "44": 1,
+        "52": 1
+      },
+      "minutes_total": 360,
+      "minutes_apnea": 192,
+      "minutes_normal": 168,
+      "minutes_unlabeled": 0
+    },
+    "slp14": {
+      "fs": 250.0,
+      "duration_s": 21600.0,
+      "n_annotations": 714,
+      "first_annotation_s": 180.0,
+      "last_annotation_s": 21570.0,
+      "max_offset_from_30s_grid_s": 0.0,
+      "stage_token_counts": {
+        "1": 188,
+        "2": 126,
+        "3": 30,
+        "4": 12,
+        "MT": 1,
+        "R": 36,
+        "W": 321
+      },
+      "event_token_counts": {
+        "H": 6,
+        "HA": 80,
+        "L": 1,
+        "LA": 1,
+        "OA": 1,
+        "X": 97
+      },
+      "epochs_with_token": {
+        "H": 5,
+        "HA": 80,
+        "L": 1,
+        "LA": 1,
+        "OA": 1,
+        "X": 96
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 182,
+      "respiratory_epoch_run_lengths": {
+        "1": 29,
+        "2": 29,
+        "3": 13,
+        "4": 4,
+        "5": 3,
+        "6": 1,
+        "9": 1,
+        "10": 1
+      },
+      "minutes_total": 360,
+      "minutes_apnea": 131,
+      "minutes_normal": 226,
+      "minutes_unlabeled": 3
+    },
+    "slp16": {
+      "fs": 250.0,
+      "duration_s": 21600.0,
+      "n_annotations": 694,
+      "first_annotation_s": 780.0,
+      "last_annotation_s": 21570.0,
+      "max_offset_from_30s_grid_s": 0.0,
+      "stage_token_counts": {
+        "1": 108,
+        "2": 181,
+        "3": 22,
+        "4": 2,
+        "R": 65,
+        "W": 316
+      },
+      "event_token_counts": {
+        "CA": 3,
+        "CAA": 23,
+        "H": 5,
+        "HA": 64,
+        "L": 3,
+        "LLL": 1,
+        "LLLL": 1,
+        "X": 224
+      },
+      "epochs_with_token": {
+        "CA": 3,
+        "CAA": 23,
+        "H": 5,
+        "HA": 61,
+        "L": 3,
+        "LLL": 1,
+        "LLLL": 1,
+        "X": 212
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 295,
+      "respiratory_epoch_run_lengths": {
+        "1": 35,
+        "2": 12,
+        "3": 4,
+        "4": 5,
+        "5": 3,
+        "6": 1,
+        "7": 2,
+        "8": 2,
+        "9": 1,
+        "10": 3,
+        "11": 2,
+        "13": 1,
+        "14": 2,
+        "15": 1,
+        "36": 1
+      },
+      "minutes_total": 360,
+      "minutes_apnea": 183,
+      "minutes_normal": 164,
+      "minutes_unlabeled": 13
+    },
+    "slp32": {
+      "fs": 250.0,
+      "duration_s": 19200.0,
+      "n_annotations": 640,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 19170.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 27,
+        "2": 159,
+        "3": 43,
+        "4": 17,
+        "W": 394
+      },
+      "event_token_counts": {
+        "H": 1,
+        "L": 15,
+        "LA": 4,
+        "OA": 12,
+        "X": 105
+      },
+      "epochs_with_token": {
+        "H": 1,
+        "L": 14,
+        "LA": 4,
+        "OA": 12,
+        "X": 105
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 118,
+      "respiratory_epoch_run_lengths": {
+        "1": 23,
+        "2": 20,
+        "3": 4,
+        "4": 5,
+        "5": 1,
+        "8": 1,
+        "10": 1
+      },
+      "minutes_total": 320,
+      "minutes_apnea": 87,
+      "minutes_normal": 233,
+      "minutes_unlabeled": 0
+    },
+    "slp37": {
+      "fs": 250.0,
+      "duration_s": 21000.0,
+      "n_annotations": 698,
+      "first_annotation_s": 60.0,
+      "last_annotation_s": 20970.0,
+      "max_offset_from_30s_grid_s": 0.0,
+      "stage_token_counts": {
+        "1": 21,
+        "2": 591,
+        "R": 11,
+        "W": 75
+      },
+      "event_token_counts": {
+        "A": 9,
+        "L": 5,
+        "LA": 1,
+        "OA": 429,
+        "X": 150
+      },
+      "epochs_with_token": {
+        "A": 9,
+        "L": 5,
+        "LA": 1,
+        "OA": 413,
+        "X": 143
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 554,
+      "respiratory_epoch_run_lengths": {
+        "1": 10,
+        "2": 7,
+        "3": 8,
+        "4": 5,
+        "5": 3,
+        "6": 1,
+        "7": 2,
+        "9": 2,
+        "10": 2,
+        "11": 2,
+        "12": 1,
+        "13": 2,
+        "16": 1,
+        "17": 1,
+        "19": 1,
+        "20": 1,
+        "22": 1,
+        "23": 1,
+        "26": 1,
+        "28": 1,
+        "45": 1,
+        "67": 1,
+        "70": 1
+      },
+      "minutes_total": 350,
+      "minutes_apnea": 304,
+      "minutes_normal": 45,
+      "minutes_unlabeled": 1
+    },
+    "slp41": {
+      "fs": 250.0,
+      "duration_s": 23400.0,
+      "n_annotations": 780,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 23370.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 230,
+        "2": 218,
+        "3": 13,
+        "R": 90,
+        "W": 229
+      },
+      "event_token_counts": {},
+      "epochs_with_token": {},
+      "max_repeats_of_a_token_in_one_epoch": 0,
+      "epochs_with_respiratory_token": 0,
+      "respiratory_epoch_run_lengths": {},
+      "minutes_total": 390,
+      "minutes_apnea": 0,
+      "minutes_normal": 390,
+      "minutes_unlabeled": 0
+    },
+    "slp45": {
+      "fs": 250.0,
+      "duration_s": 22800.0,
+      "n_annotations": 760,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 22770.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 54,
+        "2": 399,
+        "3": 51,
+        "4": 52,
+        "M": 4,
+        "R": 81,
+        "W": 119
+      },
+      "event_token_counts": {},
+      "epochs_with_token": {},
+      "max_repeats_of_a_token_in_one_epoch": 0,
+      "epochs_with_respiratory_token": 0,
+      "respiratory_epoch_run_lengths": {},
+      "minutes_total": 380,
+      "minutes_apnea": 0,
+      "minutes_normal": 380,
+      "minutes_unlabeled": 0
+    },
+    "slp48": {
+      "fs": 250.0,
+      "duration_s": 22800.0,
+      "n_annotations": 760,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 22770.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 241,
+        "2": 272,
+        "3": 2,
+        "MT": 1,
+        "R": 31,
+        "W": 213
+      },
+      "event_token_counts": {
+        "CAA": 1,
+        "H": 7,
+        "HA": 141,
+        "LA": 3,
+        "OA": 1,
+        "X": 147
+      },
+      "epochs_with_token": {
+        "CAA": 1,
+        "H": 7,
+        "HA": 138,
+        "LA": 2,
+        "OA": 1,
+        "X": 147
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 293,
+      "respiratory_epoch_run_lengths": {
+        "1": 38,
+        "2": 40,
+        "3": 21,
+        "4": 11,
+        "5": 4,
+        "6": 2,
+        "7": 2,
+        "11": 2
+      },
+      "minutes_total": 380,
+      "minutes_apnea": 205,
+      "minutes_normal": 175,
+      "minutes_unlabeled": 0
+    },
+    "slp59": {
+      "fs": 250.0,
+      "duration_s": 14400.0,
+      "n_annotations": 458,
+      "first_annotation_s": 660.0,
+      "last_annotation_s": 14370.0,
+      "max_offset_from_30s_grid_s": 0.0,
+      "stage_token_counts": {
+        "1": 105,
+        "2": 98,
+        "3": 50,
+        "4": 30,
+        "R": 35,
+        "W": 140
+      },
+      "event_token_counts": {
+        "CA": 12,
+        "CAA": 45,
+        "H": 25,
+        "HA": 52,
+        "L": 40,
+        "LA": 4,
+        "LL": 2,
+        "OA": 1,
+        "X": 86
+      },
+      "epochs_with_token": {
+        "CA": 12,
+        "CAA": 44,
+        "H": 25,
+        "HA": 52,
+        "L": 40,
+        "LA": 4,
+        "LL": 2,
+        "OA": 1,
+        "X": 83
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 209,
+      "respiratory_epoch_run_lengths": {
+        "1": 22,
+        "2": 8,
+        "3": 6,
+        "4": 6,
+        "5": 3,
+        "6": 3,
+        "7": 1,
+        "8": 2,
+        "10": 1,
+        "14": 1,
+        "22": 1,
+        "27": 1
+      },
+      "minutes_total": 240,
+      "minutes_apnea": 133,
+      "minutes_normal": 96,
+      "minutes_unlabeled": 11
+    },
+    "slp60": {
+      "fs": 250.0,
+      "duration_s": 21300.0,
+      "n_annotations": 710,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 21270.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 344,
+        "2": 49,
+        "R": 31,
+        "W": 286
+      },
+      "event_token_counts": {
+        "CA": 15,
+        "CAA": 62,
+        "H": 17,
+        "HA": 38,
+        "L": 10,
+        "LA": 2,
+        "LL": 2,
+        "OA": 13,
+        "X": 205
+      },
+      "epochs_with_token": {
+        "CA": 15,
+        "CAA": 59,
+        "H": 17,
+        "HA": 38,
+        "L": 10,
+        "LA": 2,
+        "LL": 2,
+        "OA": 13,
+        "X": 205
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 341,
+      "respiratory_epoch_run_lengths": {
+        "1": 49,
+        "2": 42,
+        "3": 12,
+        "4": 8,
+        "5": 2,
+        "6": 9,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "14": 1,
+        "17": 1
+      },
+      "minutes_total": 355,
+      "minutes_apnea": 235,
+      "minutes_normal": 120,
+      "minutes_unlabeled": 0
+    },
+    "slp61": {
+      "fs": 250.0,
+      "duration_s": 22200.0,
+      "n_annotations": 720,
+      "first_annotation_s": 600.0,
+      "last_annotation_s": 22170.0,
+      "max_offset_from_30s_grid_s": 0.0,
+      "stage_token_counts": {
+        "1": 88,
+        "2": 326,
+        "3": 103,
+        "R": 79,
+        "W": 124
+      },
+      "event_token_counts": {
+        "CA": 3,
+        "CAA": 4,
+        "H": 34,
+        "L": 70,
+        "LA": 31,
+        "LL": 1,
+        "OA": 155,
+        "X": 58
+      },
+      "epochs_with_token": {
+        "CA": 3,
+        "CAA": 4,
+        "H": 34,
+        "L": 69,
+        "LA": 30,
+        "LL": 1,
+        "OA": 155,
+        "X": 58
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 253,
+      "respiratory_epoch_run_lengths": {
+        "1": 86,
+        "2": 42,
+        "3": 14,
+        "4": 5,
+        "5": 3,
+        "6": 1
+      },
+      "minutes_total": 370,
+      "minutes_apnea": 203,
+      "minutes_normal": 157,
+      "minutes_unlabeled": 10
+    },
+    "slp66": {
+      "fs": 250.0,
+      "duration_s": 13200.0,
+      "n_annotations": 439,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 13140.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 143,
+        "2": 116,
+        "3": 5,
+        "W": 175
+      },
+      "event_token_counts": {
+        "H": 21,
+        "HA": 205,
+        "L": 1,
+        "X": 14
+      },
+      "epochs_with_token": {
+        "H": 20,
+        "HA": 200,
+        "L": 1,
+        "X": 13
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 229,
+      "respiratory_epoch_run_lengths": {
+        "1": 13,
+        "2": 10,
+        "3": 7,
+        "4": 6,
+        "5": 4,
+        "6": 3,
+        "7": 1,
+        "9": 3,
+        "10": 1,
+        "12": 1,
+        "14": 1,
+        "20": 1,
+        "23": 1
+      },
+      "minutes_total": 220,
+      "minutes_apnea": 142,
+      "minutes_normal": 77,
+      "minutes_unlabeled": 1
+    },
+    "slp67x": {
+      "fs": 250.0,
+      "duration_s": 4620.0,
+      "n_annotations": 154,
+      "first_annotation_s": 0.004,
+      "last_annotation_s": 4590.0,
+      "max_offset_from_30s_grid_s": 0.004,
+      "stage_token_counts": {
+        "1": 41,
+        "2": 40,
+        "3": 1,
+        "W": 72
+      },
+      "event_token_counts": {
+        "CA": 16,
+        "CAA": 36,
+        "H": 5,
+        "HA": 2,
+        "L": 5,
+        "X": 15
+      },
+      "epochs_with_token": {
+        "CA": 16,
+        "CAA": 35,
+        "H": 5,
+        "HA": 2,
+        "L": 5,
+        "X": 15
+      },
+      "max_repeats_of_a_token_in_one_epoch": 2,
+      "epochs_with_respiratory_token": 73,
+      "respiratory_epoch_run_lengths": {
+        "1": 16,
+        "2": 10,
+        "3": 7,
+        "4": 1,
+        "5": 1,
+        "7": 1
+      },
+      "minutes_total": 77,
+      "minutes_apnea": 53,
+      "minutes_normal": 24,
+      "minutes_unlabeled": 0
+    }
+  }
+}

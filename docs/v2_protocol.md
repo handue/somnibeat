@@ -8,7 +8,7 @@ attempt to improve it under rules fixed here, before any v2 number exists.
 
 | Test set | Status for v2 | Use |
 |---|---|---|
-| HMC Sleep Staging Database (PhysioNet, CC BY 4.0, 148 recordings, AASM 2.4 scoring) | never used for anything | primary external test for staging v2 |
+| HMC Sleep Staging Database (PhysioNet, CC BY 4.0, 151 recordings in release 1.1, AASM 2.4 scoring) | never used for anything | primary external test for staging v2 |
 | UCDDB (25 recordings) | already used once by v1 | secondary, reported as "second look" |
 
 HMC is checked with `scripts/check_data.py` before any use. No HMC data is
@@ -43,6 +43,33 @@ annotations), metric: minute kappa, with apnea-minute MAE as a guard (same
 4. Ensembles of gradient boosting and logistic regression.
 5. Class weighting and threshold rules chosen on out-of-fold training data.
 6. Apnea: add MIT-BIH event-derived minute labels to training.
+
+## Clarification for candidate 1 (added 2026-11-19, before the extra CAP data was downloaded or scored)
+
+Adding CAP records changes only the training side of fold A (CAP -> slpdb);
+fold B (slpdb -> CAP) would train on the same data and merely evaluate on a
+larger CAP set, which is not comparable to v1. Candidate 1 is therefore judged
+on fold A only, against the v1 reference's fold A score, with the same kappa
+criterion and TST-MAE guard. Its subject-grouped CV is reported but not used
+for the decision. If candidate 1 is accepted, it is combined with the best
+candidate from the other changes and the combination is re-scored on fold A
+the same way.
+
+## HMC facts and a data-quality rule (added 2026-11-19, before any HMC prediction)
+
+- The downloaded HMC 1.1 release contains 151 recordings (RECORDS, SHA256SUMS
+  and the demographics file agree), not the 148 implied on the project page.
+  All 151 pass SHA-256 and the stage/ECG alignment checks
+  (`results/v2/hmc_check.json`).
+- Two recordings have almost no usable ECG (SN098: essentially none; SN036:
+  most 30 s blocks flat or clipped). The rule below is fixed now, uses only
+  the RR series (never labels or predictions), and applies to every HMC and
+  UCDDB record alike:
+  - **Primary analysis:** records where fewer than 50 % of epochs have
+    adequate RR coverage (`low_quality == 0`) are excluded. The number and IDs
+    of excluded records are reported.
+  - **Secondary analysis:** all records, including those, is reported too.
+- No detector or RR-rule change is made because of HMC signal quality.
 
 ## Freezing and the single test run
 

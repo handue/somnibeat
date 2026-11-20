@@ -1,0 +1,15 @@
+[
+ {
+  "name": "v1_reference",
+  "model": "gb",
+  "class_weight": null,
+  "smoothing": "none",
+  "feature_set": "v1"
+ },
+ {
+  "model": "gb",
+  "class_weight": "balanced",
+  "smoothing": "hmm_viterbi",
+  "feature_set": "v1+extra"
+ }
+]

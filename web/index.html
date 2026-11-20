@@ -162,8 +162,19 @@
           <button type="button" class="seg" data-mode="four_class" aria-pressed="false" aria-label="4 stages (experimental)"><span class="lbl-long">4 stages (experimental)</span><span class="lbl-short">4 (exp.)</span></button>
         </div>
       </div>
+      <p class="series-title series-model" id="series-model" hidden>Somnibeat estimate from heartbeats</p>
       <div class="chart-box" id="hypnogram"></div>
+      <div class="compare-lab" id="compare-lab" hidden>
+        <p class="series-title series-lab">Sleep lab (polysomnography, scored by experts)</p>
+        <div class="chart-box" id="hypnogram-lab"></div>
+      </div>
       <ul class="legend" id="legend" aria-label="Chart legend"></ul>
+      <section class="compare-summary" id="compare-summary" aria-labelledby="compare-title" hidden>
+        <h3 id="compare-title">Compare with the sleep lab</h3>
+        <dl class="compare-stats" id="compare-stats"></dl>
+        <p class="caption" id="compare-caption"></p>
+      </section>
+      <p class="caption compare-unavailable" id="compare-unavailable" hidden></p>
       <p class="caption" id="chart-note">Stages are shown by row position and text labels as well as color.</p>
       <p class="caption" id="quality-line"></p>
     </div>

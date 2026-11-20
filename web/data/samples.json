@@ -14,7 +14,8 @@
    "doi": "10.13026/C26C7D",
    "note": "Part of the external test set: the models never saw this night during training. Reference sleep stages and apnea events exist for it.",
    "record": "ucddb018"
-  }
+  },
+  "reference": "samples/ucddb018_reference.json"
  },
  {
   "id": "apnea",
@@ -31,7 +32,8 @@
    "doi": "10.13026/C26C7D",
    "note": "Part of the external test set: the models never saw this night during training. Reference sleep stages and apnea events exist for it.",
    "record": "ucddb025"
-  }
+  },
+  "reference": "samples/ucddb025_reference.json"
  },
  {
   "id": "noisy",

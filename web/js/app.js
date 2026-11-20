@@ -4,7 +4,7 @@
 
 import {
   esc, fmtNum, fmtHM, fmtClock, hypnogramSvg, blandAltmanSvg, comparisonBarsSvg,
-  STAGE_MODES, COLORS, computeBA,
+  STAGE_MODES, COLORS, computeBA, alignReference, compareNight,
 } from './charts.js';
 
 // Link to the source repository. Empty string hides every repository link.
@@ -36,6 +36,11 @@ const state = {
   reportClockStartS: null,
   reportClockNote: '',
   reportIsStub: false,
+  // Sleep lab comparison: the sample the report came from (null for uploads) and its
+  // expert reference labels (data/samples/*_reference.json), or an error message.
+  reportSample: null,
+  reportReference: null,
+  reportReferenceError: null,
   mode: 'sleep_wake',
   animateNext: false,
   job: null,
@@ -251,11 +256,16 @@ async function openSample(index) {
   if (!clocks) return;
   const name = s.file ? s.file.split('/').pop() : s.id;
   const label = s.title ? `${s.title} (${name})` : name;
+  // The reference labels load alongside the CSV; a failure only hides the comparison.
+  const refPromise = s.reference
+    ? fetchJson(`data/${s.reference}`).then((value) => ({ value }), (err) => ({ error: err.message }))
+    : Promise.resolve({ value: null });
   try {
     const res = await fetch(`data/${s.file}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
-    runAnalysis(text, label, clocks);
+    const ref = await refPromise;
+    runAnalysis(text, label, clocks, { sample: s, reference: ref.value || null, referenceError: ref.error || null });
   } catch (err) {
     showProblem({ code: 'sample_unavailable', message: `The sample file could not be loaded (${err.message}).` }, label);
   }
@@ -363,10 +373,10 @@ function createWorker() {
   return new Worker('js/worker.js', { type: 'module' });
 }
 
-function runAnalysis(csvText, fileName, clocks) {
+function runAnalysis(csvText, fileName, clocks, origin = null) {
   cancelJob();
   state.error = null;
-  const job = { fileName, clocks, steps: {}, worker: null };
+  const job = { fileName, clocks, origin, steps: {}, worker: null };
   state.job = job;
   for (const el of $$('[data-bind="job-file"]')) el.textContent = fileName;
   resetSteps();
@@ -408,6 +418,9 @@ function onWorkerMessage(job, msg) {
     state.reportClockStartS = job.clocks.clockStartS;
     state.reportClockNote = job.clocks.note || '';
     state.reportIsStub = USE_STUB_WORKER;
+    state.reportSample = (job.origin && job.origin.sample) || null;
+    state.reportReference = (job.origin && job.origin.reference) || null;
+    state.reportReferenceError = (job.origin && job.origin.referenceError) || null;
     state.mode = 'sleep_wake';
     state.animateNext = true;
     go('report');
@@ -559,10 +572,15 @@ function renderChart() {
     idPrefix: `hyp-${state.mode}`,
   });
 
+  const aligned = renderCompare(width, animate);
+
   const def = STAGE_MODES[state.mode];
   const items = Object.values(def.stages).map((s) => `<li><span class="swatch" style="background:${s.color}"></span>${esc(s.name === 'Light' ? 'Light sleep' : s.name === 'Deep' ? 'Deep sleep' : s.name)}</li>`);
-  items.push(`<li><span class="swatch" style="background:${COLORS.apnea}"></span>Suspected apnea</li>`);
+  items.push(`<li><span class="swatch" style="background:${COLORS.apnea}"></span>${aligned ? 'Suspected apnea (estimate) / scored apnea or hypopnea (lab)' : 'Suspected apnea'}</li>`);
   items.push('<li><span class="swatch swatch-hatch"></span>not enough usable data</li>');
+  if (aligned && aligned.stages[state.mode].some((v) => v === null)) {
+    items.push('<li><span class="swatch swatch-gap"></span>gap: epoch not scored by the lab</li>');
+  }
   $('#legend').innerHTML = items.join('');
 
   const note = $('#chart-note');
@@ -575,6 +593,90 @@ function renderChart() {
   if (clockStartIsKnown()) text += ' Times are clock times.';
   else text += ' Times are hours from the start of the analysed window.';
   note.textContent = text;
+}
+
+// ---------------------------------------------------------------------------
+// Compare with the sleep lab (UCDDB samples only)
+
+function compareHidden() {
+  $('#series-model').hidden = true;
+  $('#compare-lab').hidden = true;
+  $('#compare-summary').hidden = true;
+  $('#hypnogram-lab').innerHTML = '';
+}
+
+/** Draw the lab row and the agreement summary. Returns the aligned reference or null. */
+function renderCompare(width, animate) {
+  const r = state.report;
+  const sample = state.reportSample;
+  const note = $('#compare-unavailable');
+  compareHidden();
+  note.hidden = true;
+  note.textContent = '';
+  if (!r || !sample) return null; // uploads: no reference exists, the view is hidden
+  if (!sample.has_stage_reference) {
+    note.textContent = 'Compare with the sleep lab is not available for this sample: the Apnea-ECG database has no expert sleep-stage scoring, so there is no sleep lab hypnogram to compare with.';
+    note.hidden = false;
+    return null;
+  }
+  if (!state.reportReference) {
+    note.textContent = `Compare with the sleep lab is not available: the reference labels could not be loaded${state.reportReferenceError ? ` (${state.reportReferenceError})` : ''}.`;
+    note.hidden = false;
+    return null;
+  }
+  const aligned = alignReference(state.reportReference, r);
+  if (!aligned) {
+    note.textContent = 'Compare with the sleep lab is not available for this analysis window: lights off must fall on a whole minute of the recording.';
+    note.hidden = false;
+    return null;
+  }
+
+  const labReport = {
+    grid: r.grid,
+    stages: { [state.mode]: aligned.stages[state.mode] },
+    lowQuality: [],
+    apnea: { minute_s: (r.apnea && r.apnea.minute_s) || 60, labels: aligned.apnea },
+  };
+  $('#hypnogram-lab').innerHTML = hypnogramSvg({
+    report: labReport,
+    mode: state.mode,
+    width,
+    clockStartS: state.reportClockStartS,
+    animate,
+    idPrefix: `lab-${state.mode}`,
+    subject: 'Sleep lab reference hypnogram (polysomnography, scored by experts)',
+    apneaTitle: 'Scored apnea or hypopnea',
+    apneaPhrase: 'minutes with scored apnea or hypopnea',
+  });
+  $('#series-model').hidden = false;
+  $('#compare-lab').hidden = false;
+
+  const c = compareNight(r, aligned, state.mode);
+  const modeName = state.mode === 'sleep_wake' ? 'wake / sleep' : STAGE_MODES[state.mode].title;
+  const pair = (estimate, lab) => `<span class="compare-pair"><span class="who">Estimate</span><span class="val">${estimate}</span><span class="who">Sleep lab</span><span class="val">${lab}</span></span>`;
+  const unscored = c.nEpochs - c.nScored;
+  $('#compare-stats').innerHTML = `
+    <div class="compare-stat">
+      <dt>Epochs where both agree (${esc(modeName)})</dt>
+      <dd class="compare-value">${Number.isFinite(c.agreementPct) ? `${fmtNum(c.agreementPct, 0)}<span class="unit">%</span>` : '—'}</dd>
+      <dd class="help">${fmtNum(c.nScored, 0)} epochs of 30 s scored by the lab${unscored ? `; ${fmtNum(unscored, 0)} not scored are left out` : ''}.</dd>
+    </div>
+    <div class="compare-stat">
+      <dt>Total sleep time</dt>
+      <dd>${pair(esc(fmtHM(c.tstModelMin)), esc(fmtHM(c.tstLabMin)))}</dd>
+      <dd class="help">Difference ${fmtNum(c.tstModelMin - c.tstLabMin, 0, { sign: true })} min (estimate minus lab).</dd>
+    </div>
+    <div class="compare-stat">
+      <dt>Apnea minutes</dt>
+      <dd>${pair(`${fmtNum(c.apneaModelMin, 0)} min`, `${fmtNum(c.apneaLabMin, 0)} min`)}</dd>
+      <dd class="help">Estimate: suspected apnea minutes. Lab: minutes with a scored apnea or hypopnea.</dd>
+    </div>`;
+  const rec = sample.source && sample.source.record ? ` (UCDDB record ${sample.source.record})` : '';
+  $('#compare-caption').textContent = `This is one night of the external test set${rec}, which the model never saw during training. ` +
+    'The numbers are computed in your browser from the two charts above. One night says little on its own: ' +
+    'the overall error over all test nights is in “How far can you trust this?” below.';
+  $('#compare-summary').hidden = false;
+  return aligned;
 }
 
 function clockStartIsKnown() {

@@ -116,7 +116,7 @@ def load_cap(root: Path, rid: str) -> Record:
         k = int(round((t - t0) / EPOCH_S))
         stages[k] = s
     starts = t0 + np.arange(n) * EPOCH_S
-    keep = starts + EPOCH_S <= len(x) / fs + 1e-6
+    keep = (starts >= 0) & (starts + EPOCH_S <= len(x) / fs + 1e-6)  # epochs outside the ECG are dropped
     return Record("cap", rid, rid, x, fs, starts[keep], [s for s, k in zip(stages, keep) if k],
                   meta={"ecg_label": label})
 
@@ -160,12 +160,15 @@ def load_apnea_ecg(root: Path, rid: str) -> Record:
     return Record("apnea-ecg", rid, APNEA_ECG_SUBJECT.get(rid, rid), sig[:, 0], fs, apnea_minutes=lab, meta={"ecg_label": "ECG"})
 
 
-def list_records(raw: Path, cfg: dict) -> dict[str, list[str]]:
+def list_records(raw: Path, cfg: dict, include_hmc: bool = False) -> dict[str, list[str]]:
     raw = Path(raw)
     ucddb = [l[:-4] for l in (raw / "ucddb" / "RECORDS").read_text().split() if l.endswith(".rec")]
     slp = (raw / "slpdb" / "RECORDS").read_text().split()
-    return {"ucddb": ucddb, "slpdb": slp, "cap": list(cfg["datasets"]["cap"]["records"]),
-            "apnea-ecg": APNEA_ECG_LEARNING}
+    out = {"ucddb": ucddb, "slpdb": slp, "cap": list(cfg["datasets"]["cap"]["records"]),
+           "apnea-ecg": APNEA_ECG_LEARNING}
+    if include_hmc:  # v2 external test set; never part of the v1 default list
+        out["hmc"] = hmc_listed_records(raw / "hmc")
+    return out
 
 
 def load(raw: Path, dataset: str, rid: str, cfg: dict) -> Record:
@@ -178,4 +181,111 @@ def load(raw: Path, dataset: str, rid: str, cfg: dict) -> Record:
         return load_slpdb(raw / "slpdb", rid)
     if dataset == "apnea-ecg":
         return load_apnea_ecg(raw / "apnea-ecg", rid)
+    if dataset == "hmc":
+        return load_hmc(raw / "hmc", rid)
     raise ValueError(dataset)
+
+
+# ------------------------------------------------------------------ HMC (v2 external test set)
+# HMC Sleep Staging Database 1.1 (PhysioNet hmc-sleep-staging, CC BY 4.0), AASM scoring.
+# Test set only: nothing here may be used for fitting, normalization, selection or tuning.
+HMC_STAGES = {"Sleep stage W": "W", "Sleep stage R": "R", "Sleep stage N1": "S1",
+              "Sleep stage N2": "S2", "Sleep stage N3": "S3"}  # anything else -> None
+HMC_SCORING_COLUMNS = ["Date", "Time", "Recording onset", "Duration", "Annotation", "Linked channel"]
+
+
+def parse_hmc_scoring(path: Path) -> list[dict]:
+    """Rows of an HMC SN###_sleepscoring.txt file (comma-separated, header row first).
+
+    Date is dd.mm.yy and Time is hh.mm.ss[.mmm]; onset and duration are seconds
+    from the EDF start.
+    """
+    lines = [l for l in Path(path).read_text(errors="replace").splitlines() if l.strip()]
+    cols = [c.strip() for c in lines[0].split(",")]
+    if cols != HMC_SCORING_COLUMNS:
+        raise ValueError(f"{path}: unexpected scoring columns {cols}")
+    out = []
+    for l in lines[1:]:
+        p = [c.strip() for c in l.split(",")]
+        p += [""] * (len(cols) - len(p))
+        out.append({"date": p[0], "time": p[1], "onset_s": float(p[2]), "duration_s": float(p[3]),
+                    "annotation": p[4], "linked_channel": p[5]})
+    return out
+
+
+def hmc_clock(date: str, time: str) -> dt.datetime:
+    d, mo, y = (int(x) for x in date.split("."))
+    t = time.split(".")
+    us = int(round(float("0." + t[3]) * 1e6)) if len(t) > 3 else 0
+    return dt.datetime(2000 + y if y < 85 else 1900 + y, mo, d, int(t[0]), int(t[1]), int(t[2]), us)
+
+
+def _hmc_dir(root: Path) -> Path:
+    root = Path(root)
+    return root / "recordings" if (root / "recordings").is_dir() else root
+
+
+def load_hmc(root: Path, rid: str) -> Record:
+    """Load one HMC recording. `root` is data/raw/hmc (or its recordings/ folder).
+
+    Stages: W, R, N1 -> S1, N2 -> S2, N3 -> S3 (so light = N1 + N2 and deep = N3 via
+    config [stages]); any other stage label -> None. Epochs start at the listed
+    'Recording onset' (seconds from the EDF start); epochs that do not end
+    inside the ECG are dropped. meta lights_off_s / lights_on_s are the first
+    'Lights off' / last 'Lights on' onsets, or None when not annotated.
+    """
+    d = _hmc_dir(root)
+    x, fs, hdr, label = read_channel(d / f"{rid}.edf", r"^ECG$|ECG|EKG")
+    rows = parse_hmc_scoring(d / f"{rid}_sleepscoring.txt")
+    stage_rows = [r for r in rows if r["annotation"].startswith("Sleep stage")]
+    dur = len(x) / fs
+    keep = [r for r in stage_rows if r["onset_s"] + EPOCH_S <= dur + 1e-6]
+    # Lights offsets from the Date/Time column (ms precision); the onset column is rounded to ~6 digits.
+    clk = lambda r: round((hmc_clock(r["date"], r["time"]) - hdr.start).total_seconds(), 3)
+    off = [clk(r) for r in rows if r["annotation"] == "Lights off"]
+    on = [clk(r) for r in rows if r["annotation"] == "Lights on"]
+    other = sorted({r["annotation"] for r in rows
+                    if not r["annotation"].startswith("Sleep stage") and r["annotation"] not in ("Lights off", "Lights on")})
+    return Record("hmc", rid, rid, x, fs, np.array([r["onset_s"] for r in keep]),
+                  [HMC_STAGES.get(r["annotation"]) for r in keep],
+                  meta={"ecg_label": label, "raw_stages": [r["annotation"] for r in keep],
+                        "lights_off_s": off[0] if off else None, "lights_on_s": on[-1] if on else None,
+                        "other_annotations": other, "edf_start": hdr.start.isoformat()})
+
+
+def hmc_sha256_table(raw_hmc: Path) -> dict[str, str]:
+    """Map 'recordings/SN001.edf' -> expected SHA-256 from SHA256SUMS.txt."""
+    out = {}
+    for l in (Path(raw_hmc) / "SHA256SUMS.txt").read_text().splitlines():
+        p = l.split()
+        if len(p) == 2:
+            out[p[1]] = p[0]
+    return out
+
+
+def hmc_listed_records(raw_hmc: Path) -> list[str]:
+    """Record ids listed in the HMC RECORDS file (e.g. SN001)."""
+    return [Path(l).stem for l in (Path(raw_hmc) / "RECORDS").read_text().split() if l.endswith(".edf")]
+
+
+def _sha256_file(path: Path) -> str:
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def hmc_record_status(raw_hmc: Path, rid: str, sums: dict[str, str] | None = None) -> str:
+    """'ok' if the EDF and scoring txt exist, are non-empty and match SHA256SUMS.txt;
+    otherwise 'missing' or 'sha256_mismatch' (e.g. a download still in progress)."""
+    raw_hmc = Path(raw_hmc)
+    sums = sums if sums is not None else hmc_sha256_table(raw_hmc)
+    for rel in (f"recordings/{rid}.edf", f"recordings/{rid}_sleepscoring.txt"):
+        f = raw_hmc / rel
+        if not (f.exists() and f.stat().st_size > 0):
+            return "missing"
+        if rel not in sums or _sha256_file(f) != sums[rel]:
+            return "sha256_mismatch"
+    return "ok"

@@ -1479,7 +1479,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 10.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "brux2": {
         "edf_start": "2002-01-01T22:05:16",
@@ -1521,7 +1522,8 @@
         },
         "missing_epochs_inside_scoring": 8,
         "unscored_tail_s": 31.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins1": {
         "edf_start": "2006-01-01T18:05:58",
@@ -1561,7 +1563,8 @@
         },
         "missing_epochs_inside_scoring": 10,
         "unscored_tail_s": 4650.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins2": {
         "edf_start": "2007-01-01T18:25:37",
@@ -1599,7 +1602,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": -1.0,
-        "epochs_past_ecg_end_dropped": 1
+        "epochs_past_ecg_end_dropped": 1,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins3": {
         "edf_start": "1998-01-01T20:39:02",
@@ -1639,7 +1643,8 @@
         },
         "missing_epochs_inside_scoring": 11,
         "unscored_tail_s": -9.0,
-        "epochs_past_ecg_end_dropped": 1
+        "epochs_past_ecg_end_dropped": 1,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins4": {
         "edf_start": "2008-01-01T18:07:34",
@@ -1679,7 +1684,8 @@
         },
         "missing_epochs_inside_scoring": 15,
         "unscored_tail_s": 3811.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins5": {
         "edf_start": "2011-01-01T17:58:48",
@@ -1718,7 +1724,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins6": {
         "edf_start": "2002-01-01T18:46:57",
@@ -1758,7 +1765,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 2770.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins7": {
         "edf_start": "2011-01-01T19:58:14",
@@ -1797,7 +1805,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins8": {
         "edf_start": "2008-01-01T22:16:34",
@@ -1837,7 +1846,8 @@
         },
         "missing_epochs_inside_scoring": 7,
         "unscored_tail_s": 3210.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "ins9": {
         "edf_start": "1999-01-01T22:28:44",
@@ -1877,7 +1887,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 2010.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n1": {
         "edf_start": "2009-01-01T22:06:03",
@@ -1918,7 +1929,8 @@
         },
         "missing_epochs_inside_scoring": 7,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n10": {
         "edf_start": "2008-01-01T22:24:52",
@@ -1959,7 +1971,8 @@
         },
         "missing_epochs_inside_scoring": 8,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n11": {
         "edf_start": "2007-01-01T22:36:46",
@@ -2000,7 +2013,8 @@
         },
         "missing_epochs_inside_scoring": 2,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n12": {
         "edf_start": "2002-01-01T15:14:22",
@@ -2041,7 +2055,8 @@
         },
         "missing_epochs_inside_scoring": 6,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n13": {
         "edf_start": "2005-01-01T21:39:18",
@@ -2083,7 +2098,8 @@
         },
         "missing_epochs_inside_scoring": 18,
         "unscored_tail_s": 57.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n14": {
         "edf_start": "2005-01-01T22:09:32",
@@ -2124,7 +2140,8 @@
         },
         "missing_epochs_inside_scoring": 3,
         "unscored_tail_s": 151.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n15": {
         "edf_start": "2004-01-01T21:55:22",
@@ -2165,7 +2182,8 @@
         },
         "missing_epochs_inside_scoring": 1,
         "unscored_tail_s": 100.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n2": {
         "edf_start": "2009-01-01T19:12:06",
@@ -2205,7 +2223,8 @@
         },
         "missing_epochs_inside_scoring": 1,
         "unscored_tail_s": 2880.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n3": {
         "edf_start": "2009-01-01T22:15:42",
@@ -2245,7 +2264,8 @@
         },
         "missing_epochs_inside_scoring": 2,
         "unscored_tail_s": 1.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n4": {
         "edf_start": "2004-01-01T22:08:07",
@@ -2287,7 +2307,8 @@
         },
         "missing_epochs_inside_scoring": 32,
         "unscored_tail_s": 3700.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n5": {
         "edf_start": "2009-01-01T22:29:48",
@@ -2328,7 +2349,8 @@
         },
         "missing_epochs_inside_scoring": 1,
         "unscored_tail_s": 1.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n6": {
         "edf_start": "1999-01-01T22:33:09",
@@ -2368,7 +2390,8 @@
         },
         "missing_epochs_inside_scoring": 10,
         "unscored_tail_s": 95.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n7": {
         "edf_start": "1999-01-01T22:21:11",
@@ -2410,7 +2433,8 @@
         },
         "missing_epochs_inside_scoring": 11,
         "unscored_tail_s": -10.0,
-        "epochs_past_ecg_end_dropped": 1
+        "epochs_past_ecg_end_dropped": 1,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n8": {
         "edf_start": "2005-01-01T22:17:41",
@@ -2450,7 +2474,8 @@
         },
         "missing_epochs_inside_scoring": 9,
         "unscored_tail_s": 10.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "n9": {
         "edf_start": "2000-01-01T22:55:13",
@@ -2491,7 +2516,8 @@
         },
         "missing_epochs_inside_scoring": 8,
         "unscored_tail_s": 1041.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "narco1": {
         "edf_start": "2007-01-01T22:14:03",
@@ -2531,7 +2557,8 @@
         },
         "missing_epochs_inside_scoring": 8,
         "unscored_tail_s": 720.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "narco2": {
         "edf_start": "2007-01-01T21:50:53",
@@ -2570,7 +2597,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "narco3": {
         "edf_start": "2008-01-01T17:35:43",
@@ -2611,7 +2639,8 @@
         },
         "missing_epochs_inside_scoring": 17,
         "unscored_tail_s": -59.0,
-        "epochs_past_ecg_end_dropped": 2
+        "epochs_past_ecg_end_dropped": 2,
+        "epochs_before_ecg_start_dropped": 0
       },
       "narco4": {
         "edf_start": "2007-01-01T22:16:02",
@@ -2652,7 +2681,8 @@
         },
         "missing_epochs_inside_scoring": 14,
         "unscored_tail_s": 8280.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "narco5": {
         "edf_start": "2001-01-01T18:25:21",
@@ -2693,7 +2723,8 @@
         },
         "missing_epochs_inside_scoring": 3,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm1": {
         "edf_start": "2010-01-01T21:58:23",
@@ -2733,7 +2764,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": -90.0,
-        "epochs_past_ecg_end_dropped": 3
+        "epochs_past_ecg_end_dropped": 3,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm10": {
         "edf_start": "2011-01-01T22:41:46",
@@ -2773,7 +2805,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm2": {
         "edf_start": "2007-01-01T22:28:47",
@@ -2814,7 +2847,8 @@
         },
         "missing_epochs_inside_scoring": 1,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm3": {
         "edf_start": "2011-01-01T22:57:41",
@@ -2854,7 +2888,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm4": {
         "edf_start": "2009-01-01T20:27:19",
@@ -2894,7 +2929,8 @@
         },
         "missing_epochs_inside_scoring": 4,
         "unscored_tail_s": 4200.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm5": {
         "edf_start": "2009-01-01T20:16:16",
@@ -2934,7 +2970,8 @@
         },
         "missing_epochs_inside_scoring": 3,
         "unscored_tail_s": 6810.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm6": {
         "edf_start": "2007-01-01T18:28:17",
@@ -2973,7 +3010,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm7": {
         "edf_start": "2007-01-01T22:17:00",
@@ -3013,7 +3051,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm8": {
         "edf_start": "2008-01-01T21:51:17",
@@ -3053,7 +3092,8 @@
         },
         "missing_epochs_inside_scoring": 9,
         "unscored_tail_s": -29.0,
-        "epochs_past_ecg_end_dropped": 1
+        "epochs_past_ecg_end_dropped": 1,
+        "epochs_before_ecg_start_dropped": 0
       },
       "plm9": {
         "edf_start": "2008-01-01T22:01:40",
@@ -3094,7 +3134,8 @@
         },
         "missing_epochs_inside_scoring": 6,
         "unscored_tail_s": 1.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "rbd1": {
         "edf_start": "2002-01-01T20:32:49",
@@ -3135,7 +3176,8 @@
         },
         "missing_epochs_inside_scoring": 8,
         "unscored_tail_s": 1.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "rbd2": {
         "edf_start": "2007-01-01T21:45:55",
@@ -3175,7 +3217,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "rbd3": {
         "edf_start": "2011-01-01T22:01:37",
@@ -3214,7 +3257,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "rbd4": {
         "edf_start": "2009-01-01T18:46:00",
@@ -3254,7 +3298,8 @@
         },
         "missing_epochs_inside_scoring": 1,
         "unscored_tail_s": 5041.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "sdb1": {
         "edf_start": "2010-01-01T00:10:10",
@@ -3295,7 +3340,8 @@
         },
         "missing_epochs_inside_scoring": 6,
         "unscored_tail_s": 5100.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "sdb2": {
         "edf_start": "2008-01-01T21:50:52",
@@ -3336,7 +3382,8 @@
         },
         "missing_epochs_inside_scoring": 10,
         "unscored_tail_s": -29.0,
-        "epochs_past_ecg_end_dropped": 1
+        "epochs_past_ecg_end_dropped": 1,
+        "epochs_before_ecg_start_dropped": 0
       },
       "sdb3": {
         "edf_start": "2009-01-01T18:39:26",
@@ -3375,7 +3422,8 @@
         },
         "missing_epochs_inside_scoring": 0,
         "unscored_tail_s": 0.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       },
       "sdb4": {
         "edf_start": "2007-01-01T22:16:05",
@@ -3416,7 +3464,8 @@
         },
         "missing_epochs_inside_scoring": 25,
         "unscored_tail_s": 5130.0,
-        "epochs_past_ecg_end_dropped": 0
+        "epochs_past_ecg_end_dropped": 0,
+        "epochs_before_ecg_start_dropped": 0
       }
     }
   },
@@ -6333,14 +6382,14 @@
     {
       "dataset": "CAP",
       "check": "brux1 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1400.0,
         32330.0,
         32340.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6387,14 +6436,14 @@
     {
       "dataset": "CAP",
       "check": "brux2 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         180.0,
         31290.0,
         31321.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6441,14 +6490,14 @@
     {
       "dataset": "CAP",
       "check": "ins1 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         15870.0,
         43350.0,
         48000.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6493,14 +6542,14 @@
     {
       "dataset": "CAP",
       "check": "ins2 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1.0,
         50251.0,
         50250.0
       ],
       "pass": true,
-      "note": "1 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 1 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6546,14 +6595,14 @@
     {
       "dataset": "CAP",
       "check": "ins3 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         4900.0,
         30910.0,
         30901.0
       ],
       "pass": true,
-      "note": "1 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 1 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6599,14 +6648,14 @@
     {
       "dataset": "CAP",
       "check": "ins4 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         12390.0,
         34380.0,
         38191.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6651,14 +6700,14 @@
     {
       "dataset": "CAP",
       "check": "ins5 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         51600.0,
         51600.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6703,14 +6752,14 @@
     {
       "dataset": "CAP",
       "check": "ins6 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         13820.0,
         45530.0,
         48300.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6755,14 +6804,14 @@
     {
       "dataset": "CAP",
       "check": "ins7 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         44490.0,
         44490.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6808,14 +6857,14 @@
     {
       "dataset": "CAP",
       "check": "ins8 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1590.0,
         26790.0,
         30000.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6860,14 +6909,14 @@
     {
       "dataset": "CAP",
       "check": "ins9 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         31500.0,
         33510.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6913,14 +6962,14 @@
     {
       "dataset": "CAP",
       "check": "n1 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         210.0,
         34620.0,
         34620.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -6966,14 +7015,14 @@
     {
       "dataset": "CAP",
       "check": "n10 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         3600.0,
         29400.0,
         29400.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7019,14 +7068,14 @@
     {
       "dataset": "CAP",
       "check": "n11 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         30.0,
         31620.0,
         31620.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7072,14 +7121,14 @@
     {
       "dataset": "CAP",
       "check": "n12 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         29700.0,
         29700.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7126,14 +7175,14 @@
     {
       "dataset": "CAP",
       "check": "n13 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         270.0,
         29370.0,
         29427.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7179,14 +7228,14 @@
     {
       "dataset": "CAP",
       "check": "n14 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         360.0,
         29400.0,
         29551.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7232,14 +7281,14 @@
     {
       "dataset": "CAP",
       "check": "n15 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         240.0,
         29550.0,
         29650.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7285,14 +7334,14 @@
     {
       "dataset": "CAP",
       "check": "n2 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         11220.0,
         41220.0,
         44100.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7338,14 +7387,14 @@
     {
       "dataset": "CAP",
       "check": "n3 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         3030.0,
         33060.0,
         33061.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7392,14 +7441,14 @@
     {
       "dataset": "CAP",
       "check": "n4 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1710.0,
         32040.0,
         35740.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7445,14 +7494,14 @@
     {
       "dataset": "CAP",
       "check": "n5 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1200.0,
         31440.0,
         31441.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7498,14 +7547,14 @@
     {
       "dataset": "CAP",
       "check": "n6 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         330.0,
         31530.0,
         31625.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7552,14 +7601,14 @@
     {
       "dataset": "CAP",
       "check": "n7 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         29550.0,
         29540.0
       ],
       "pass": true,
-      "note": "1 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 1 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7605,14 +7654,14 @@
     {
       "dataset": "CAP",
       "check": "n8 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         30030.0,
         30040.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7658,14 +7707,14 @@
     {
       "dataset": "CAP",
       "check": "n9 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         60.0,
         30900.0,
         31941.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7711,14 +7760,14 @@
     {
       "dataset": "CAP",
       "check": "narco1 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         30.0,
         33120.0,
         33840.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7763,14 +7812,14 @@
     {
       "dataset": "CAP",
       "check": "narco2 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         34470.0,
         34470.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7816,14 +7865,14 @@
     {
       "dataset": "CAP",
       "check": "narco3 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         30.0,
         46110.0,
         46051.0
       ],
       "pass": true,
-      "note": "2 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 2 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7869,14 +7918,14 @@
     {
       "dataset": "CAP",
       "check": "narco4 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         120.0,
         31020.0,
         39300.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7922,14 +7971,14 @@
     {
       "dataset": "CAP",
       "check": "narco5 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         30.0,
         24480.0,
         24480.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -7974,14 +8023,14 @@
     {
       "dataset": "CAP",
       "check": "plm1 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         39570.0,
         39480.0
       ],
       "pass": true,
-      "note": "3 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 3 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8026,14 +8075,14 @@
     {
       "dataset": "CAP",
       "check": "plm10 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         30.0,
         30120.0,
         30120.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8079,14 +8128,14 @@
     {
       "dataset": "CAP",
       "check": "plm2 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         27090.0,
         27090.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8131,14 +8180,14 @@
     {
       "dataset": "CAP",
       "check": "plm3 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         25200.0,
         25200.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8184,14 +8233,14 @@
     {
       "dataset": "CAP",
       "check": "plm4 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         11820.0,
         37590.0,
         41790.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8237,14 +8286,14 @@
     {
       "dataset": "CAP",
       "check": "plm5 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         11130.0,
         35880.0,
         42690.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8289,14 +8338,14 @@
     {
       "dataset": "CAP",
       "check": "plm6 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         18150.0,
         37920.0,
         37920.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8341,14 +8390,14 @@
     {
       "dataset": "CAP",
       "check": "plm7 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1860.0,
         31560.0,
         31560.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8394,14 +8443,14 @@
     {
       "dataset": "CAP",
       "check": "plm8 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         5550.0,
         27600.0,
         27571.0
       ],
       "pass": true,
-      "note": "1 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 1 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8447,14 +8496,14 @@
     {
       "dataset": "CAP",
       "check": "plm9 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1260.0,
         31440.0,
         31441.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8500,14 +8549,14 @@
     {
       "dataset": "CAP",
       "check": "rbd1 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         9270.0,
         30270.0,
         30271.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8552,14 +8601,14 @@
     {
       "dataset": "CAP",
       "check": "rbd2 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         35820.0,
         35820.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8604,14 +8653,14 @@
     {
       "dataset": "CAP",
       "check": "rbd3 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         0.0,
         36300.0,
         36300.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8657,14 +8706,14 @@
     {
       "dataset": "CAP",
       "check": "rbd4 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         5940.0,
         46500.0,
         51541.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8710,14 +8759,14 @@
     {
       "dataset": "CAP",
       "check": "sdb1 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         30.0,
         23160.0,
         28260.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8763,14 +8812,14 @@
     {
       "dataset": "CAP",
       "check": "sdb2 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         330.0,
         30810.0,
         30781.0
       ],
       "pass": true,
-      "note": "1 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 1 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8815,14 +8864,14 @@
     {
       "dataset": "CAP",
       "check": "sdb3 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         6990.0,
         30780.0,
         30780.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "CAP",
@@ -8868,14 +8917,14 @@
     {
       "dataset": "CAP",
       "check": "sdb4 stages inside EDF",
-      "expected": "first >= 0; at most 3 epochs past ECG end (dropped)",
+      "expected": "at most 5 epochs outside the ECG (dropped)",
       "observed": [
         1110.0,
         33960.0,
         39090.0
       ],
       "pass": true,
-      "note": "0 trailing epochs extend past the ECG and are dropped"
+      "note": "0 leading and 0 trailing epochs fall outside the ECG and are dropped"
     },
     {
       "dataset": "slpdb",
