@@ -25,7 +25,9 @@ TMP = OUT / "build"
 W, H, FPS = 1920, 1080, 30
 LEAD_IN, TAIL = 0.6, 1.0
 ORDER = [("intro", "N0"), ("start", "N1"), ("report", "N2"), ("compare", "N3"), ("failure", "N4"),
-         ("trust", "N5"), ("method", "N6"), ("outro", "N7")]
+         ("apnea", "N5"), ("noisy", "N6"), ("trust", "N7"), ("method", "N8"), ("harm", "N9"), ("outro", "N10")]
+MUSIC_GAIN = 0.03          # quiet bed: music-only stretches sit about 18 dB under the voice
+MUSIC_DUCK = "threshold=0.015:ratio=12:attack=30:release=900:makeup=1"
 CARD_LEN = {"intro": 7.0, "outro": 8.0}
 FAST_TARGET_S = 2.5  # the in-browser computation is shown in this many seconds
 FONT = "/System/Library/Fonts/Helvetica.ttc"
@@ -248,15 +250,35 @@ def main() -> None:
         filt.append(f"[{n0 + j}:a]aresample=48000,aformat=channel_layouts=stereo,adelay={int(starts[b] * 1000)}:all=1[n{j}]")
     filt.append("".join(f"[n{j}]" for j in range(len(beats))) +
                 f"amix=inputs={len(beats)}:normalize=0,apad=whole_dur={total:.3f},asplit=2[voice][sc]")
-    filt.append(f"[{music_idx}:a]aresample=48000,atrim=0:{total:.3f},volume=0.30,"
+    filt.append(f"[{music_idx}:a]aresample=48000,atrim=0:{total:.3f},volume={MUSIC_GAIN},"
                 f"afade=t=in:st=0:d=2.5,afade=t=out:st={total - 4:.3f}:d=4[mus]")
-    filt.append("[mus][sc]sidechaincompress=threshold=0.03:ratio=6:attack=40:release=600[duck]")
+    filt.append(f"[mus][sc]sidechaincompress={MUSIC_DUCK}[duck]")
     filt.append("[voice][duck]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[aout]")
 
+    # Render picture and sound separately, then mux. Encoding both from one filter graph
+    # left gaps in the audio timestamps (narration drifted by ~8 s); a WAV render is exact.
+    vfilt = [x for x in filt if x.endswith("[vcap]")]
+    afilt = [x for x in filt if not x.endswith("[vcap]")]
+    video_only = TMP / "video_only.mp4"
+    run(["ffmpeg", "-v", "error", "-y", *inputs[:n0 * 2], "-filter_complex", ";".join(vfilt),
+         "-map", last, "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
+         "-t", f"{total:.3f}", str(video_only)])
+    audio_inputs = inputs[n0 * 2:]
+    afilt_rebased = []
+    for x in afilt:
+        for j in range(len(beats) + 1):
+            x = x.replace(f"[{n0 + j}:a]", f"[A{j}:a]")
+        for j in range(len(beats) + 1):
+            x = x.replace(f"[A{j}:a]", f"[{j}:a]")
+        afilt_rebased.append(x)
+    audio_wav = TMP / "audio.wav"
+    run(["ffmpeg", "-v", "error", "-y", *audio_inputs, "-filter_complex", ";".join(afilt_rebased),
+         "-map", "[aout]", "-ar", "48000", "-t", f"{total:.3f}", str(audio_wav)])
     out = OUT / "somnibeat_demo.mp4"
-    run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(filt),
-         "-map", last, "-map", "[aout]", "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
-         "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-t", f"{total:.3f}", "-movflags", "+faststart", str(out)])
+    run(["ffmpeg", "-v", "error", "-y", "-i", str(video_only), "-i", str(audio_wav), "-map", "0:v", "-map", "1:a",
+         "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-t", f"{total:.3f}",
+         "-movflags", "+faststart", str(out)])
+    (TMP / "timeline.json").write_text(json.dumps({"total": total, "narration_starts": starts}, indent=2))
     srt = "".join(f"{i + 1}\n{srt_time(a)} --> {srt_time(b)}\n{text}\n\n" for i, (a, b, text) in enumerate(cues))
     (OUT / "somnibeat_demo.srt").write_text(srt)
     print(f"wrote {out} ({total:.1f}s), {len(cues)} captions")

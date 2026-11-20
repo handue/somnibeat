@@ -182,9 +182,62 @@ def scene_method(page, rec, need):
     rec.stop(need)
 
 
+def open_report_quietly(page, title):
+    """Open a sample and wait for its report before recording starts (no processing screen)."""
+    page.goto(SITE + "#/", wait_until="networkidle")
+    page.wait_for_timeout(500)
+    click_sample(page, title)
+    wait_report(page)
+    page.wait_for_timeout(1500)
+
+
+def scene_apnea(page, rec, need):
+    open_report_quietly(page, "Many suspected apnea minutes")
+    y = page.evaluate(TOP_OF, ["h2", "Night report", 30])
+    page.evaluate("y => window.scrollTo(0, y)", y or 0)
+    page.wait_for_timeout(300)
+    rec.start()
+    rec.hold(2.5)
+    scroll_to(page, "h2", "Sleep stages across the night", offset=40, ms=1800)
+    rec.hold(4.0)
+    scroll_to(page, "h3, h2, p, div", "Sleep lab (polysomnography", offset=360, ms=1600)
+    rec.stop(need)
+
+
+def scene_noisy(page, rec, need):
+    open_report_quietly(page, "A noisy night")
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(300)
+    rec.start()
+    rec.hold(3.0)
+    scroll_to(page, "h2", "Sleep stages across the night", offset=40, ms=1800)
+    rec.stop(need)
+
+
+def scene_trust_on(page, rec, need):
+    open_report_quietly(page, "A typical night")
+    y = page.evaluate(TOP_OF, ["h2", "Sleep stages across the night", 40])
+    page.evaluate("y => window.scrollTo(0, y)", y or 0)
+    page.wait_for_timeout(500)
+    scene_trust(page, rec, need)
+
+
+def scene_harm(page, rec, need):
+    page.goto(SITE + "#/method", wait_until="networkidle")
+    page.wait_for_timeout(600)
+    y = page.evaluate(TOP_OF, ["h2", "Who benefits, and who could be harmed", 30])
+    page.evaluate("y => window.scrollTo(0, y)", y or 0)
+    page.wait_for_timeout(500)
+    rec.start()
+    rec.hold(5.0)
+    scroll_to(page, "h2", "Limitations", offset=200, ms=2200)
+    rec.stop(need)
+
+
 SCENES = {"start": ("N1", scene_start), "report": ("N2", scene_report), "compare": ("N3", scene_compare),
-          "failure": ("N4", scene_failure), "trust": ("N5", scene_trust), "method": ("N6", scene_method)}
-ORDER = ["start", "report", "compare", "failure", "trust", "method"]
+          "failure": ("N4", scene_failure), "apnea": ("N5", scene_apnea), "noisy": ("N6", scene_noisy),
+          "trust": ("N7", scene_trust_on), "method": ("N8", scene_method), "harm": ("N9", scene_harm)}
+ORDER = ["start", "report", "compare", "failure", "apnea", "noisy", "trust", "method", "harm"]
 
 
 def main(names: list[str]) -> None:
@@ -196,9 +249,8 @@ def main(names: list[str]) -> None:
         for name in ORDER:
             beat, fn = SCENES[name]
             need = LEAD_IN + timings[beat]["duration"] + TAIL
-            if names and name not in names and name not in ("report",):
-                # 'compare' and 'trust' continue the previous page state; run their parents too
-                continue
+            if names and name not in names and not (name == "report" and "compare" in names):
+                continue  # 'compare' continues the report scene's page state
             rec = Recorder(page, name)
             fn(page, rec, need)
         browser.close()
