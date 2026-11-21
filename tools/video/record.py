@@ -140,26 +140,76 @@ pre b{{color:#4FD1C5;font-weight:600}}
 Recording from the open UCDDB research dataset (PhysioNet)</div>
 </div></div></body></html>"""
 
-CURSOR = """async ([sel, ms]) => {
-  let c = document.getElementById('demo-cursor');
-  if (!c) {
-    c = document.createElement('div'); c.id = 'demo-cursor';
-    c.style.cssText = 'position:fixed;left:0;top:0;width:22px;height:22px;border-radius:50%;z-index:99999;' +
-      'background:rgba(242,244,247,.9);box-shadow:0 0 0 3px rgba(0,0,0,.6);pointer-events:none;' +
-      'transform:translate(1100px,700px);transition:transform ' + ms + 'ms cubic-bezier(.4,0,.2,1)';
-    document.body.appendChild(c);
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-  }
-  const r = document.querySelector(sel).getBoundingClientRect();
-  c.style.transform = `translate(${r.left + r.width / 2 - 11}px, ${r.top + r.height / 2 - 11}px)`;
-  await new Promise(res => setTimeout(res, ms + 50));
-  c.animate([{transform: c.style.transform + ' scale(1)'}, {transform: c.style.transform + ' scale(.7)'},
-             {transform: c.style.transform + ' scale(1)'}], {duration: 260});
+
+
+# Drag-and-drop as a person does it: a file window, the cursor picks up the file and drops it on the
+# page's drop zone. The window, icon and cursor are drawn for the video; the drop itself is a real
+# DragEvent carrying the real file, handled by the site's own drop handler (web/js/app.js).
+DRAG_DROP = """async ([name, text]) => {
+  const css = document.createElement('style');
+  css.textContent = `
+  #demo-win{position:fixed;left:70px;top:470px;width:420px;background:#14171C;border:1px solid #2A303A;border-radius:12px;
+    box-shadow:0 18px 50px rgba(0,0,0,.6);z-index:99990;font:14px -apple-system,Helvetica,sans-serif;color:#C9CED6;
+    opacity:0;transform:translateY(16px);transition:opacity .45s,transform .45s}
+  #demo-win.on{opacity:1;transform:none}
+  #demo-win .bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid #2A303A}
+  #demo-win .dot{width:12px;height:12px;border-radius:50%}
+  #demo-win .ttl{margin-left:10px;color:#F2F4F7;font-weight:600}
+  #demo-win .body{padding:22px 26px;display:flex;gap:30px}
+  .demo-file{width:96px;text-align:center;font-size:13px;color:#F2F4F7}
+  .demo-file .ic{width:54px;height:66px;margin:0 auto 8px;background:#F2F4F7;border-radius:4px;position:relative;
+    clip-path:polygon(0 0,72% 0,100% 22%,100% 100%,0 100%)}
+  .demo-file .ic b{position:absolute;bottom:9px;left:0;right:0;font:700 11px Helvetica;color:#0A7A6F}
+  .demo-file.sel .nm{background:#2B5FD9;border-radius:4px;padding:1px 4px}
+  .demo-file.dim{opacity:.35}
+  #demo-ghost{position:fixed;left:0;top:0;z-index:99998;pointer-events:none;opacity:.85}
+  #demo-cursor{position:fixed;left:0;top:0;width:22px;height:22px;border-radius:50%;z-index:99999;pointer-events:none;
+    background:rgba(242,244,247,.92);box-shadow:0 0 0 3px rgba(0,0,0,.6)}`;
+  document.head.appendChild(css);
+  const win = document.createElement('div');
+  win.id = 'demo-win';
+  win.innerHTML = `<div class="bar"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span>
+    <span class="dot" style="background:#28C840"></span><span class="ttl">Downloads</span></div>
+    <div class="body"><div class="demo-file" id="demo-src"><div class="ic"><b>CSV</b></div><div class="nm">${name}</div></div>
+    <div class="demo-file dim"><div class="ic"><b>PDF</b></div><div class="nm">sleep_notes.pdf</div></div></div>`;
+  document.body.appendChild(win);
+  const cur = document.createElement('div'); cur.id = 'demo-cursor'; document.body.appendChild(cur);
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let cx = 900, cy = 760;
+  const place = (el, x, y) => { el.style.transform = `translate(${x}px, ${y}px)`; };
+  place(cur, cx, cy);
+  const move = async (x, y, ms, ghost) => {
+    const x0 = cx, y0 = cy, t0 = performance.now();
+    await new Promise(res => { const step = now => {
+      const k = Math.min(1, (now - t0) / ms), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      cx = x0 + (x - x0) * e; cy = y0 + (y - y0) * e; place(cur, cx - 11, cy - 11);
+      if (ghost) place(ghost, cx - 40, cy - 30);
+      k < 1 ? requestAnimationFrame(step) : res(); }; requestAnimationFrame(step); });
+  };
+  await sleep(100); win.classList.add('on'); await sleep(700);
+  const src = document.getElementById('demo-src').getBoundingClientRect();
+  await move(src.left + src.width / 2, src.top + 34, 900);
+  document.getElementById('demo-src').classList.add('sel');
+  await sleep(350);
+  const ghost = document.getElementById('demo-src').cloneNode(true); ghost.id = 'demo-ghost'; ghost.classList.remove('sel');
+  document.body.appendChild(ghost); place(ghost, cx - 40, cy - 30);
+  const dt = new DataTransfer();
+  dt.items.add(new File([text], name, {type: 'text/csv'}));
+  const zone = document.getElementById('drop-zone');
+  const z = zone.getBoundingClientRect();
+  const tx = z.left + z.width / 2, ty = z.top + z.height / 2;
+  await move(src.left + 160, src.top - 60, 350, ghost);
+  zone.dispatchEvent(new DragEvent('dragenter', {dataTransfer: dt, bubbles: true, cancelable: true}));
+  await move(tx, ty, 1100, ghost);
+  zone.dispatchEvent(new DragEvent('dragover', {dataTransfer: dt, bubbles: true, cancelable: true}));
+  await sleep(450);
+  for (const el of [ghost, win, cur]) el.remove();
+  zone.dispatchEvent(new DragEvent('drop', {dataTransfer: dt, bubbles: true, cancelable: true}));
 }"""
 
 
 def scene_report(page, rec, need):
-    """Show the file, then upload it on the start page and wait for the report."""
+    """Show the file, then drag it from a file window onto the start page and wait for the report."""
     text = SAMPLE_FILE.read_text()
     rows = text.split()
     lines = "<b>" + rows[0] + "</b>\n" + "\n".join(rows[1:13]) + "\n…"
@@ -172,11 +222,7 @@ def scene_report(page, rec, need):
     page.goto(SITE + "#/", wait_until="networkidle")
     page.wait_for_timeout(600)
     rec.hold(1.2)
-    page.evaluate(CURSOR, ["#btn-upload", 1100])
-    with page.expect_file_chooser() as fc:
-        page.click("#btn-upload")
-    fc.value.set_files(str(SAMPLE_FILE))
-    page.evaluate("document.getElementById('demo-cursor')?.remove()")
+    page.evaluate(DRAG_DROP, [SAMPLE_FILE.name, text])
     rec.mark("processing")
     wait_report(page)
     rec.mark("report")

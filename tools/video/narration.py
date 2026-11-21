@@ -78,7 +78,7 @@ def main() -> None:
                       "and the interval in milliseconds. "
                       "Load that file into Somnibeat, and its AI reads the night thirty seconds at a time."),
         ("N2", "report", f"Here is a real overnight recording from an open research dataset, {beats_txt}. "
-                         "We upload the file on the page, and in seconds the report appears: total sleep time, "
+                         "We drop the file onto the page, and in seconds the report appears: total sleep time, "
                          "sleep efficiency, wake bouts, and minutes with suspected sleep apnea. "
                          "The file is read right here in the browser, and never sent to a server."),
         ("N3", "compare", f"Behind it is a machine-learning model, trained on {words(n_train)} overnight recordings "
