@@ -71,7 +71,8 @@ def main() -> None:
                       "and every beat makes a sharp spike. The time from one spike to the next is the heartbeat interval. "
                       "You can record it at home: a Holter monitor, a portable ECG your doctor can order, "
                       f"costs from about {holter_txt}, and an ECG chest strap sold for sport costs about {strap_txt}. "
-                      "Somnibeat itself is free, and runs in any web browser."),
+                      "With Somnibeat, a night recorded this way becomes a sleep report, "
+                      "at a much lower cost than a night in a sleep lab."),
         ("NH", "how", "First, record your heart overnight with an ECG. "
                       "Our converter turns the recording into a simple table, with the time in seconds "
                       "and the interval in milliseconds. "

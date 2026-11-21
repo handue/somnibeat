@@ -27,6 +27,7 @@ LEAD_IN, TAIL = 0.6, 1.0
 ORDER = [("intro", "N0"), ("start", "N1"), ("ecg", "NE"), ("how", "NH"), ("report", "N2"), ("compare", "N3"), ("apnea", "N4"),
          ("noisy", "N5"), ("trust", "N6"), ("method", "N7"), ("outro", "N8")]
 CARD_LEN = {"intro": 7.0, "outro": 8.0}
+SCENE_FADE = 0.45  # each recorded scene fades in from and out to black (cards fade too)
 FAST_TARGET_S = 2.5  # the in-browser computation is shown in this many seconds
 FONT = "/System/Library/Fonts/Helvetica.ttc"
 SITE_URL = "handue.github.io/somnibeat"
@@ -64,7 +65,7 @@ def render_cards() -> dict[str, Path]:
                                   '<div class="pill">Research prototype · not a diagnostic tool</div>', credits=credits)
     paths = {}
     hows = [how_card(k) for k in range(4)]  # 0: steps dimmed, k: steps 1..k lit
-    ecgs = [ecg_card(k) for k in range(3)]  # 0: trace, 1: + prices, 2: + Somnibeat
+    ecgs = [ecg_card(k) for k in range(3)]  # 0: trace, 1: + prices, 2: + Somnibeat line
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=1)
@@ -138,6 +139,7 @@ ECG_CSS = """<style>
 .bar{height:22px;border-radius:6px;background:#5B7FA6}
 .price{font-size:26px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
 .hide{visibility:hidden}
+.note{font-size:24px;color:#4FD1C5;font-weight:600;margin-top:22px}
 .foot{font-size:17px;color:#969FAC;margin-top:18px}
 </style>"""
 
@@ -173,7 +175,8 @@ def ecg_card(stage: int) -> str:
     rows = (row("Sleep lab night", "US average; waits can take months", lab, f"${lab:,}", "#969FAC", stage < 1)
             + row("Holter monitor", "portable ECG worn at home, doctor's order", h_hi, f"${h_lo}–{h_hi}", "#5B7FA6", stage < 1)
             + row("ECG chest strap", "sold for sport", strap, f"about ${strap}", "#5B7FA6", stage < 1)
-            + row("Somnibeat", "runs in your browser", 0, "free", "#4FD1C5", stage < 2))
+            + f'<div class="note{" hide" if stage < 2 else ""}">With Somnibeat, a night recorded this way '
+              'becomes a sleep report.</div>')
     right = (f'<div class="panel" style="width:860px"><div class="k">WHAT IT COSTS TO RECORD A NIGHT</div>{rows}'
              '<div class="foot">US prices, 2026; they vary by insurance, state and seller. Sources: Sleep Foundation, MDsave, '
              'Polar (see SOURCES.md). Somnibeat\'s accuracy was measured on clinical ECG recordings.</div></div>')
@@ -229,7 +232,8 @@ def scene_clip(name: str, min_len: float) -> tuple[Path, float, tuple[float, flo
     lst.write_text("\n".join(lines) + "\n")
     clip = TMP / f"{name}.mp4"
     run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst),
-         "-vf", f"{crop_filter(meta, frames[0][1])}scale={W}:{H}:flags=lanczos,fps={FPS},format=yuv420p",
+         "-vf", f"{crop_filter(meta, frames[0][1])}scale={W}:{H}:flags=lanczos,fps={FPS},format=yuv420p,"
+                f"fade=t=in:st=0:d={SCENE_FADE},fade=t=out:st={out_len - SCENE_FADE:.3f}:d={SCENE_FADE}",
          "-t", f"{out_len:.3f}",
          "-c:v", "libx264", "-preset", "slow", "-crf", "16", str(clip)])
     return clip, out_len, fast
@@ -316,7 +320,7 @@ def main() -> None:
         if name == "ecg":
             length = need
             sw = [LEAD_IN + c["start"] for c in timings[beat]["cues"]]
-            # prices with the third sentence, the free Somnibeat row with the fourth
+            # prices with the third sentence, the Somnibeat line with the fourth
             clip = steps_clip(name, [cards[f"ecg{k}"] for k in range(3)], [sw[2], sw[3]], length)
         elif name == "how":
             length = need
