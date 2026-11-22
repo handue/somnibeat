@@ -67,13 +67,13 @@ def main() -> None:
                         f"{lab_txt} on average, and the wait can take months. "
                         "Yet the heart keeps its own record of the night: the time between heartbeats "
                         "shifts as we fall asleep, dream, and wake."),
-        ("NE", "ecg", "That record is an ECG: small pads on the skin pick up the heart's electrical signal, "
+        ("NE", "ecg", "The file comes from an ECG: small pads on the skin pick up the heart's electrical signal, "
                       "and every beat makes a sharp spike. The time from one spike to the next is the heartbeat interval. "
                       "You can record it at home: a Holter monitor, a portable ECG your doctor can order, "
                       f"costs from about {holter_txt}, and an ECG chest strap sold for sport costs about {strap_txt}. "
                       "With Somnibeat, a night recorded this way becomes a sleep report, "
                       "at a much lower cost than a night in a sleep lab."),
-        ("NH", "how", "First, record your heart overnight with an ECG. "
+        ("NH", "how", "To use it yourself, first record your heart overnight with an ECG. "
                       "Our converter turns the recording into a simple table, with the time in seconds "
                       "and the interval in milliseconds. "
                       "Load that file into Somnibeat, and its AI reads the night thirty seconds at a time."),

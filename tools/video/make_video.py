@@ -24,8 +24,9 @@ OUT = ROOT / "tools/video/out"
 TMP = OUT / "build"
 W, H, FPS = 1920, 1080, 30
 LEAD_IN, TAIL = 0.6, 1.0
-ORDER = [("intro", "N0"), ("start", "N1"), ("ecg", "NE"), ("how", "NH"), ("report", "N2"), ("compare", "N3"), ("apnea", "N4"),
-         ("noisy", "N5"), ("trust", "N6"), ("method", "N7"), ("outro", "N8")]
+ORDER = [("intro", "N0"), ("start", "N1"), ("report", "N2"), ("compare", "N3"), ("ecg", "NE"), ("how", "NH"),
+         ("apnea", "N4"), ("noisy", "N5"), ("trust", "N6"), ("method", "N7"), ("outro", "N8")]
+# The working demo (upload -> report) comes right after the problem, so it is on screen within 60 s.
 CARD_LEN = {"intro": 7.0, "outro": 8.0}
 SCENE_FADE = 0.45  # each recorded scene fades in from and out to black (cards fade too)
 FAST_TARGET_S = 2.5  # the in-browser computation is shown in this many seconds
