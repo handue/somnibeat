@@ -12,3 +12,10 @@ results/v2/models/
 tools/video/.venv/
 tools/video/out/
 private/
+
+# local-only (not for the public repository)
+wireframes/
+.claude/
+results/v2/dry_run.log
+results/v2/final_run.log
+results/v2/parts/run_apnea.log
