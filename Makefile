@@ -2,7 +2,7 @@ PY ?= .venv/bin/python
 CONFIG ?= config/default.toml
 V2_CONFIG ?= config/v2.toml
 
-.PHONY: reproduce reproduce-v1 setup download check features rpeaks evaluate web docs parity test clean-results
+.PHONY: reproduce reproduce-v1 setup download check features rpeaks evaluate web docs parity ecg-parity test clean-results
 .PHONY: v2 v2-download v2-check v2-features v2-select v2-decide v2-evaluate
 
 # Targets depend on each other through files in data/ and results/, not through make rules:
@@ -15,7 +15,7 @@ V2_CONFIG ?= config/v2.toml
 reproduce:
 	$(MAKE) reproduce-v1
 	$(MAKE) v2
-	$(MAKE) web web-v2 docs parity test
+	$(MAKE) web web-v2 ecg-parity docs parity test
 
 ## v1 only (the original pipeline, tag v1-results)
 reproduce-v1: setup download check features rpeaks evaluate web docs parity test
@@ -102,6 +102,10 @@ docs:
 ## Python/JavaScript parity tests (needs node)
 parity:
 	$(PY) -m pytest -q tests/test_parity_*.py
+
+# Browser ECG reader (web/js/ecg.js) vs the evaluated RR series on every EDF recording (needs Node).
+ecg-parity:
+	$(PY) scripts/check_ecg_parity.py
 
 test:
 	$(PY) -m pytest -q tests

@@ -103,7 +103,7 @@ def main() -> None:
                       f"On {words(n_rec_parity)} recordings, it finds the same heartbeats as our evaluation code: "
                       f"of {millions_txt} intervals, all but {words(n_diff)} are identical. "
                       "It also catches files in the wrong units, and works better with a keyboard or screen reader. "
-                      "And one command still rebuilds every number, byte for byte."),
+                      "And one command still rebuilds every result from the raw data."),
         ("NL", "limits", "Somnibeat is a research prototype, not a diagnosis. Its accuracy was measured on clinical ECG "
                          "recordings, not yet on chest straps, and the three- and four-stage views are experimental."),
         ("N8", "outro", "Somnibeat is open source, built with help from the Claude Code assistant and checked by tests. "
