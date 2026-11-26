@@ -99,15 +99,9 @@ def main() -> None:
         ("N6", "trust", f"Every number comes with its measured accuracy, from {words(n_primary)} nights "
                         "in a sleep clinic that the model had never seen. Version two agrees more closely "
                         "with the sleep experts than version one, and the page shows exactly how much."),
-        ("NN", "new", "New in this version: Somnibeat reads the ECG file itself, in the browser. "
-                      f"On {words(n_rec_parity)} recordings, it finds the same heartbeats as our evaluation code: "
-                      f"of {millions_txt} intervals, all but {words(n_diff)} are identical. "
-                      "It also catches files in the wrong units, and works better with a keyboard or screen reader. "
-                      "And one command still rebuilds every result from the raw data."),
         ("NL", "limits", "Somnibeat is a research prototype, not a diagnosis. Its accuracy was measured on clinical ECG "
                          "recordings, not yet on chest straps, and the three- and four-stage views are experimental."),
-        ("N8", "outro", "Somnibeat is open source, built with help from the Claude Code assistant and checked by tests. "
-                        "Try it with your own file, or a sample night, at the address on screen."),
+        ("N8", "outro", "Somnibeat is open source. Try it with your own file, or a sample night, at the address on screen."),
     ]
     OUT.mkdir(parents=True, exist_ok=True)
     data = {"source": {"results_json": "web/data/results.json", "hmc_primary_records": n_primary,
