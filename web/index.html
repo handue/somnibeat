@@ -38,8 +38,8 @@
         <p class="lead">Get total sleep time, sleep efficiency, wake bouts and suspected sleep-apnea minutes, plus how far this kind of estimate can differ from a hospital sleep study.</p>
         <div class="button-row">
           <button type="button" class="btn btn-primary" id="btn-samples">Load a sample</button>
-          <button type="button" class="btn btn-secondary" id="btn-upload">Upload your file (RR CSV)</button>
-          <input type="file" id="file-input" accept=".csv,text/csv,text/plain" class="visually-hidden" tabindex="-1" aria-hidden="true">
+          <button type="button" class="btn btn-secondary" id="btn-upload">Upload your file (ECG or RR)</button>
+          <input type="file" id="file-input" accept=".edf,.rec,.csv,.txt,text/csv,text/plain" class="visually-hidden" tabindex="-1" aria-hidden="true">
         </div>
         <fieldset class="clock-fields">
           <legend>Optional clock times</legend>
@@ -60,12 +60,12 @@
           <p id="clock-help" class="caption">With the recording start time, the chart shows clock times. Lights off and lights on limit the analysis to time in bed and need the recording start time.</p>
           <p id="clock-message" class="inline-message" role="status" aria-live="polite" hidden></p>
         </fieldset>
-        <p class="body-muted small">Your file is never sent to a server; everything is computed in this browser. Expected columns: <code>time_s</code>, <code>rr_ms</code>.</p>
-        <p class="body-muted small">Only have the raw ECG (for example an EDF file from a sleep lab or Holter)? <a href="https://github.com/handue/somnibeat#from-an-ecg-recording-to-the-rr-file" target="_blank" rel="noopener">Convert it to this file</a> with <code>scripts/ecg_to_rr.py</code>.</p>
+        <p class="body-muted small">Your file is never sent to a server; everything is computed in this browser.</p>
+        <p class="body-muted small">Accepted files: an overnight ECG in EDF (<code>.edf</code>, <code>.rec</code>, as exported by sleep labs and Holter recorders), the RR export of an ECG chest strap app, or a CSV with the columns <code>time_s</code> and <code>rr_ms</code>. <a href="https://github.com/handue/somnibeat#from-an-ecg-recording-to-the-rr-file" target="_blank" rel="noopener">More about the file formats</a>.</p>
       </div>
 
       <div class="card drop-zone" id="drop-zone">
-        <div class="caption">Drop an RR CSV file here</div>
+        <div class="caption">Drop an ECG (EDF) or RR file here</div>
         <div class="preview-tiles" aria-hidden="true">
           <div class="preview-tile"><div class="caption">Total sleep time</div><div class="preview-value num">— h — m</div></div>
           <div class="preview-tile"><div class="caption">Sleep efficiency</div><div class="preview-value num">— %</div></div>
@@ -106,6 +106,7 @@
       </div>
       <ol class="steps" id="steps" aria-live="polite">
         <li data-step="read"><span>Reading the file</span><span class="step-status">Waiting</span></li>
+        <li data-step="ecg" hidden><span>Finding heartbeats in the ECG</span><span class="step-status">Waiting</span></li>
         <li data-step="beats"><span>Finding usable heartbeats</span><span class="step-status">Waiting</span></li>
         <li data-step="features"><span>Computing 30-second and 10-minute features</span><span class="step-status">Waiting</span></li>
         <li data-step="report"><span>Building the report</span><span class="step-status">Waiting</span></li>
@@ -187,6 +188,10 @@
       <p class="caption compare-unavailable" id="compare-unavailable" hidden></p>
       <p class="caption" id="chart-note">Stages are shown by row position and text labels as well as color.</p>
       <p class="caption" id="quality-line"></p>
+      <div class="conversion" id="conversion" hidden>
+        <p class="caption" id="conversion-line"></p>
+        <button type="button" class="btn btn-secondary btn-small" id="btn-save-rr">Save the RR file (CSV)</button>
+      </div>
     </div>
 
     <div class="trust-grid">
@@ -339,6 +344,11 @@
         <li>RR values should be in milliseconds, one row per heartbeat.</li>
         <li><code>time_s</code> is the time of each beat in seconds since the recording started, increasing row by row.</li>
         <li id="problem-min-hours">The recording needs enough hours of beats to make a report.</li>
+      </ul>
+      <ul class="bullets" id="problem-requirements-ecg" hidden>
+        <li>An ECG recording in EDF format (<code>.edf</code> or <code>.rec</code>, 16-bit).</li>
+        <li>One channel labelled ECG or EKG (for example <code>ECG</code>, <code>EKG</code>, <code>ECG1-ECG2</code>).</li>
+        <li>The ECG sampled at 100 Hz or more, covering at least 2 hours of the night.</li>
       </ul>
       <p class="caption" id="problem-example-caption">Expected format</p>
       <pre class="code-block" id="problem-example"><code>time_s,rr_ms</code></pre>

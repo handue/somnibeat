@@ -20,3 +20,4 @@ results/v2/dry_run.log
 results/v2/final_run.log
 results/v2/parts/run_apnea.log
 .impeccable/
+web/_local/

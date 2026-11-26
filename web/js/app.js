@@ -6,6 +6,7 @@ import {
   esc, fmtNum, fmtHM, fmtClock, hypnogramSvg, blandAltmanSvg, comparisonBarsSvg,
   STAGE_MODES, COLORS, computeBA, alignReference, compareNight,
 } from './charts.js';
+import { readEdfHeader } from './ecg.js';
 
 // Link to the source repository. Empty string hides every repository link.
 const REPO_URL = 'https://github.com/handue/somnibeat';
@@ -18,6 +19,9 @@ const INVALID_WARN_PCT = 10;
 const DAY_S = 86400;
 
 const STEP_ORDER = ['read', 'beats', 'features', 'report'];
+const STEP_ORDER_ECG = ['read', 'ecg', 'beats', 'features', 'report'];
+const EDF_RE = /\.(edf|rec)$/i;
+const ECG_CODES = ['NOT_EDF', 'NO_ECG_CHANNEL', 'LOW_FS', 'NO_BEATS', 'TRUNCATED', 'BDF'];
 const ROUTES = ['start', 'processing', 'report', 'method', 'problem'];
 const ROUTE_TITLES = {
   start: 'Somnibeat',
@@ -36,6 +40,10 @@ const state = {
   reportClockStartS: null,
   reportClockNote: '',
   reportIsStub: false,
+  // RR file made in the browser from an EDF or RR export: {csvText, info} or null.
+  reportConversion: null,
+  // Recording start time last filled in from an EDF header (cleared for the next file).
+  autoClockStart: null,
   // Sleep lab comparison: the sample the report came from (null for uploads) and its
   // expert reference labels (data/samples/*_reference.json), or an error message.
   reportSample: null,
@@ -349,7 +357,7 @@ async function openSample(index) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     const ref = await refPromise;
-    runAnalysis(text, label, clocks, { sample: s, reference: ref.value || null, referenceError: ref.error || null });
+    runAnalysis({ csvText: text }, label, clocks, { sample: s, reference: ref.value || null, referenceError: ref.error || null });
   } catch (err) {
     showProblem({ code: 'sample_unavailable', message: `The sample file could not be loaded (${err.message}).` }, label);
   }
@@ -357,11 +365,38 @@ async function openSample(index) {
 
 async function openFile(file) {
   if (!file) return;
+  // A start time read from the previous EDF file does not belong to this one.
+  if (state.autoClockStart && $('#clock-start').value === state.autoClockStart) $('#clock-start').value = '';
+  state.autoClockStart = null;
+  if (/\.bdf$/i.test(file.name)) {
+    showProblem({ code: 'BDF', message: 'BDF (24-bit) recordings are not supported yet. Export the night as EDF (16-bit) and try again.' }, file.name);
+    return;
+  }
+  if (EDF_RE.test(file.name)) {
+    let hdr;
+    try {
+      hdr = await readEdfHeader(file);
+    } catch (err) {
+      showProblem({ code: err.code || 'read_failed', message: err.code ? err.message : `The file could not be read (${err.message}).`, details: err.details }, file.name);
+      return;
+    }
+    let note = '';
+    if (hdr.startClock && !$('#clock-start').value) {
+      $('#clock-start').value = hdr.startClock;
+      state.autoClockStart = hdr.startClock;
+      note = `The recording start time (${hdr.startClock}) was read from the EDF file.`;
+    }
+    const clocks = readClocks();
+    if (!clocks) return;
+    if (note) clocks.note = clocks.note ? `${clocks.note} ${note}` : note;
+    runAnalysis({ edf: file }, file.name, clocks);
+    return;
+  }
   const clocks = readClocks();
   if (!clocks) return;
   try {
     const text = await file.text();
-    runAnalysis(text, file.name, clocks);
+    runAnalysis({ csvText: text }, file.name, clocks);
   } catch (err) {
     showProblem({ code: 'read_failed', message: `The file could not be read (${err.message}).` }, file.name);
   }
@@ -463,16 +498,17 @@ const FEATURE_STEP_TEXT = {
   v1: 'Computing 30-second features',
 };
 
-function runAnalysis(csvText, fileName, clocks, origin = null, model = 'v2') {
+function runAnalysis(input, fileName, clocks, origin = null, model = 'v2', conversion = null) {
   cancelJob();
   state.error = null;
-  state.lastRun = { csvText, fileName, clocks, origin };
-  const job = { fileName, clocks, origin, model, steps: {}, worker: null };
+  state.lastRun = { input, fileName, clocks, origin, conversion };
+  const stepOrder = input.edf ? STEP_ORDER_ECG : STEP_ORDER;
+  const job = { fileName, clocks, origin, model, steps: {}, worker: null, stepOrder, conversion };
   state.job = job;
   for (const el of $$('[data-bind="job-file"]')) el.textContent = fileName;
   const featureStep = $('#steps li[data-step="features"] > span:first-child');
   if (featureStep) featureStep.textContent = FEATURE_STEP_TEXT[model] || FEATURE_STEP_TEXT.v2;
-  resetSteps();
+  resetSteps(stepOrder);
   go('processing');
 
   let worker;
@@ -491,7 +527,8 @@ function runAnalysis(csvText, fileName, clocks, origin = null, model = 'v2') {
   worker.onmessageerror = () => failJob(job, { code: 'worker_failed', message: 'The analysis returned unreadable data.' });
   worker.postMessage({
     type: 'run',
-    csvText,
+    csvText: input.csvText,
+    edf: input.edf,
     fileName,
     lightsOffS: clocks.lightsOffS,
     lightsOnS: clocks.lightsOnS,
@@ -504,13 +541,18 @@ function rerunWithModel(model) {
   const run = state.lastRun;
   if (!run || !state.report || state.report.model === model) return;
   const mode = state.mode;
-  runAnalysis(run.csvText, run.fileName, run.clocks, run.origin, model);
+  runAnalysis(run.input, run.fileName, run.clocks, run.origin, model, run.conversion);
   if (state.job) state.job.keepMode = mode;
 }
 
 function onWorkerMessage(job, msg) {
   if (state.job !== job) return;
-  if (msg.type === 'progress') {
+  if (msg.type === 'converted') {
+    // Keep the RR file: a rerun with the other model reuses it instead of converting again.
+    job.conversion = { csvText: msg.csvText, info: msg.info || {} };
+    state.lastRun.input = { csvText: msg.csvText };
+    state.lastRun.conversion = job.conversion;
+  } else if (msg.type === 'progress') {
     job.steps[msg.step] = msg.status;
     updateSteps(job);
   } else if (msg.type === 'error') {
@@ -521,6 +563,7 @@ function onWorkerMessage(job, msg) {
     state.reportClockStartS = job.clocks.clockStartS;
     state.reportClockNote = job.clocks.note || '';
     state.reportIsStub = USE_STUB_WORKER;
+    state.reportConversion = job.conversion || null;
     state.reportSample = (job.origin && job.origin.sample) || null;
     state.reportReference = (job.origin && job.origin.reference) || null;
     state.reportReferenceError = (job.origin && job.origin.referenceError) || null;
@@ -554,17 +597,20 @@ function showProblem(err, fileName) {
   go('problem');
 }
 
-function resetSteps() {
+function resetSteps(order = STEP_ORDER) {
   for (const li of $$('#steps li')) {
+    li.hidden = !order.includes(li.dataset.step);
     li.dataset.status = 'waiting';
     $('.step-status', li).textContent = 'Waiting';
   }
-  setProgress(0);
+  $('#progress').setAttribute('aria-valuemax', String(order.length));
+  setProgress(0, order.length);
 }
 
 function updateSteps(job) {
   let done = 0;
-  for (const step of STEP_ORDER) {
+  const order = job.stepOrder || STEP_ORDER;
+  for (const step of order) {
     const li = $(`#steps li[data-step="${step}"]`);
     const status = job.steps[step];
     if (!li) continue;
@@ -572,14 +618,14 @@ function updateSteps(job) {
     $('.step-status', li).textContent = status === 'done' ? 'Done' : status === 'running' ? 'In progress' : 'Waiting';
     if (status === 'done') done++;
   }
-  setProgress(done);
+  setProgress(done, order.length);
 }
 
-function setProgress(done) {
+function setProgress(done, total = STEP_ORDER.length) {
   const bar = $('#progress');
   bar.setAttribute('aria-valuenow', String(done));
-  bar.setAttribute('aria-valuetext', `${done} of ${STEP_ORDER.length} steps done`);
-  $('#progress-fill').style.width = `${(100 * done) / STEP_ORDER.length}%`;
+  bar.setAttribute('aria-valuetext', `${done} of ${total} steps done`);
+  $('#progress-fill').style.width = `${(100 * done) / total}%`;
 }
 
 // ---------------------------------------------------------------------------
@@ -650,10 +696,41 @@ function renderReport() {
   $('#quality-line').textContent = (parts.length ? `Data quality: ${parts.join(' · ')}.` : '') +
     (state.reportClockNote ? ` ${state.reportClockNote}` : '');
 
+  renderConversion();
   renderModelLine();
   syncModeButtons();
   renderChart();
   renderTrust();
+}
+
+/** Line saying the RR file was made in the browser, with a button to save it. */
+function renderConversion() {
+  const box = $('#conversion');
+  const c = state.reportConversion;
+  if (!c) {
+    box.hidden = true;
+    return;
+  }
+  const i = c.info || {};
+  const beats = Number.isFinite(i.beats) ? `${Number(i.beats).toLocaleString('en-US')} heartbeats` : 'heartbeats';
+  $('#conversion-line').textContent = i.fromEcg
+    ? `Heartbeats were found in the ECG in this browser (${i.source}): ${beats}, with the same detector the accuracy was measured with.`
+    : `RR intervals were read from the ${i.source || 'RR'} export: ${beats}.`;
+  box.hidden = false;
+}
+
+function saveConversion() {
+  const c = state.reportConversion;
+  if (!c) return;
+  const stem = (state.report && state.report.fileName ? state.report.fileName : 'night').replace(/\.[^.]+$/, '');
+  const url = URL.createObjectURL(new Blob([c.csvText], { type: 'text/csv' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${stem}_rr.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.parentNode.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function syncModeButtons() {
@@ -1284,7 +1361,15 @@ function renderProblem() {
   const name = e.fileName ? `File: ${e.fileName}. ` : '';
   let reason = e.message || 'The file could not be processed.';
   if (typeof e.details === 'string' && e.details) reason += ` ${e.details}`;
+  if (e.code === 'NO_ECG_CHANNEL' && e.details && Array.isArray(e.details.labels)) {
+    reason += ` Channels in this file: ${e.details.labels.filter(Boolean).join(', ') || 'none'}.`;
+  }
   $('#problem-reason').textContent = name + reason;
+  const ecgProblem = ECG_CODES.includes(e.code);
+  $('#problem-requirements').hidden = ecgProblem;
+  $('#problem-requirements-ecg').hidden = !ecgProblem;
+  $('#problem-example-caption').hidden = ecgProblem;
+  $('#problem-example').hidden = ecgProblem;
 
   // Failures of the app itself (worker, models, unexpected errors) are not a problem with the file.
   const appFailure = ['worker_failed', 'MODELS_UNAVAILABLE', 'INTERNAL', 'sample_unavailable'].includes(e.code);
@@ -1432,6 +1517,7 @@ function createStubWorker() {
 // Boot
 
 function wireReport() {
+  $('#btn-save-rr').addEventListener('click', saveConversion);
   for (const btn of $$('.seg[data-mode]')) {
     btn.addEventListener('click', () => {
       if (state.mode === btn.dataset.mode) return;
