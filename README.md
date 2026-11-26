@@ -5,8 +5,8 @@
 
 **Research prototype · not a diagnostic tool.**
 
-Somnibeat turns one night of heartbeat intervals (an RR-interval CSV) into an
-overnight sleep report: total sleep time, sleep efficiency, wake bouts and
+Somnibeat turns one night of heartbeats (an overnight ECG in EDF, or the
+RR intervals from it) into an overnight sleep report: total sleep time, sleep efficiency, wake bouts and
 suspected sleep-apnea minutes. Every estimate is shown next to how far this
 kind of estimate differs from a hospital sleep study, measured on recordings
 the models never saw during training.
@@ -125,7 +125,8 @@ python3 -m http.server 8000 --directory web
 ```
 
 Then open http://localhost:8000/. Load one of the sample nights, or
-upload your own RR CSV:
+drop your own file on the page: an overnight ECG in EDF (see the next
+section), the RR export of an ECG chest strap app, or an RR CSV:
 
 ```csv
 time_s,rr_ms
@@ -141,8 +142,19 @@ the analysis to time in bed.
 ### From an ECG recording to the RR file
 
 Most sleep-lab and Holter software exports the raw ECG, not RR intervals.
-`scripts/ecg_to_rr.py` finds the heartbeats with the same R-peak detector the
-evaluation used and writes the file above (after `make setup`):
+The page reads an EDF recording (`.edf`, `.rec`) directly: it takes the first
+channel labelled ECG or EKG, finds the heartbeats in the browser, fills in the
+recording start time from the file, and can save the resulting RR file. The
+browser code (`web/js/ecg.js`) is a port of the evaluation's EDF reader, R-peak
+detector and rounding. Run on all 282 EDF recordings of the
+evaluation (9,284,066 RR intervals), it gives 9,284,064 intervals identical
+to the series the accuracy was measured on. The one beat that differs
+(`cap/brux1`) is a tie between two equal peaks in an artifact stretch, and that
+night's report is unchanged ([`results/ecg_parity.json`](results/ecg_parity.json),
+`scripts/check_ecg_parity.py`, `tests/test_parity_ecg.py`).
+
+For other formats, `scripts/ecg_to_rr.py` finds the heartbeats with the same
+R-peak detector the evaluation used and writes the file above (after `make setup`):
 
 ```bash
 .venv/bin/python scripts/ecg_to_rr.py night.edf          # writes night_rr.csv
@@ -232,7 +244,7 @@ such.
 config/       pipeline configuration (v1: default.toml, v2: v2.toml)
 somnibeat/    Python package: EDF reading, dataset loaders, R-peaks, RR rules, features, smoothing, evaluation, report
 scripts/      ECG-to-RR conversion, download, data checks, feature builds, v1 training/evaluation, v2 selection and evaluation, web export, doc rendering
-web/          static demo (index.html, css/, js/, data/, assets/)
+web/          static demo (index.html, css/, js/ including the in-browser ECG reader ecg.js, data/, assets/)
 tests/        unit tests and Python/JavaScript parity tests
 results/      v1 evaluation outputs (JSON and figures); results/v2/ holds v2 selection and test outputs
 docs/         evaluation protocols (v1, v2), v2 selection, RR rules, review log, web contract, write-up

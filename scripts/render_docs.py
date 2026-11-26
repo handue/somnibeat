@@ -8,6 +8,7 @@ Placeholder syntax (inside {{ }}):
     ci:<path>:<decimals>    its 95% interval                       -> "35.2 to 68.9"
     pm:<path>:<decimals>    point with interval                    -> "50.9 (95% CI 35.2 to 68.9)"
     v:<path>[:<decimals>]   any value (integers print as-is)
+    n:<path>                an integer with thousands separators   -> "9,284,064"
     pct:<path>:<decimals>   a fraction shown as a percentage       -> "99.9"
     sgn:<path>:<decimals>   point with an explicit sign            -> "+12.3"
     len:<path>              number of items in a list or dict      -> "36"
@@ -79,6 +80,8 @@ def render_one(kind: str, path: str, dec: str | None, results: dict) -> str:
     if kind == "pct":
         v = node["point"] if isinstance(node, dict) else node
         return fmt(100.0 * v, d)
+    if kind == "n":
+        return f"{int(node):,}"
     if kind == "len":
         return str(len(node))
     if kind == "keys":

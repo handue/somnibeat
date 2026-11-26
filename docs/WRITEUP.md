@@ -68,7 +68,11 @@ annotations it finds 99.93% of beats with
 99.78% positive predictive value. RR intervals outside 300-2000 ms, or more
 than 30 % away from the local median, are marked invalid and never
 interpolated ([`docs/rr_rules.md`](rr_rules.md)). The detector and RR rules
-are the same in v1 and v2.
+are the same in v1 and v2. The demo page runs the same detector in the
+browser, so a user can drop the EDF recording itself: on the 282 EDF
+recordings of the evaluation it reproduces 9,284,064 of 9,284,066 RR intervals
+exactly, and the one differing beat does not change that night's report
+([`results/ecg_parity.json`](../results/ecg_parity.json)).
 
 **Features.** For each 30 s epoch (60 s for apnea): mean RR, SDNN, RMSSD,
 pNN50 and coefficient of variation over 30 s, 150 s and 300 s windows;
@@ -310,6 +314,9 @@ recomputed by the same run. All 25 UCDDB records are in the primary analysis.
   whose gains and losses are both reported.
 - Everything runs in the browser, so no data is uploaded. This removes one
   privacy barrier to trying it.
+- Anyone with an overnight ECG file (EDF from a sleep lab or Holter recorder,
+  or a chest strap's RR export) can drop it on the page as it is, with no
+  software to install and no conversion step.
 
 **Who could be harmed, and how we try to limit it.**
 
