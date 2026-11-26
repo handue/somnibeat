@@ -18,6 +18,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+ROOT_ = Path(__file__).resolve().parents[1]
+import sys  # noqa: E402
+sys.path.insert(0, str(ROOT_))
+from somnibeat.provenance import drop_timing  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[1]
 CLI = ROOT / "tests/parity/ecg_cli.mjs"
 REPORT_CLI = ROOT / "tests/parity/report_v2_cli.mjs"
@@ -80,10 +85,10 @@ def main() -> int:
         "recordings_identical": len(rows) - len(diff),
         "recordings_with_differences": [r["dataset"] + "/" + r["record"] for r in diff],
         "reports_identical_where_different": all(r.get("report_identical") for r in diff),
-        "max_seconds": max(r["seconds"] for r in rows) if rows else None,
     }
+    print(f"slowest conversion (Node, including reading the file): {max(r['seconds'] for r in rows):.1f} s")
     a.out.parent.mkdir(parents=True, exist_ok=True)
-    a.out.write_text(json.dumps({"summary": summary, "records": rows}, indent=1) + "\n")
+    a.out.write_text(json.dumps(drop_timing({"summary": summary, "records": rows}), indent=1) + "\n")
     print(json.dumps(summary, indent=1))
     return 0
 

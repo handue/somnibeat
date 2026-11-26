@@ -1,0 +1,2276 @@
+{
+ "summary": {
+  "recordings": 282,
+  "datasets": [
+   "cap",
+   "hmc",
+   "ucddb"
+  ],
+  "intervals": 9284066,
+  "identical_intervals": 9284064,
+  "recordings_identical": 281,
+  "recordings_with_differences": [
+   "cap/brux1"
+  ],
+  "reports_identical_where_different": true
+ },
+ "records": [
+  {
+   "dataset": "cap",
+   "record": "brux1",
+   "fs": 512,
+   "intervals": 10369,
+   "intervals_js": 10369,
+   "identical": 10367,
+   "report_identical": true
+  },
+  {
+   "dataset": "cap",
+   "record": "brux2",
+   "fs": 256,
+   "intervals": 36742,
+   "intervals_js": 36742,
+   "identical": 36742
+  },
+  {
+   "dataset": "cap",
+   "record": "ins1",
+   "fs": 128,
+   "intervals": 67942,
+   "intervals_js": 67942,
+   "identical": 67942
+  },
+  {
+   "dataset": "cap",
+   "record": "ins2",
+   "fs": 512,
+   "intervals": 60500,
+   "intervals_js": 60500,
+   "identical": 60500
+  },
+  {
+   "dataset": "cap",
+   "record": "ins3",
+   "fs": 256,
+   "intervals": 35057,
+   "intervals_js": 35057,
+   "identical": 35057
+  },
+  {
+   "dataset": "cap",
+   "record": "ins4",
+   "fs": 512,
+   "intervals": 47960,
+   "intervals_js": 47960,
+   "identical": 47960
+  },
+  {
+   "dataset": "cap",
+   "record": "ins5",
+   "fs": 512,
+   "intervals": 67050,
+   "intervals_js": 67050,
+   "identical": 67050
+  },
+  {
+   "dataset": "cap",
+   "record": "ins6",
+   "fs": 512,
+   "intervals": 70461,
+   "intervals_js": 70461,
+   "identical": 70461
+  },
+  {
+   "dataset": "cap",
+   "record": "ins7",
+   "fs": 512,
+   "intervals": 54275,
+   "intervals_js": 54275,
+   "identical": 54275
+  },
+  {
+   "dataset": "cap",
+   "record": "ins8",
+   "fs": 512,
+   "intervals": 28322,
+   "intervals_js": 28322,
+   "identical": 28322
+  },
+  {
+   "dataset": "cap",
+   "record": "ins9",
+   "fs": 512,
+   "intervals": 28831,
+   "intervals_js": 28831,
+   "identical": 28831
+  },
+  {
+   "dataset": "cap",
+   "record": "n1",
+   "fs": 512,
+   "intervals": 41788,
+   "intervals_js": 41788,
+   "identical": 41788
+  },
+  {
+   "dataset": "cap",
+   "record": "n10",
+   "fs": 512,
+   "intervals": 37637,
+   "intervals_js": 37637,
+   "identical": 37637
+  },
+  {
+   "dataset": "cap",
+   "record": "n11",
+   "fs": 512,
+   "intervals": 33968,
+   "intervals_js": 33968,
+   "identical": 33968
+  },
+  {
+   "dataset": "cap",
+   "record": "n12",
+   "fs": 100,
+   "intervals": 30591,
+   "intervals_js": 30591,
+   "identical": 30591
+  },
+  {
+   "dataset": "cap",
+   "record": "n13",
+   "fs": 100,
+   "intervals": 31450,
+   "intervals_js": 31450,
+   "identical": 31450
+  },
+  {
+   "dataset": "cap",
+   "record": "n14",
+   "fs": 200,
+   "intervals": 35937,
+   "intervals_js": 35937,
+   "identical": 35937
+  },
+  {
+   "dataset": "cap",
+   "record": "n15",
+   "fs": 200,
+   "intervals": 31201,
+   "intervals_js": 31201,
+   "identical": 31201
+  },
+  {
+   "dataset": "cap",
+   "record": "n2",
+   "fs": 512,
+   "intervals": 50964,
+   "intervals_js": 50964,
+   "identical": 50964
+  },
+  {
+   "dataset": "cap",
+   "record": "n3",
+   "fs": 512,
+   "intervals": 34868,
+   "intervals_js": 34868,
+   "identical": 34868
+  },
+  {
+   "dataset": "cap",
+   "record": "n4",
+   "fs": 200,
+   "intervals": 40424,
+   "intervals_js": 40424,
+   "identical": 40424
+  },
+  {
+   "dataset": "cap",
+   "record": "n5",
+   "fs": 512,
+   "intervals": 37603,
+   "intervals_js": 37603,
+   "identical": 37603
+  },
+  {
+   "dataset": "cap",
+   "record": "n6",
+   "fs": 128,
+   "intervals": 28444,
+   "intervals_js": 28444,
+   "identical": 28444
+  },
+  {
+   "dataset": "cap",
+   "record": "n7",
+   "fs": 128,
+   "intervals": 33544,
+   "intervals_js": 33544,
+   "identical": 33544
+  },
+  {
+   "dataset": "cap",
+   "record": "n8",
+   "fs": 200,
+   "intervals": 33746,
+   "intervals_js": 33746,
+   "identical": 33746
+  },
+  {
+   "dataset": "cap",
+   "record": "n9",
+   "fs": 128,
+   "intervals": 27654,
+   "intervals_js": 27654,
+   "identical": 27654
+  },
+  {
+   "dataset": "cap",
+   "record": "narco1",
+   "fs": 512,
+   "intervals": 37354,
+   "intervals_js": 37354,
+   "identical": 37354
+  },
+  {
+   "dataset": "cap",
+   "record": "narco2",
+   "fs": 512,
+   "intervals": 65501,
+   "intervals_js": 65501,
+   "identical": 65501
+  },
+  {
+   "dataset": "cap",
+   "record": "narco3",
+   "fs": 512,
+   "intervals": 67830,
+   "intervals_js": 67830,
+   "identical": 67830
+  },
+  {
+   "dataset": "cap",
+   "record": "narco4",
+   "fs": 512,
+   "intervals": 45696,
+   "intervals_js": 45696,
+   "identical": 45696
+  },
+  {
+   "dataset": "cap",
+   "record": "narco5",
+   "fs": 512,
+   "intervals": 28918,
+   "intervals_js": 28918,
+   "identical": 28918
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle1",
+   "fs": 512,
+   "intervals": 36105,
+   "intervals_js": 36105,
+   "identical": 36105
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle10",
+   "fs": 128,
+   "intervals": 28783,
+   "intervals_js": 28783,
+   "identical": 28783
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle11",
+   "fs": 128,
+   "intervals": 21738,
+   "intervals_js": 21738,
+   "identical": 21738
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle12",
+   "fs": 512,
+   "intervals": 74832,
+   "intervals_js": 74832,
+   "identical": 74832
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle13",
+   "fs": 512,
+   "intervals": 28956,
+   "intervals_js": 28956,
+   "identical": 28956
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle14",
+   "fs": 512,
+   "intervals": 29947,
+   "intervals_js": 29947,
+   "identical": 29947
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle15",
+   "fs": 512,
+   "intervals": 36539,
+   "intervals_js": 36539,
+   "identical": 36539
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle16",
+   "fs": 512,
+   "intervals": 39023,
+   "intervals_js": 39023,
+   "identical": 39023
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle17",
+   "fs": 512,
+   "intervals": 26835,
+   "intervals_js": 26835,
+   "identical": 26835
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle18",
+   "fs": 512,
+   "intervals": 34723,
+   "intervals_js": 34723,
+   "identical": 34723
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle19",
+   "fs": 128,
+   "intervals": 28001,
+   "intervals_js": 28001,
+   "identical": 28001
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle2",
+   "fs": 512,
+   "intervals": 30250,
+   "intervals_js": 30250,
+   "identical": 30250
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle20",
+   "fs": 128,
+   "intervals": 30653,
+   "intervals_js": 30653,
+   "identical": 30653
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle21",
+   "fs": 512,
+   "intervals": 32829,
+   "intervals_js": 32829,
+   "identical": 32829
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle22",
+   "fs": 512,
+   "intervals": 30966,
+   "intervals_js": 30966,
+   "identical": 30966
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle23",
+   "fs": 128,
+   "intervals": 33499,
+   "intervals_js": 33499,
+   "identical": 33499
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle24",
+   "fs": 512,
+   "intervals": 27195,
+   "intervals_js": 27195,
+   "identical": 27195
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle25",
+   "fs": 128,
+   "intervals": 40704,
+   "intervals_js": 40704,
+   "identical": 40704
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle26",
+   "fs": 128,
+   "intervals": 28503,
+   "intervals_js": 28503,
+   "identical": 28503
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle28",
+   "fs": 512,
+   "intervals": 33556,
+   "intervals_js": 33556,
+   "identical": 33556
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle29",
+   "fs": 512,
+   "intervals": 34782,
+   "intervals_js": 34782,
+   "identical": 34782
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle3",
+   "fs": 512,
+   "intervals": 37334,
+   "intervals_js": 37334,
+   "identical": 37334
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle30",
+   "fs": 512,
+   "intervals": 41722,
+   "intervals_js": 41722,
+   "identical": 41722
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle31",
+   "fs": 128,
+   "intervals": 33330,
+   "intervals_js": 33330,
+   "identical": 33330
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle32",
+   "fs": 512,
+   "intervals": 39443,
+   "intervals_js": 39443,
+   "identical": 39443
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle33",
+   "fs": 512,
+   "intervals": 42381,
+   "intervals_js": 42381,
+   "identical": 42381
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle34",
+   "fs": 512,
+   "intervals": 31118,
+   "intervals_js": 31118,
+   "identical": 31118
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle35",
+   "fs": 512,
+   "intervals": 34622,
+   "intervals_js": 34622,
+   "identical": 34622
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle36",
+   "fs": 512,
+   "intervals": 33234,
+   "intervals_js": 33234,
+   "identical": 33234
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle37",
+   "fs": 512,
+   "intervals": 32310,
+   "intervals_js": 32310,
+   "identical": 32310
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle38",
+   "fs": 512,
+   "intervals": 34547,
+   "intervals_js": 34547,
+   "identical": 34547
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle39",
+   "fs": 512,
+   "intervals": 39605,
+   "intervals_js": 39605,
+   "identical": 39605
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle4",
+   "fs": 512,
+   "intervals": 33717,
+   "intervals_js": 33717,
+   "identical": 33717
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle40",
+   "fs": 512,
+   "intervals": 34516,
+   "intervals_js": 34516,
+   "identical": 34516
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle5",
+   "fs": 512,
+   "intervals": 41442,
+   "intervals_js": 41442,
+   "identical": 41442
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle6",
+   "fs": 128,
+   "intervals": 24335,
+   "intervals_js": 24335,
+   "identical": 24335
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle7",
+   "fs": 512,
+   "intervals": 42635,
+   "intervals_js": 42635,
+   "identical": 42635
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle8",
+   "fs": 128,
+   "intervals": 31440,
+   "intervals_js": 31440,
+   "identical": 31440
+  },
+  {
+   "dataset": "cap",
+   "record": "nfle9",
+   "fs": 512,
+   "intervals": 56543,
+   "intervals_js": 56543,
+   "identical": 56543
+  },
+  {
+   "dataset": "cap",
+   "record": "plm1",
+   "fs": 128,
+   "intervals": 50444,
+   "intervals_js": 50444,
+   "identical": 50444
+  },
+  {
+   "dataset": "cap",
+   "record": "plm10",
+   "fs": 512,
+   "intervals": 34269,
+   "intervals_js": 34269,
+   "identical": 34269
+  },
+  {
+   "dataset": "cap",
+   "record": "plm2",
+   "fs": 512,
+   "intervals": 28696,
+   "intervals_js": 28696,
+   "identical": 28696
+  },
+  {
+   "dataset": "cap",
+   "record": "plm3",
+   "fs": 512,
+   "intervals": 30180,
+   "intervals_js": 30180,
+   "identical": 30180
+  },
+  {
+   "dataset": "cap",
+   "record": "plm4",
+   "fs": 512,
+   "intervals": 56970,
+   "intervals_js": 56970,
+   "identical": 56970
+  },
+  {
+   "dataset": "cap",
+   "record": "plm5",
+   "fs": 512,
+   "intervals": 46346,
+   "intervals_js": 46346,
+   "identical": 46346
+  },
+  {
+   "dataset": "cap",
+   "record": "plm6",
+   "fs": 512,
+   "intervals": 54269,
+   "intervals_js": 54269,
+   "identical": 54269
+  },
+  {
+   "dataset": "cap",
+   "record": "plm7",
+   "fs": 512,
+   "intervals": 38728,
+   "intervals_js": 38728,
+   "identical": 38728
+  },
+  {
+   "dataset": "cap",
+   "record": "plm8",
+   "fs": 512,
+   "intervals": 31428,
+   "intervals_js": 31428,
+   "identical": 31428
+  },
+  {
+   "dataset": "cap",
+   "record": "plm9",
+   "fs": 512,
+   "intervals": 34862,
+   "intervals_js": 34862,
+   "identical": 34862
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd1",
+   "fs": 512,
+   "intervals": 32735,
+   "intervals_js": 32735,
+   "identical": 32735
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd10",
+   "fs": 512,
+   "intervals": 29995,
+   "intervals_js": 29995,
+   "identical": 29995
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd11",
+   "fs": 512,
+   "intervals": 29995,
+   "intervals_js": 29995,
+   "identical": 29995
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd12",
+   "fs": 512,
+   "intervals": 31241,
+   "intervals_js": 31241,
+   "identical": 31241
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd13",
+   "fs": 512,
+   "intervals": 45254,
+   "intervals_js": 45254,
+   "identical": 45254
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd14",
+   "fs": 512,
+   "intervals": 30925,
+   "intervals_js": 30925,
+   "identical": 30925
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd15",
+   "fs": 512,
+   "intervals": 62380,
+   "intervals_js": 62380,
+   "identical": 62380
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd16",
+   "fs": 512,
+   "intervals": 44064,
+   "intervals_js": 44064,
+   "identical": 44064
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd17",
+   "fs": 512,
+   "intervals": 34955,
+   "intervals_js": 34955,
+   "identical": 34955
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd18",
+   "fs": 512,
+   "intervals": 40100,
+   "intervals_js": 40100,
+   "identical": 40100
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd19",
+   "fs": 512,
+   "intervals": 31770,
+   "intervals_js": 31770,
+   "identical": 31770
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd2",
+   "fs": 512,
+   "intervals": 41251,
+   "intervals_js": 41251,
+   "identical": 41251
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd20",
+   "fs": 512,
+   "intervals": 25008,
+   "intervals_js": 25008,
+   "identical": 25008
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd21",
+   "fs": 512,
+   "intervals": 36323,
+   "intervals_js": 36323,
+   "identical": 36323
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd22",
+   "fs": 512,
+   "intervals": 38534,
+   "intervals_js": 38534,
+   "identical": 38534
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd3",
+   "fs": 512,
+   "intervals": 32789,
+   "intervals_js": 32789,
+   "identical": 32789
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd4",
+   "fs": 512,
+   "intervals": 56834,
+   "intervals_js": 56834,
+   "identical": 56834
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd5",
+   "fs": 512,
+   "intervals": 32367,
+   "intervals_js": 32367,
+   "identical": 32367
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd6",
+   "fs": 512,
+   "intervals": 60654,
+   "intervals_js": 60654,
+   "identical": 60654
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd7",
+   "fs": 512,
+   "intervals": 30325,
+   "intervals_js": 30325,
+   "identical": 30325
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd8",
+   "fs": 512,
+   "intervals": 26958,
+   "intervals_js": 26958,
+   "identical": 26958
+  },
+  {
+   "dataset": "cap",
+   "record": "rbd9",
+   "fs": 512,
+   "intervals": 39952,
+   "intervals_js": 39952,
+   "identical": 39952
+  },
+  {
+   "dataset": "cap",
+   "record": "sdb1",
+   "fs": 128,
+   "intervals": 34773,
+   "intervals_js": 34773,
+   "identical": 34773
+  },
+  {
+   "dataset": "cap",
+   "record": "sdb2",
+   "fs": 128,
+   "intervals": 40763,
+   "intervals_js": 40763,
+   "identical": 40763
+  },
+  {
+   "dataset": "cap",
+   "record": "sdb3",
+   "fs": 512,
+   "intervals": 32503,
+   "intervals_js": 32503,
+   "identical": 32503
+  },
+  {
+   "dataset": "cap",
+   "record": "sdb4",
+   "fs": 128,
+   "intervals": 39435,
+   "intervals_js": 39435,
+   "identical": 39435
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN001",
+   "fs": 256,
+   "intervals": 37810,
+   "intervals_js": 37810,
+   "identical": 37810
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN002",
+   "fs": 256,
+   "intervals": 20179,
+   "intervals_js": 20179,
+   "identical": 20179
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN003",
+   "fs": 256,
+   "intervals": 27942,
+   "intervals_js": 27942,
+   "identical": 27942
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN004",
+   "fs": 256,
+   "intervals": 29184,
+   "intervals_js": 29184,
+   "identical": 29184
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN005",
+   "fs": 256,
+   "intervals": 30330,
+   "intervals_js": 30330,
+   "identical": 30330
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN006",
+   "fs": 256,
+   "intervals": 45860,
+   "intervals_js": 45860,
+   "identical": 45860
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN007",
+   "fs": 256,
+   "intervals": 34375,
+   "intervals_js": 34375,
+   "identical": 34375
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN008",
+   "fs": 256,
+   "intervals": 24626,
+   "intervals_js": 24626,
+   "identical": 24626
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN009",
+   "fs": 256,
+   "intervals": 29817,
+   "intervals_js": 29817,
+   "identical": 29817
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN010",
+   "fs": 256,
+   "intervals": 25950,
+   "intervals_js": 25950,
+   "identical": 25950
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN011",
+   "fs": 256,
+   "intervals": 44806,
+   "intervals_js": 44806,
+   "identical": 44806
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN012",
+   "fs": 256,
+   "intervals": 26195,
+   "intervals_js": 26195,
+   "identical": 26195
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN013",
+   "fs": 256,
+   "intervals": 37112,
+   "intervals_js": 37112,
+   "identical": 37112
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN015",
+   "fs": 256,
+   "intervals": 31814,
+   "intervals_js": 31814,
+   "identical": 31814
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN016",
+   "fs": 256,
+   "intervals": 23194,
+   "intervals_js": 23194,
+   "identical": 23194
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN017",
+   "fs": 256,
+   "intervals": 35334,
+   "intervals_js": 35334,
+   "identical": 35334
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN018",
+   "fs": 256,
+   "intervals": 27762,
+   "intervals_js": 27762,
+   "identical": 27762
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN019",
+   "fs": 256,
+   "intervals": 21594,
+   "intervals_js": 21594,
+   "identical": 21594
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN020",
+   "fs": 256,
+   "intervals": 34434,
+   "intervals_js": 34434,
+   "identical": 34434
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN021",
+   "fs": 256,
+   "intervals": 27327,
+   "intervals_js": 27327,
+   "identical": 27327
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN022",
+   "fs": 256,
+   "intervals": 31440,
+   "intervals_js": 31440,
+   "identical": 31440
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN023",
+   "fs": 256,
+   "intervals": 25122,
+   "intervals_js": 25122,
+   "identical": 25122
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN024",
+   "fs": 256,
+   "intervals": 24400,
+   "intervals_js": 24400,
+   "identical": 24400
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN025",
+   "fs": 256,
+   "intervals": 45934,
+   "intervals_js": 45934,
+   "identical": 45934
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN026",
+   "fs": 256,
+   "intervals": 31267,
+   "intervals_js": 31267,
+   "identical": 31267
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN027",
+   "fs": 256,
+   "intervals": 28754,
+   "intervals_js": 28754,
+   "identical": 28754
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN028",
+   "fs": 256,
+   "intervals": 25034,
+   "intervals_js": 25034,
+   "identical": 25034
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN029",
+   "fs": 256,
+   "intervals": 30896,
+   "intervals_js": 30896,
+   "identical": 30896
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN030",
+   "fs": 256,
+   "intervals": 27171,
+   "intervals_js": 27171,
+   "identical": 27171
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN031",
+   "fs": 256,
+   "intervals": 24834,
+   "intervals_js": 24834,
+   "identical": 24834
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN032",
+   "fs": 256,
+   "intervals": 51163,
+   "intervals_js": 51163,
+   "identical": 51163
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN033",
+   "fs": 256,
+   "intervals": 18449,
+   "intervals_js": 18449,
+   "identical": 18449
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN034",
+   "fs": 256,
+   "intervals": 28185,
+   "intervals_js": 28185,
+   "identical": 28185
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN035",
+   "fs": 256,
+   "intervals": 28799,
+   "intervals_js": 28799,
+   "identical": 28799
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN036",
+   "fs": 256,
+   "intervals": 7681,
+   "intervals_js": 7681,
+   "identical": 7681
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN037",
+   "fs": 256,
+   "intervals": 20252,
+   "intervals_js": 20252,
+   "identical": 20252
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN038",
+   "fs": 256,
+   "intervals": 33074,
+   "intervals_js": 33074,
+   "identical": 33074
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN039",
+   "fs": 256,
+   "intervals": 28500,
+   "intervals_js": 28500,
+   "identical": 28500
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN040",
+   "fs": 256,
+   "intervals": 29889,
+   "intervals_js": 29889,
+   "identical": 29889
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN041",
+   "fs": 256,
+   "intervals": 26965,
+   "intervals_js": 26965,
+   "identical": 26965
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN042",
+   "fs": 256,
+   "intervals": 36173,
+   "intervals_js": 36173,
+   "identical": 36173
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN043",
+   "fs": 256,
+   "intervals": 31515,
+   "intervals_js": 31515,
+   "identical": 31515
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN044",
+   "fs": 256,
+   "intervals": 27520,
+   "intervals_js": 27520,
+   "identical": 27520
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN045",
+   "fs": 256,
+   "intervals": 19859,
+   "intervals_js": 19859,
+   "identical": 19859
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN046",
+   "fs": 256,
+   "intervals": 27423,
+   "intervals_js": 27423,
+   "identical": 27423
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN047",
+   "fs": 256,
+   "intervals": 26458,
+   "intervals_js": 26458,
+   "identical": 26458
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN048",
+   "fs": 256,
+   "intervals": 37087,
+   "intervals_js": 37087,
+   "identical": 37087
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN049",
+   "fs": 256,
+   "intervals": 31298,
+   "intervals_js": 31298,
+   "identical": 31298
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN050",
+   "fs": 256,
+   "intervals": 21462,
+   "intervals_js": 21462,
+   "identical": 21462
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN051",
+   "fs": 256,
+   "intervals": 28678,
+   "intervals_js": 28678,
+   "identical": 28678
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN052",
+   "fs": 256,
+   "intervals": 23428,
+   "intervals_js": 23428,
+   "identical": 23428
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN053",
+   "fs": 256,
+   "intervals": 34075,
+   "intervals_js": 34075,
+   "identical": 34075
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN054",
+   "fs": 256,
+   "intervals": 19239,
+   "intervals_js": 19239,
+   "identical": 19239
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN055",
+   "fs": 256,
+   "intervals": 31725,
+   "intervals_js": 31725,
+   "identical": 31725
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN056",
+   "fs": 256,
+   "intervals": 40728,
+   "intervals_js": 40728,
+   "identical": 40728
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN057",
+   "fs": 256,
+   "intervals": 21577,
+   "intervals_js": 21577,
+   "identical": 21577
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN058",
+   "fs": 256,
+   "intervals": 42489,
+   "intervals_js": 42489,
+   "identical": 42489
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN059",
+   "fs": 256,
+   "intervals": 28251,
+   "intervals_js": 28251,
+   "identical": 28251
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN060",
+   "fs": 256,
+   "intervals": 31488,
+   "intervals_js": 31488,
+   "identical": 31488
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN061",
+   "fs": 256,
+   "intervals": 28338,
+   "intervals_js": 28338,
+   "identical": 28338
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN062",
+   "fs": 256,
+   "intervals": 11176,
+   "intervals_js": 11176,
+   "identical": 11176
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN063",
+   "fs": 256,
+   "intervals": 43331,
+   "intervals_js": 43331,
+   "identical": 43331
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN065",
+   "fs": 256,
+   "intervals": 37795,
+   "intervals_js": 37795,
+   "identical": 37795
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN066",
+   "fs": 256,
+   "intervals": 25306,
+   "intervals_js": 25306,
+   "identical": 25306
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN067",
+   "fs": 256,
+   "intervals": 37544,
+   "intervals_js": 37544,
+   "identical": 37544
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN068",
+   "fs": 256,
+   "intervals": 21073,
+   "intervals_js": 21073,
+   "identical": 21073
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN069",
+   "fs": 256,
+   "intervals": 23083,
+   "intervals_js": 23083,
+   "identical": 23083
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN070",
+   "fs": 256,
+   "intervals": 24676,
+   "intervals_js": 24676,
+   "identical": 24676
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN071",
+   "fs": 256,
+   "intervals": 31590,
+   "intervals_js": 31590,
+   "identical": 31590
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN072",
+   "fs": 256,
+   "intervals": 36899,
+   "intervals_js": 36899,
+   "identical": 36899
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN073",
+   "fs": 256,
+   "intervals": 32758,
+   "intervals_js": 32758,
+   "identical": 32758
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN074",
+   "fs": 256,
+   "intervals": 22496,
+   "intervals_js": 22496,
+   "identical": 22496
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN075",
+   "fs": 256,
+   "intervals": 36806,
+   "intervals_js": 36806,
+   "identical": 36806
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN076",
+   "fs": 256,
+   "intervals": 26379,
+   "intervals_js": 26379,
+   "identical": 26379
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN077",
+   "fs": 256,
+   "intervals": 26113,
+   "intervals_js": 26113,
+   "identical": 26113
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN078",
+   "fs": 256,
+   "intervals": 26304,
+   "intervals_js": 26304,
+   "identical": 26304
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN079",
+   "fs": 256,
+   "intervals": 42535,
+   "intervals_js": 42535,
+   "identical": 42535
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN080",
+   "fs": 256,
+   "intervals": 32414,
+   "intervals_js": 32414,
+   "identical": 32414
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN081",
+   "fs": 256,
+   "intervals": 35668,
+   "intervals_js": 35668,
+   "identical": 35668
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN082",
+   "fs": 256,
+   "intervals": 19269,
+   "intervals_js": 19269,
+   "identical": 19269
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN083",
+   "fs": 256,
+   "intervals": 32529,
+   "intervals_js": 32529,
+   "identical": 32529
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN084",
+   "fs": 256,
+   "intervals": 26516,
+   "intervals_js": 26516,
+   "identical": 26516
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN085",
+   "fs": 256,
+   "intervals": 37666,
+   "intervals_js": 37666,
+   "identical": 37666
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN086",
+   "fs": 256,
+   "intervals": 24940,
+   "intervals_js": 24940,
+   "identical": 24940
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN087",
+   "fs": 256,
+   "intervals": 27569,
+   "intervals_js": 27569,
+   "identical": 27569
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN088",
+   "fs": 256,
+   "intervals": 37788,
+   "intervals_js": 37788,
+   "identical": 37788
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN089",
+   "fs": 256,
+   "intervals": 25464,
+   "intervals_js": 25464,
+   "identical": 25464
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN090",
+   "fs": 256,
+   "intervals": 32115,
+   "intervals_js": 32115,
+   "identical": 32115
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN091",
+   "fs": 256,
+   "intervals": 27982,
+   "intervals_js": 27982,
+   "identical": 27982
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN092",
+   "fs": 256,
+   "intervals": 36831,
+   "intervals_js": 36831,
+   "identical": 36831
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN093",
+   "fs": 256,
+   "intervals": 27548,
+   "intervals_js": 27548,
+   "identical": 27548
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN094",
+   "fs": 256,
+   "intervals": 34523,
+   "intervals_js": 34523,
+   "identical": 34523
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN095",
+   "fs": 256,
+   "intervals": 30072,
+   "intervals_js": 30072,
+   "identical": 30072
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN096",
+   "fs": 256,
+   "intervals": 25355,
+   "intervals_js": 25355,
+   "identical": 25355
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN097",
+   "fs": 256,
+   "intervals": 32604,
+   "intervals_js": 32604,
+   "identical": 32604
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN098",
+   "fs": 256,
+   "intervals": 54,
+   "intervals_js": 54,
+   "identical": 54
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN099",
+   "fs": 256,
+   "intervals": 30767,
+   "intervals_js": 30767,
+   "identical": 30767
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN100",
+   "fs": 256,
+   "intervals": 29537,
+   "intervals_js": 29537,
+   "identical": 29537
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN101",
+   "fs": 256,
+   "intervals": 28650,
+   "intervals_js": 28650,
+   "identical": 28650
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN102",
+   "fs": 256,
+   "intervals": 25991,
+   "intervals_js": 25991,
+   "identical": 25991
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN103",
+   "fs": 256,
+   "intervals": 26200,
+   "intervals_js": 26200,
+   "identical": 26200
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN104",
+   "fs": 256,
+   "intervals": 37295,
+   "intervals_js": 37295,
+   "identical": 37295
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN105",
+   "fs": 256,
+   "intervals": 34434,
+   "intervals_js": 34434,
+   "identical": 34434
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN106",
+   "fs": 256,
+   "intervals": 23378,
+   "intervals_js": 23378,
+   "identical": 23378
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN107",
+   "fs": 256,
+   "intervals": 27424,
+   "intervals_js": 27424,
+   "identical": 27424
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN108",
+   "fs": 256,
+   "intervals": 24264,
+   "intervals_js": 24264,
+   "identical": 24264
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN109",
+   "fs": 256,
+   "intervals": 26843,
+   "intervals_js": 26843,
+   "identical": 26843
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN110",
+   "fs": 256,
+   "intervals": 23899,
+   "intervals_js": 23899,
+   "identical": 23899
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN111",
+   "fs": 256,
+   "intervals": 51176,
+   "intervals_js": 51176,
+   "identical": 51176
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN112",
+   "fs": 256,
+   "intervals": 21699,
+   "intervals_js": 21699,
+   "identical": 21699
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN113",
+   "fs": 256,
+   "intervals": 33162,
+   "intervals_js": 33162,
+   "identical": 33162
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN114",
+   "fs": 256,
+   "intervals": 29850,
+   "intervals_js": 29850,
+   "identical": 29850
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN115",
+   "fs": 256,
+   "intervals": 22592,
+   "intervals_js": 22592,
+   "identical": 22592
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN116",
+   "fs": 256,
+   "intervals": 29401,
+   "intervals_js": 29401,
+   "identical": 29401
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN117",
+   "fs": 256,
+   "intervals": 22382,
+   "intervals_js": 22382,
+   "identical": 22382
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN118",
+   "fs": 256,
+   "intervals": 33838,
+   "intervals_js": 33838,
+   "identical": 33838
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN119",
+   "fs": 256,
+   "intervals": 41852,
+   "intervals_js": 41852,
+   "identical": 41852
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN120",
+   "fs": 256,
+   "intervals": 30524,
+   "intervals_js": 30524,
+   "identical": 30524
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN121",
+   "fs": 256,
+   "intervals": 32972,
+   "intervals_js": 32972,
+   "identical": 32972
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN122",
+   "fs": 256,
+   "intervals": 31192,
+   "intervals_js": 31192,
+   "identical": 31192
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN123",
+   "fs": 256,
+   "intervals": 28720,
+   "intervals_js": 28720,
+   "identical": 28720
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN124",
+   "fs": 256,
+   "intervals": 34932,
+   "intervals_js": 34932,
+   "identical": 34932
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN125",
+   "fs": 256,
+   "intervals": 48412,
+   "intervals_js": 48412,
+   "identical": 48412
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN126",
+   "fs": 256,
+   "intervals": 23375,
+   "intervals_js": 23375,
+   "identical": 23375
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN127",
+   "fs": 256,
+   "intervals": 31645,
+   "intervals_js": 31645,
+   "identical": 31645
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN128",
+   "fs": 256,
+   "intervals": 25122,
+   "intervals_js": 25122,
+   "identical": 25122
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN129",
+   "fs": 256,
+   "intervals": 32030,
+   "intervals_js": 32030,
+   "identical": 32030
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN130",
+   "fs": 256,
+   "intervals": 15442,
+   "intervals_js": 15442,
+   "identical": 15442
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN131",
+   "fs": 256,
+   "intervals": 31279,
+   "intervals_js": 31279,
+   "identical": 31279
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN132",
+   "fs": 256,
+   "intervals": 33758,
+   "intervals_js": 33758,
+   "identical": 33758
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN133",
+   "fs": 256,
+   "intervals": 37146,
+   "intervals_js": 37146,
+   "identical": 37146
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN134",
+   "fs": 256,
+   "intervals": 37652,
+   "intervals_js": 37652,
+   "identical": 37652
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN136",
+   "fs": 256,
+   "intervals": 22446,
+   "intervals_js": 22446,
+   "identical": 22446
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN137",
+   "fs": 256,
+   "intervals": 36814,
+   "intervals_js": 36814,
+   "identical": 36814
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN138",
+   "fs": 256,
+   "intervals": 39444,
+   "intervals_js": 39444,
+   "identical": 39444
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN139",
+   "fs": 256,
+   "intervals": 30274,
+   "intervals_js": 30274,
+   "identical": 30274
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN140",
+   "fs": 256,
+   "intervals": 60519,
+   "intervals_js": 60519,
+   "identical": 60519
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN141",
+   "fs": 256,
+   "intervals": 32700,
+   "intervals_js": 32700,
+   "identical": 32700
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN142",
+   "fs": 256,
+   "intervals": 29078,
+   "intervals_js": 29078,
+   "identical": 29078
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN143",
+   "fs": 256,
+   "intervals": 33399,
+   "intervals_js": 33399,
+   "identical": 33399
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN144",
+   "fs": 256,
+   "intervals": 27166,
+   "intervals_js": 27166,
+   "identical": 27166
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN145",
+   "fs": 256,
+   "intervals": 24290,
+   "intervals_js": 24290,
+   "identical": 24290
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN146",
+   "fs": 256,
+   "intervals": 27124,
+   "intervals_js": 27124,
+   "identical": 27124
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN147",
+   "fs": 256,
+   "intervals": 27239,
+   "intervals_js": 27239,
+   "identical": 27239
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN148",
+   "fs": 256,
+   "intervals": 25682,
+   "intervals_js": 25682,
+   "identical": 25682
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN149",
+   "fs": 256,
+   "intervals": 34753,
+   "intervals_js": 34753,
+   "identical": 34753
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN150",
+   "fs": 256,
+   "intervals": 20128,
+   "intervals_js": 20128,
+   "identical": 20128
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN151",
+   "fs": 256,
+   "intervals": 28216,
+   "intervals_js": 28216,
+   "identical": 28216
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN152",
+   "fs": 256,
+   "intervals": 42050,
+   "intervals_js": 42050,
+   "identical": 42050
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN153",
+   "fs": 256,
+   "intervals": 35143,
+   "intervals_js": 35143,
+   "identical": 35143
+  },
+  {
+   "dataset": "hmc",
+   "record": "SN154",
+   "fs": 256,
+   "intervals": 30044,
+   "intervals_js": 30044,
+   "identical": 30044
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb002",
+   "fs": 128,
+   "intervals": 23018,
+   "intervals_js": 23018,
+   "identical": 23018
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb003",
+   "fs": 128,
+   "intervals": 28065,
+   "intervals_js": 28065,
+   "identical": 28065
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb005",
+   "fs": 128,
+   "intervals": 23178,
+   "intervals_js": 23178,
+   "identical": 23178
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb006",
+   "fs": 128,
+   "intervals": 28855,
+   "intervals_js": 28855,
+   "identical": 28855
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb007",
+   "fs": 128,
+   "intervals": 24265,
+   "intervals_js": 24265,
+   "identical": 24265
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb008",
+   "fs": 128,
+   "intervals": 35810,
+   "intervals_js": 35810,
+   "identical": 35810
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb009",
+   "fs": 128,
+   "intervals": 29230,
+   "intervals_js": 29230,
+   "identical": 29230
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb010",
+   "fs": 128,
+   "intervals": 34734,
+   "intervals_js": 34734,
+   "identical": 34734
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb011",
+   "fs": 128,
+   "intervals": 34019,
+   "intervals_js": 34019,
+   "identical": 34019
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb012",
+   "fs": 128,
+   "intervals": 26315,
+   "intervals_js": 26315,
+   "identical": 26315
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb013",
+   "fs": 128,
+   "intervals": 27257,
+   "intervals_js": 27257,
+   "identical": 27257
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb014",
+   "fs": 128,
+   "intervals": 27078,
+   "intervals_js": 27078,
+   "identical": 27078
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb015",
+   "fs": 128,
+   "intervals": 33974,
+   "intervals_js": 33974,
+   "identical": 33974
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb017",
+   "fs": 128,
+   "intervals": 25527,
+   "intervals_js": 25527,
+   "identical": 25527
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb018",
+   "fs": 128,
+   "intervals": 26527,
+   "intervals_js": 26527,
+   "identical": 26527
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb019",
+   "fs": 128,
+   "intervals": 29297,
+   "intervals_js": 29297,
+   "identical": 29297
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb020",
+   "fs": 128,
+   "intervals": 20315,
+   "intervals_js": 20315,
+   "identical": 20315
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb021",
+   "fs": 128,
+   "intervals": 33725,
+   "intervals_js": 33725,
+   "identical": 33725
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb022",
+   "fs": 128,
+   "intervals": 24483,
+   "intervals_js": 24483,
+   "identical": 24483
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb023",
+   "fs": 128,
+   "intervals": 35207,
+   "intervals_js": 35207,
+   "identical": 35207
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb024",
+   "fs": 128,
+   "intervals": 25483,
+   "intervals_js": 25483,
+   "identical": 25483
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb025",
+   "fs": 128,
+   "intervals": 23974,
+   "intervals_js": 23974,
+   "identical": 23974
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb026",
+   "fs": 128,
+   "intervals": 26464,
+   "intervals_js": 26464,
+   "identical": 26464
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb027",
+   "fs": 128,
+   "intervals": 37480,
+   "intervals_js": 37480,
+   "identical": 37480
+  },
+  {
+   "dataset": "ucddb",
+   "record": "ucddb028",
+   "fs": 128,
+   "intervals": 26011,
+   "intervals_js": 26011,
+   "identical": 26011
+  }
+ ]
+}
