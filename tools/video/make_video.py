@@ -25,11 +25,12 @@ TMP = OUT / "build"
 W, H, FPS = 1920, 1080, 30
 LEAD_IN, TAIL = 0.6, 1.0
 ORDER = [("intro", "N0"), ("start", "N1"), ("report", "N2"), ("compare", "N3"), ("ecg", "NE"), ("how", "NH"),
-         ("apnea", "N4"), ("noisy", "N5"), ("trust", "N6"), ("method", "N7"), ("outro", "N8")]
+         ("apnea", "N4"), ("noisy", "N5"), ("fail", "NF"), ("trust", "N6"), ("new", "NN"), ("limits", "NL"),
+         ("outro", "N8")]
 # The working demo (upload -> report) comes right after the problem, so it is on screen within 60 s.
 CARD_LEN = {"intro": 7.0, "outro": 8.0}
 SCENE_FADE = 0.45  # each recorded scene fades in from and out to black (cards fade too)
-FAST_TARGET_S = 2.5  # the in-browser computation is shown in this many seconds
+FAST_TARGET_S = 4.0  # the in-browser computation (ECG -> beats -> report) is shown in this many seconds
 FONT = "/System/Library/Fonts/Helvetica.ttc"
 SITE_URL = "handue.github.io/somnibeat"
 REPO_URL = "github.com/handue/somnibeat"
@@ -56,22 +57,23 @@ font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;c
 def render_cards() -> dict[str, Path]:
     lockup = (ROOT / "assets/somnibeat-lockup.svg").read_text()
     intro = CARD_HTML.format(body=f'<div style="width:1120px">{lockup.replace("width=\"640\" height=\"160\"", "width=\"1120\" height=\"280\"")}</div>'
-                                  '<div class="sub">An overnight sleep report from heartbeat intervals</div>'
+                                  '<div class="sub">An overnight sleep report from your heart&rsquo;s ECG</div>'
                                   '<div class="pill">Research prototype · not a diagnostic tool</div>', credits="")
     credits = ('<div class="credits">Data: UCDDB, CAP, MIT-BIH Polysomnographic, Apnea-ECG (PhysioNet, ODC-By 1.0) · '
                'HMC Sleep Staging (PhysioNet, CC BY 4.0)<br>Narration: Kokoro-82M text to speech · '
-               'The file uploaded in this video is a public UCDDB research recording</div>')
+               'The ECG uploaded in this video is the public UCDDB recording ucddb015; the refused file is a copy of its RR series with times in milliseconds</div>')
     outro = CARD_HTML.format(body=f'<div style="width:880px">{lockup.replace("width=\"640\" height=\"160\"", "width=\"880\" height=\"220\"")}</div>'
                                   f'<div class="url">{SITE_URL}</div><div class="small">{REPO_URL}</div>'
                                   '<div class="pill">Research prototype · not a diagnostic tool</div>', credits=credits)
     paths = {}
     hows = [how_card(k) for k in range(4)]  # 0: steps dimmed, k: steps 1..k lit
     ecgs = [ecg_card(k) for k in range(3)]  # 0: trace, 1: + prices, 2: + Somnibeat line
+    news = [new_card(k) for k in range(4)]  # items lit one by one
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=1)
         for name, html in (("intro", intro), ("outro", outro), *((f"how{k}", h) for k, h in enumerate(hows)),
-                           *((f"ecg{k}", h) for k, h in enumerate(ecgs))):
+                           *((f"ecg{k}", h) for k, h in enumerate(ecgs)), *((f"new{k}", h) for k, h in enumerate(news))):
             pg.set_content(html)
             pg.wait_for_timeout(200)
             paths[name] = TMP / f"card_{name}.png"
@@ -107,9 +109,9 @@ def how_card(lit: int) -> str:
     steps = [
         ("1", "Record overnight", f'{ecg}<div class="t">An ECG through the night: a Holter monitor '
                                   'or an ECG chest strap.</div>'),
-        ("2", "Convert to one CSV", '<div class="t"><code>ecg_to_rr.py</code> turns an ECG file (EDF) or an RR export '
-                                    'into two columns:</div>'
-                                    f'<pre>{csv}</pre>'),
+        ("2", "Drop the file", '<div class="t">The EDF file from the recorder, or a chest strap app\'s RR export. '
+                               'Somnibeat finds every heartbeat in your browser:</div>'
+                               f'<pre>{csv}</pre>'),
         ("3", "AI report", '<div class="t">Every 30 seconds is labelled:</div><div class="chips">'
                            '<span class="chip" style="background:#F5A524">Wake</span>'
                            '<span class="chip" style="background:#A78BFA">REM</span>'
@@ -183,6 +185,36 @@ def ecg_card(stage: int) -> str:
              'Polar (see SOURCES.md). Somnibeat\'s accuracy was measured on clinical ECG recordings.</div></div>')
     html = CARD_HTML.format(body=f'<div class="grid">{left}{right}</div>', credits="")
     return html.replace("</head>", ECG_CSS + "</head>")
+
+
+NEW_CSS = """<style>
+.title{font-size:30px;color:#969FAC;letter-spacing:.08em;text-transform:uppercase}
+.items{display:flex;flex-direction:column;gap:22px;width:1360px}
+.item{background:#0A0C10;border:1px solid #1A1F27;border-radius:18px;padding:28px 36px;display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:center}
+.item.dim{opacity:.22}
+.h{font-size:34px;font-weight:600}
+.t{font-size:25px;line-height:1.5;color:#C9CED6}
+.big{font-size:40px;font-weight:600;color:#4FD1C5;font-variant-numeric:tabular-nums}
+</style>"""
+
+
+def new_card(lit: int) -> str:
+    par = json.loads((ROOT / "results/ecg_parity.json").read_text())["summary"]
+    items = [
+        ("Reads the ECG itself", f'<div class="t">Drop an EDF recording on the page. On {par["recordings"]} recordings the browser '
+                                 f'finds the same heartbeats as the evaluation code:</div>'
+                                 f'<div class="big">{par["identical_intervals"]:,} of {par["intervals"]:,} intervals identical</div>'),
+        ("Catches bad files", '<div class="t">Times in milliseconds, clock or Unix time, two nights in one file, a cut-off EDF: '
+                              'each gets a clear message instead of a wrong report.</div>'),
+        ("Easier to use without a mouse", '<div class="t">Keyboard focus that stays put, progress and errors read out by '
+                                          'screen readers, stronger contrast for inputs and chart marks.</div>'),
+    ]
+    rows = "".join(f'<div class="item{"" if i < lit else " dim"}"><div class="h">{h}</div><div>{b}</div></div>'
+                   for i, (h, b) in enumerate(items))
+    html = CARD_HTML.format(body=f'<div class="title">New in this version</div><div class="items">{rows}</div>'
+                                 '<div class="pill">Details and test results: README and results/ecg_parity.json</div>',
+                            credits="")
+    return html.replace("</head>", NEW_CSS + "</head>")
 
 
 def steps_clip(name: str, pngs: list[Path], switches: list[float], length: float) -> Path:
@@ -321,13 +353,18 @@ def main() -> None:
         if name == "ecg":
             length = need
             sw = [LEAD_IN + c["start"] for c in timings[beat]["cues"]]
-            # prices with the third sentence, the Somnibeat line with the fourth
-            clip = steps_clip(name, [cards[f"ecg{k}"] for k in range(3)], [sw[2], sw[3]], length)
+            # prices with the second sentence, the Somnibeat line with the third
+            clip = steps_clip(name, [cards[f"ecg{k}"] for k in range(3)], [sw[1], sw[2]], length)
         elif name == "how":
             length = need
             sw = [LEAD_IN + c["start"] for c in timings[beat]["cues"]]
-            # step 1 lights as the voice starts, steps 2 and 3 with their sentences
-            clip = steps_clip(name, [cards[f"how{k}"] for k in range(4)], [LEAD_IN * 0.5, *sw[1:3]], length)
+            # step 1 as the voice starts, step 2 at "then drop the file", step 3 with the second sentence
+            clip = steps_clip(name, [cards[f"how{k}"] for k in range(4)], [LEAD_IN * 0.5, LEAD_IN + 2.8, sw[1]], length)
+        elif name == "new":
+            length = need
+            sw = [LEAD_IN + c["start"] for c in timings[beat]["cues"]]
+            # item 1 with the first sentence, item 2 and 3 with "It also catches ..."
+            clip = steps_clip(name, [cards[f"new{k}"] for k in range(1, 4)], [sw[2], sw[2] + 2.3], length)
         elif name in cards:
             length = max(CARD_LEN[name], need)
             clip = card_clip(name, cards[name], length)

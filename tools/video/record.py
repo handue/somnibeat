@@ -102,7 +102,7 @@ def scroll_to(page, sel, text=None, offset=90, ms=1400):
 
 
 def click_sample(page, title):
-    page.get_by_role("button", name=f"Open sample: {title}").click()
+    page.get_by_role("button", name=f"Open this sample: {title}").click()
 
 
 def wait_report(page, timeout=120000):
@@ -122,6 +122,47 @@ def scene_start(page, rec, need):
 
 
 SAMPLE_FILE = ROOT / "web/data/samples/ucddb015.csv"
+EDF_FILE = ROOT / "data/raw/ucddb/ucddb015.rec"  # the public UCDDB recording behind that sample
+DEMO_URL = "https://handue.github.io/somnibeat/_demo/"  # served by page.route, never fetched from the site
+
+
+def ecg_excerpt_svg(start_s: float = 7200.0, seconds: float = 7.0, width: int = 700, height: int = 190) -> str:
+    """The real ECG of EDF_FILE for a few seconds, with the beats the detector found (white dots)."""
+    import numpy as np
+    sys.path.insert(0, str(ROOT))
+    from somnibeat.edf import read_channel
+    x, fs, _, _ = read_channel(EDF_FILE, "ECG|EKG")
+    a, b = int(start_s * fs), int((start_s + seconds) * fs)
+    seg = x[a:b] - np.median(x[a:b])
+    lo, hi = np.percentile(seg, 0.5), np.percentile(seg, 99.8)
+    def y(v):
+        return height - 16 - (v - lo) / (hi - lo) * (height - 40)
+    pts = " ".join(f"{i / (b - a) * width:.1f},{y(v):.1f}" for i, v in enumerate(seg))
+    beats = np.load(ROOT / "data/cache/beats/ucddb_ucddb015.npy")
+    beats = beats[(beats >= start_s) & (beats < start_s + seconds)]
+    dots = "".join(f'<circle cx="{(t - start_s) / seconds * width:.1f}" cy="{y(seg[min(len(seg) - 1, int(round((t - start_s) * fs)))]):.1f}" '
+                   f'r="6" fill="#F2F4F7"/>' for t in beats)
+    return (f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}">'
+            f'<polyline fill="none" stroke="#4FD1C5" stroke-width="2.2" stroke-linejoin="round" points="{pts}"/>{dots}</svg>')
+
+
+EDF_VIEW = """<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{{margin:0;background:#000;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:#F2F4F7}}
+.wrap{{height:100%;display:flex;align-items:flex-start;justify-content:center;padding-top:70px;box-sizing:border-box}}
+.win{{width:760px;background:#0A0C10;border:1px solid #1A1F27;border-radius:14px;overflow:hidden}}
+.bar{{display:flex;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #1A1F27;font-size:17px}}
+.bar span{{color:#969FAC}}
+.body{{padding:18px 30px 6px}}
+.kv{{display:grid;grid-template-columns:190px 1fr;gap:6px 12px;font-size:17px;color:#C9CED6;margin-bottom:12px}}
+.kv b{{color:#969FAC;font-weight:500}}
+.note{{padding:4px 30px 18px;font-size:15px;color:#969FAC}}
+</style></head><body><div class="wrap"><div class="win">
+<div class="bar"><strong>{name}</strong><span>EDF recording · {mb} MB</span></div>
+<div class="body"><div class="kv"><b>Signal</b><span>ECG (channel "{label}"), {fs:g} Hz</span>
+<b>Length</b><span>{hours:.1f} hours, started {start}</span></div>{svg}</div>
+<div class="note">A few seconds of the night's ECG · white dots: heartbeats<br>
+Recording ucddb015 from the open UCDDB research dataset (PhysioNet)</div>
+</div></div></body></html>"""
 
 # A plain view of the file being uploaded (its real first rows), in the site's colours.
 FILE_VIEW = """<!doctype html><html><head><meta charset="utf-8"><style>
@@ -145,7 +186,7 @@ Recording from the open UCDDB research dataset (PhysioNet)</div>
 # Drag-and-drop as a person does it: a file window, the cursor picks up the file and drops it on the
 # page's drop zone. The window, icon and cursor are drawn for the video; the drop itself is a real
 # DragEvent carrying the real file, handled by the site's own drop handler (web/js/app.js).
-DRAG_DROP = """async ([name, text]) => {
+DRAG_DROP = """async ([name, text, url, kind]) => {
   const css = document.createElement('style');
   css.textContent = `
   #demo-win{position:fixed;left:70px;top:470px;width:420px;background:#14171C;border:1px solid #2A303A;border-radius:12px;
@@ -170,7 +211,7 @@ DRAG_DROP = """async ([name, text]) => {
   win.id = 'demo-win';
   win.innerHTML = `<div class="bar"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span>
     <span class="dot" style="background:#28C840"></span><span class="ttl">Downloads</span></div>
-    <div class="body"><div class="demo-file" id="demo-src"><div class="ic"><b>CSV</b></div><div class="nm">${name}</div></div>
+    <div class="body"><div class="demo-file" id="demo-src"><div class="ic"><b>${kind || 'CSV'}</b></div><div class="nm">${name}</div></div>
     <div class="demo-file dim"><div class="ic"><b>PDF</b></div><div class="nm">sleep_notes.pdf</div></div></div>`;
   document.body.appendChild(win);
   const cur = document.createElement('div'); cur.id = 'demo-cursor'; document.body.appendChild(cur);
@@ -194,7 +235,8 @@ DRAG_DROP = """async ([name, text]) => {
   const ghost = document.getElementById('demo-src').cloneNode(true); ghost.id = 'demo-ghost'; ghost.classList.remove('sel');
   document.body.appendChild(ghost); place(ghost, cx - 40, cy - 30);
   const dt = new DataTransfer();
-  dt.items.add(new File([text], name, {type: 'text/csv'}));
+  const content = url ? await (await fetch(url)).arrayBuffer() : text;
+  dt.items.add(new File([content], name, {type: url ? 'application/octet-stream' : 'text/csv'}));
   const zone = document.getElementById('drop-zone');
   const z = zone.getBoundingClientRect();
   const tx = z.left + z.width / 2, ty = z.top + z.height / 2;
@@ -208,27 +250,67 @@ DRAG_DROP = """async ([name, text]) => {
 }"""
 
 
+def serve_edf(page):
+    data = EDF_FILE.read_bytes()
+    page.route(DEMO_URL + "**", lambda route: route.fulfill(status=200, body=data,
+                                                             headers={"Content-Type": "application/octet-stream"}))
+
+
 def scene_report(page, rec, need):
-    """Show the file, then drag it from a file window onto the start page and wait for the report."""
-    text = SAMPLE_FILE.read_text()
-    rows = text.split()
-    lines = "<b>" + rows[0] + "</b>\n" + "\n".join(rows[1:13]) + "\n…"
+    """Show the ECG file, then drag it from a file window onto the start page and wait for the report."""
+    sys.path.insert(0, str(ROOT))
+    from somnibeat.edf import read_header
+    hdr = read_header(EDF_FILE)
+    i = [k for k, lab in enumerate(hdr.labels) if "ECG" in lab.upper()][0]
     page.goto("about:blank")  # set_content keeps the URL; leave the site so the later goto reloads it
-    page.set_content(FILE_VIEW.format(name=SAMPLE_FILE.name, rows=len(rows) - 1,
-                                      kb=round(SAMPLE_FILE.stat().st_size / 1000), lines=lines))
+    page.set_content(EDF_VIEW.format(name=EDF_FILE.name, mb=round(EDF_FILE.stat().st_size / 1e6), label=hdr.labels[i],
+                                     fs=float(hdr.fs[i]), hours=hdr.duration_s / 3600,
+                                     start=hdr.start.strftime("%H:%M"), svg=ecg_excerpt_svg()))
     page.wait_for_timeout(300)
+    serve_edf(page)
     rec.start()
     rec.hold(5.0)
     page.goto(SITE + "#/", wait_until="networkidle")
     page.wait_for_timeout(600)
-    rec.hold(1.2)
-    page.evaluate(DRAG_DROP, [SAMPLE_FILE.name, text])
+    rec.hold(1.0)
+    page.evaluate(DRAG_DROP, [EDF_FILE.name, "", DEMO_URL + EDF_FILE.name, "EDF"])
     rec.mark("processing")
+    page.wait_for_function("document.querySelector('#steps li[data-step=ecg]')?.dataset.status === 'done'", timeout=120000)
+    rec.mark("ecg_done")
     wait_report(page)
     rec.mark("report")
     rec.hold(2.5)
     scroll_to(page, ".metric, [class*=tile]", None, offset=140, ms=900)
     rec.hold(3.0)
+    scroll_to(page, "#conversion-line", None, offset=420, ms=1400)
+    rec.hold(3.0)
+    rec.stop(need)
+
+
+def scene_fail(page, rec, need):
+    """Drop a copy of the sample file whose times are in milliseconds: the page refuses it and says why."""
+    rows = SAMPLE_FILE.read_text().split()
+    body = [f"{float(t) * 1000:.1f},{r}" for t, r in (row.split(",") for row in rows[1:])]
+    text = rows[0] + "\n" + "\n".join(body) + "\n"
+    page.goto(SITE + "#/", wait_until="networkidle")
+    page.wait_for_timeout(600)
+    rec.start()
+    rec.hold(0.8)
+    page.evaluate(DRAG_DROP, ["night_times_in_ms.csv", text, None, "CSV"])
+    page.wait_for_function("location.hash.startsWith('#/problem')", timeout=60000)
+    rec.hold(1.0)
+    rec.stop(need)
+
+
+def scene_limits(page, rec, need):
+    page.goto(SITE + "#/method", wait_until="networkidle")
+    page.wait_for_timeout(600)
+    y = page.evaluate(TOP_OF, ["h2", "Who benefits, and who could be harmed", 30])
+    page.evaluate("y => window.scrollTo(0, y)", y or 0)
+    page.wait_for_timeout(400)
+    rec.start()
+    rec.hold(1.5)
+    scroll_to(page, "h2", "Limitations", offset=60, ms=2200)
     rec.stop(need)
 
 
@@ -345,9 +427,9 @@ def scene_harm(page, rec, need):
 
 
 SCENES = {"start": ("N1", scene_start), "report": ("N2", scene_report), "compare": ("N3", scene_compare),
-          "apnea": ("N4", scene_apnea), "noisy": ("N5", scene_noisy),
-          "trust": ("N6", scene_trust_on), "method": ("N7", scene_method)}
-ORDER = ["start", "report", "compare", "apnea", "noisy", "trust", "method"]
+          "apnea": ("N4", scene_apnea), "noisy": ("N5", scene_noisy), "fail": ("NF", scene_fail),
+          "trust": ("N6", scene_trust_on), "limits": ("NL", scene_limits)}
+ORDER = ["start", "report", "compare", "apnea", "noisy", "fail", "trust", "limits"]
 
 
 def main(names: list[str]) -> None:

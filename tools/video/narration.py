@@ -61,45 +61,59 @@ def main() -> None:
     holter_txt = f"{words(facts['holter_cash_price_usd'][0])} dollars"
     strap_txt = words(facts["ecg_chest_strap_usd_about"])
 
+    parity = json.loads((ROOT / "results/ecg_parity.json").read_text())["summary"]
+    n_rec_parity = parity["recordings"]
+    n_diff = parity["intervals"] - parity["identical_intervals"]
+    millions = parity["intervals"] / 1e6
+    millions_txt = f"more than {words(int(millions))} million"
+
     beats = [
-        ("N0", "intro", "Somnibeat. An overnight sleep report, from heartbeat intervals alone."),
-        ("N1", "start", "A night in a sleep lab is the gold standard, but in the United States it costs about "
-                        f"{lab_txt} on average, and the wait can take months. "
-                        "Yet the heart keeps its own record of the night: the time between heartbeats "
-                        "shifts as we fall asleep, dream, and wake."),
-        ("NE", "ecg", "The file comes from an ECG: small pads on the skin pick up the heart's electrical signal, "
-                      "and every beat makes a sharp spike. The time from one spike to the next is the heartbeat interval. "
-                      "You can record it at home: a Holter monitor, a portable ECG your doctor can order, "
-                      f"costs from about {holter_txt}, and an ECG chest strap sold for sport costs about {strap_txt}. "
-                      "With Somnibeat, a night recorded this way becomes a sleep report, "
-                      "at a much lower cost than a night in a sleep lab."),
-        ("NH", "how", "To use it yourself, first record your heart overnight with an ECG. "
-                      "Our converter turns the recording into a simple table, with the time in seconds "
-                      "and the interval in milliseconds. "
-                      "Load that file into Somnibeat, and its AI reads the night thirty seconds at a time."),
-        ("N2", "report", f"Here is a real overnight recording from an open research dataset, {beats_txt}. "
-                         "We drop the file onto the page, and in seconds the report appears: total sleep time, "
-                         "sleep efficiency, wake bouts, and minutes with suspected sleep apnea. "
-                         "The file is read right here in the browser, and never sent to a server."),
-        ("N3", "compare", f"Behind it is a machine-learning model, trained on {words(n_train)} overnight recordings "
-                          "scored by sleep experts. It labels every thirty seconds as wake, light, deep, or REM sleep. "
-                          "For public test nights, the experts' own scoring sits right below, minute by minute."),
+        ("N0", "intro", "Somnibeat. An overnight sleep report, from your heart's ECG."),
+        ("N1", "start", "A night in a sleep lab costs about "
+                        f"{lab_txt} in the United States, and the wait can take months. "
+                        "Somnibeat is for anyone with an overnight ECG, from a Holter monitor or a chest strap, "
+                        "and for researchers with ECG data."),
+        ("N2", "report", "Here is a real overnight ECG from an open research dataset, the kind of file a sleep lab "
+                         "or Holter recorder gives you. We drop it onto the page as it is. "
+                         f"Right in the browser, Somnibeat finds {beats_txt}, and in seconds the report appears: "
+                         "total sleep time, sleep efficiency, wake bouts, and minutes with suspected sleep apnea. "
+                         "Nothing is sent to a server."),
+        ("N3", "compare", "The AI behind it is a set of machine-learning models that read heart-rate variability, "
+                          f"trained on {words(n_train)} overnight recordings scored by sleep experts. "
+                          "They label every thirty seconds as wake, light, deep, or REM sleep. "
+                          "For public test nights, the experts' own scoring sits right below."),
+        ("NE", "ecg", "An ECG records the heart's electrical signal: every beat is a sharp spike, "
+                      "and the time between spikes is the heartbeat interval. "
+                      f"At home, a Holter monitor costs from about {holter_txt}, "
+                      f"and an ECG chest strap about {strap_txt}. "
+                      "With Somnibeat, a night recorded this way becomes a sleep report."),
+        ("NH", "how", "To use it, record your heart overnight, then drop the file on the page: "
+                      "the EDF file from the recorder, or the RR export from a chest strap app. "
+                      "Somnibeat finds every heartbeat, and its AI reads the night thirty seconds at a time."),
         ("N4", "apnea", "On a night with many breathing pauses, suspected apnea minutes appear as red marks "
                         "under the chart, right next to the experts' own scoring."),
         ("N5", "noisy", "Somnibeat checks every single beat. When a recording is noisy, the report tells you, "
                         "and clearly marks the stretches it could not read."),
+        ("NF", "fail", "And when a file can't be used, it says why. Here the times are in milliseconds instead of seconds, "
+                       "so Somnibeat stops and explains, instead of making a wrong report."),
         ("N6", "trust", f"Every number comes with its measured accuracy, from {words(n_primary)} nights "
                         "in a sleep clinic that the model had never seen. Version two agrees more closely "
                         "with the sleep experts than version one, and the page shows exactly how much."),
-        ("N7", "method", "We fixed the evaluation before training, chose models on training data only, "
-                         "froze them, and tested once. One command rebuilds every number, byte for byte."),
-        ("N8", "outro", "Somnibeat is open source, and you can try it with your own file, or a sample night, "
-                        "at the address on screen."),
+        ("NN", "new", "New in this version: Somnibeat reads the ECG file itself, in the browser. "
+                      f"On {words(n_rec_parity)} recordings, it finds the same heartbeats as our evaluation code: "
+                      f"of {millions_txt} intervals, all but {words(n_diff)} are identical. "
+                      "It also catches files in the wrong units, and works better with a keyboard or screen reader. "
+                      "And one command still rebuilds every number, byte for byte."),
+        ("NL", "limits", "Somnibeat is a research prototype, not a diagnosis. Its accuracy was measured on clinical ECG "
+                         "recordings, not yet on chest straps, and the three- and four-stage views are experimental."),
+        ("N8", "outro", "Somnibeat is open source, built with help from the Claude Code assistant and checked by tests. "
+                        "Try it with your own file, or a sample night, at the address on screen."),
     ]
     OUT.mkdir(parents=True, exist_ok=True)
     data = {"source": {"results_json": "web/data/results.json", "hmc_primary_records": n_primary,
                        "ucddb018_leading_wake_hours": round(lead_h, 3),
-                       "v2_training_recordings": n_train, "ucddb015_beats": n_beats},
+                       "v2_training_recordings": n_train, "ucddb015_beats": n_beats,
+                       "ecg_parity": "results/ecg_parity.json"},
             "beats": [{"id": i, "scene": s, "text": t} for i, s, t in beats]}
     (OUT / "narration.json").write_text(json.dumps(data, indent=2))
     for b in data["beats"]:
