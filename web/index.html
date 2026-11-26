@@ -46,19 +46,19 @@
           <div class="clock-grid">
             <div class="field">
               <label for="clock-start">Recording started at</label>
-              <input id="clock-start" type="time" aria-describedby="clock-help">
+              <input id="clock-start" type="time" aria-describedby="clock-message clock-help">
             </div>
             <div class="field">
               <label for="clock-off">Lights off</label>
-              <input id="clock-off" type="time" aria-describedby="clock-help">
+              <input id="clock-off" type="time" aria-describedby="clock-message clock-help">
             </div>
             <div class="field">
               <label for="clock-on">Lights on</label>
-              <input id="clock-on" type="time" aria-describedby="clock-help">
+              <input id="clock-on" type="time" aria-describedby="clock-message clock-help">
             </div>
           </div>
           <p id="clock-help" class="caption">With the recording start time, the chart shows clock times. Lights off and lights on limit the analysis to time in bed and need the recording start time.</p>
-          <p id="clock-message" class="inline-message" role="status" aria-live="polite" hidden></p>
+          <p id="clock-message" class="inline-message" role="status" aria-live="polite"></p>
         </fieldset>
         <p class="body-muted small">Your file is never sent to a server; everything is computed in this browser.</p>
         <p class="body-muted small">Accepted files: an overnight ECG in EDF (<code>.edf</code>, <code>.rec</code>, as exported by sleep labs and Holter recorders), the RR export of an ECG chest strap app, or a CSV with the columns <code>time_s</code> and <code>rr_ms</code>. <a href="https://github.com/handue/somnibeat#from-an-ecg-recording-to-the-rr-file" target="_blank" rel="noopener">More about the file formats</a>.</p>
@@ -105,11 +105,11 @@
         <div class="progress-fill" id="progress-fill"></div>
       </div>
       <ol class="steps" id="steps" aria-live="polite">
-        <li data-step="read"><span>Reading the file</span><span class="step-status">Waiting</span></li>
-        <li data-step="ecg" hidden><span>Finding heartbeats in the ECG</span><span class="step-status">Waiting</span></li>
-        <li data-step="beats"><span>Finding usable heartbeats</span><span class="step-status">Waiting</span></li>
-        <li data-step="features"><span>Computing 30-second and 10-minute features</span><span class="step-status">Waiting</span></li>
-        <li data-step="report"><span>Building the report</span><span class="step-status">Waiting</span></li>
+        <li data-step="read" aria-atomic="true"><span>Reading the file</span><span class="step-status">Waiting</span></li>
+        <li data-step="ecg" hidden aria-atomic="true"><span>Finding heartbeats in the ECG</span><span class="step-status">Waiting</span></li>
+        <li data-step="beats" aria-atomic="true"><span>Finding usable heartbeats</span><span class="step-status">Waiting</span></li>
+        <li data-step="features" aria-atomic="true"><span>Computing 30-second and 10-minute features</span><span class="step-status">Waiting</span></li>
+        <li data-step="report" aria-atomic="true"><span>Building the report</span><span class="step-status">Waiting</span></li>
       </ol>
       <button type="button" class="btn btn-secondary" id="btn-cancel">Cancel</button>
     </div>
@@ -168,9 +168,9 @@
       <div class="chart-head">
         <h2>Sleep stages across the night</h2>
         <div class="segmented" role="group" aria-label="Stage detail">
-          <button type="button" class="seg" data-mode="sleep_wake" aria-pressed="true" aria-label="Wake / sleep"><span class="lbl-long">Wake / sleep</span><span class="lbl-short">Wake/sleep</span></button>
-          <button type="button" class="seg" data-mode="wake_nrem_rem" aria-pressed="false" aria-label="3 stages (experimental)"><span class="lbl-long">3 stages (experimental)</span><span class="lbl-short">3 (exp.)</span></button>
-          <button type="button" class="seg" data-mode="four_class" aria-pressed="false" aria-label="4 stages (experimental)"><span class="lbl-long">4 stages (experimental)</span><span class="lbl-short">4 (exp.)</span></button>
+          <button type="button" class="seg" data-mode="sleep_wake" aria-pressed="true" aria-label="Wake / sleep"><span class="lbl-long">Wake / sleep</span><span class="lbl-short">Wake / sleep</span></button>
+          <button type="button" class="seg" data-mode="wake_nrem_rem" aria-pressed="false" aria-label="3 stages (experimental)"><span class="lbl-long">3 stages (experimental)</span><span class="lbl-short">3 stages</span></button>
+          <button type="button" class="seg" data-mode="four_class" aria-pressed="false" aria-label="4 stages (experimental)"><span class="lbl-long">4 stages (experimental)</span><span class="lbl-short">4 stages</span></button>
         </div>
       </div>
       <p class="series-title series-model" id="series-model" hidden>Somnibeat estimate from heartbeats</p>

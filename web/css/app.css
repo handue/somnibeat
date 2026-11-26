@@ -16,6 +16,7 @@
   --bg: #000000;
   --card: #0A0C10;
   --border: #1A1F27;
+  --input-border: #6B7482;  /* form controls: 4.4:1 on #000, 4.1:1 on #0A0C10 (WCAG 1.4.11) */
   --text: #F2F4F7;
   --muted: #969FAC;
   --body-muted: #9CA5B2;
@@ -149,7 +150,7 @@ main { flex: 1; padding-top: 40px; padding-bottom: 56px; }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 13px; color: var(--muted); }
 .field input {
-  background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); color: var(--text); border: 1px solid var(--input-border); border-radius: 10px;
   padding: 10px 14px; font-size: 15px; font-family: inherit; min-height: 44px; min-width: 9.5em;
 }
 .field input:focus-visible { border-color: var(--accent); outline-offset: 1px; }
@@ -260,7 +261,7 @@ main { flex: 1; padding-top: 40px; padding-bottom: 56px; }
 .legend li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
 .swatch { width: 14px; height: 14px; border-radius: 3px; flex: none; }
 .swatch-hatch {
-  background: repeating-linear-gradient(45deg, #4A5361 0 3px, #000000 3px 6px);
+  background: repeating-linear-gradient(45deg, #7A8494 0 3px, #000000 3px 6px);
   border: 1px solid var(--border);
 }
 
@@ -456,3 +457,5 @@ main { flex: 1; padding-top: 40px; padding-bottom: 56px; }
 /* RR file made in the browser from an EDF or RR export */
 .conversion { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 8px; }
 .conversion .caption { margin: 0; flex: 1 1 320px; }
+
+.inline-message:empty { padding: 0; margin: 0; border: 0; min-height: 0; }

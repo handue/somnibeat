@@ -12,7 +12,15 @@ export const ERROR_CODES = Object.freeze({
   TOO_SHORT: "TOO_SHORT",          // fewer than MIN_HOURS of beats
   NOT_INCREASING: "NOT_INCREASING", // time_s not increasing in more than 1 % of rows
   BAD_UNIT: "BAD_UNIT",            // median rr_ms outside 300-2000 ms
+  BAD_TIME_UNIT: "BAD_TIME_UNIT",  // time_s steps do not match rr_ms (e.g. time_s in milliseconds)
+  BAD_TIME_START: "BAD_TIME_START", // time_s starts more than 24 h after 0 (e.g. clock or Unix time)
+  TIME_RESET: "TIME_RESET",        // time_s jumps back by more than TIME_RESET_S once
 });
+
+// time_s checks (docs/web_contract.md). They only reject files the analysis grid cannot use.
+export const TIME_STEP_RATIO_RANGE = [0.5, 2]; // median step of time_s (ms) / median rr_ms
+export const MAX_START_S = 86400;
+export const TIME_RESET_S = 10;
 
 function rrError(code, message, details = {}) {
   const e = new Error(message);
@@ -78,6 +86,7 @@ export function parseRRCsv(text) {
   const tList = [];
   const rrList = [];
   let skipped = 0;
+  let decimalComma = false;
   for (; li < lines.length; li++) {
     const line = lines[li];
     if (line.trim() === "") continue;
@@ -85,6 +94,8 @@ export function parseRRCsv(text) {
     const rr = parseCell(cells[iRR]);
     const t = iT >= 0 ? parseCell(cells[iT]) : 0;
     if (Number.isNaN(rr) || Number.isNaN(t)) {
+      const commaNum = (c) => /^\s*"?[+-]?\d+,\d+"?\s*$/.test(c || "");
+      if (delim === ";" && (commaNum(cells[iRR]) || (iT >= 0 && commaNum(cells[iT])))) decimalComma = true;
       skipped++;
       continue;
     }
@@ -97,7 +108,14 @@ export function parseRRCsv(text) {
   }
   const n = rrList.length;
   if (n < 2) {
-    throw rrError(ERROR_CODES.TOO_SHORT, "The file has fewer than 2 usable rows.", { rows: n, hours: 0 });
+    let msg = "The file has fewer than 2 usable rows.";
+    if (skipped > 0) {
+      msg += ` ${skipped} row${skipped === 1 ? " has" : "s have"} a value that is not a number.`;
+      if (decimalComma) {
+        msg += " Decimal commas (812,5) are not supported: use a dot (812.5).";
+      }
+    }
+    throw rrError(ERROR_CODES.TOO_SHORT, msg, { rows: n, hours: 0, skipped_rows: skipped });
   }
   const rr_ms = Float64Array.from(rrList);
   let time_s;
@@ -125,6 +143,30 @@ export function parseRRCsv(text) {
     throw rrError(ERROR_CODES.NOT_INCREASING, "time_s is not increasing in more than 1 % of rows.",
       { non_increasing_rows: nonIncreasing, rows: n });
   }
+  if (iT >= 0) {
+    for (let i = 1; i < n; i++) {
+      if (time_s[i] < time_s[i - 1] - TIME_RESET_S) {
+        throw rrError(ERROR_CODES.TIME_RESET,
+          `time_s jumps back from ${time_s[i - 1].toFixed(1)} s to ${time_s[i].toFixed(1)} s at data row ${i + 1}. Is this two recordings in one file, or a clock that restarted? Upload one night per file.`,
+          { row: i + 1, from_s: time_s[i - 1], to_s: time_s[i] });
+      }
+    }
+    const steps = new Float64Array(n - 1);
+    for (let i = 1; i < n; i++) steps[i - 1] = time_s[i] - time_s[i - 1];
+    const ratio = (median(steps) * 1000.0) / med;
+    if (!(ratio >= TIME_STEP_RATIO_RANGE[0] && ratio <= TIME_STEP_RATIO_RANGE[1])) {
+      const hint = ratio > 100 ? " Is time_s in milliseconds instead of seconds?" : "";
+      throw rrError(ERROR_CODES.BAD_TIME_UNIT,
+        `The steps between time_s values do not match the rr_ms intervals (about ${fmtRatio(ratio)} times larger).${hint}`,
+        { step_ratio: ratio });
+    }
+    const start = time_s[0] - rr_ms[0] / 1000.0;
+    if (start > MAX_START_S) {
+      throw rrError(ERROR_CODES.BAD_TIME_START,
+        `time_s starts at ${Math.round(time_s[0])} s. It should count seconds since the recording started, not clock or calendar time.`,
+        { first_time_s: time_s[0] });
+    }
+  }
   // Span covered by the beats: from the start of the first interval to the last beat.
   const hours = (time_s[n - 1] - (time_s[0] - rr_ms[0] / 1000.0)) / 3600.0;
   if (!(hours >= MIN_HOURS)) {
@@ -132,6 +174,11 @@ export function parseRRCsv(text) {
       { hours, rows: n });
   }
   return { time_s, rr_ms, warnings, skippedRows: skipped };
+}
+
+function fmtRatio(r) {
+  if (!Number.isFinite(r)) return "—";
+  return r >= 10 ? String(Math.round(r)) : r.toFixed(2);
 }
 
 /** rr_from_beats: (t[1:], diff(t) * 1000). */

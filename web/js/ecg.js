@@ -14,6 +14,7 @@ export const ECG_ERROR_CODES = Object.freeze({
   NO_ECG_CHANNEL: "NO_ECG_CHANNEL",
   LOW_FS: "LOW_FS",             // ECG sampled below MIN_FS
   NO_BEATS: "NO_BEATS",         // fewer than two heartbeats found
+  NO_INTERVALS: "NO_INTERVALS", // RR export with fewer than two numeric intervals
   TRUNCATED: "TRUNCATED",       // file holds no complete data record
 });
 
@@ -98,6 +99,9 @@ export async function readEdfHeader(source) {
   const first = await sliceBytes(source, 0, 256);
   let hdr = parseEdfHeader(first, size);
   if (hdr.needBytes) hdr = parseEdfHeader(await sliceBytes(source, 0, hdr.needBytes), size);
+  if (hdr.needBytes) {
+    throw ecgError(ECG_ERROR_CODES.TRUNCATED, "The EDF header is incomplete; the file may be cut off (an unfinished download?).");
+  }
   return hdr;
 }
 
@@ -569,7 +573,7 @@ export function rrExportToRR(text, col) {
     if (Number.isFinite(v)) vals.push(v);
   }
   if (vals.length < 2) {
-    throw ecgError(ECG_ERROR_CODES.NO_BEATS, `The column "${col.name}" has fewer than two numeric intervals.`);
+    throw ecgError(ECG_ERROR_CODES.NO_INTERVALS, `The column "${col.name}" has fewer than two numeric intervals.`);
   }
   const unit = median(vals) < 5 ? "s" : "ms";
   const rr = Float64Array.from(vals, (v) => (unit === "s" ? v * 1000.0 : v));

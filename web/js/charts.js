@@ -13,7 +13,7 @@ export const COLORS = {
   light: '#5B7FA6',
   deep: '#3B5BDB',
   apnea: '#FF5D5D',
-  hatch: '#4A5361',
+  hatch: '#7A8494', // 4.9:1 on the card (WCAG 1.4.11)
 };
 
 // Row slots are fixed so a stage keeps its vertical position across modes.

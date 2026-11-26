@@ -73,7 +73,9 @@ export function buildReportV2(input, modelsV2, opts = {}) {
   const nEpochs = stageStarts.length;
   if (nEpochs * epochS < minS) {
     throw reportError(REPORT_ERROR_CODES.TOO_SHORT,
-      `The time between lights off and lights on is shorter than ${MIN_HOURS} hours.`,
+      (opts.lightsOffS != null || opts.lightsOnS != null)
+        ? `The time between lights off and lights on is shorter than ${MIN_HOURS} hours.`
+        : `The recording covers fewer than ${MIN_HOURS} hours of beats.`,
       { hours: (nEpochs * epochS) / 3600.0, min_hours: MIN_HOURS });
   }
   const overlap = Math.min(endS, recEnd) - Math.max(startS, recStart);

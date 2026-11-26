@@ -22,6 +22,8 @@ const STEP_ORDER = ['read', 'beats', 'features', 'report'];
 const STEP_ORDER_ECG = ['read', 'ecg', 'beats', 'features', 'report'];
 const EDF_RE = /\.(edf|rec)$/i;
 const ECG_CODES = ['NOT_EDF', 'NO_ECG_CHANNEL', 'LOW_FS', 'NO_BEATS', 'TRUNCATED', 'BDF'];
+// Each open request gets a number; an older request that finishes later is dropped.
+let openSeq = 0;
 const ROUTES = ['start', 'processing', 'report', 'method', 'problem'];
 const ROUTE_TITLES = {
   start: 'Somnibeat',
@@ -323,7 +325,7 @@ function renderSamples() {
       <h3>${esc(s.title || s.id || 'Sample')}</h3>
       <p class="body-muted small">${esc(s.summary || '')}</p>
       <p class="caption">Source: ${pieces || 'unknown'}${link}${src.note ? `. ${esc(src.note)}` : ''}</p>
-      <button type="button" class="btn btn-secondary btn-small sample-btn" data-sample="${i}" aria-label="Open sample: ${esc(s.title || s.id || '')}">Open this sample</button>
+      <button type="button" class="btn btn-secondary btn-small sample-btn" data-sample="${i}" aria-label="Open this sample: ${esc(s.title || s.id || '')}">Open this sample</button>
     </article>`;
   }).join('');
   for (const btn of $$('.sample-btn', grid)) {
@@ -341,9 +343,17 @@ function focusSamples() {
   });
 }
 
+/** Clear a start time that was filled in from the previous EDF file (kept if the user edited it). */
+function dropAutoClockStart() {
+  if (state.autoClockStart && $('#clock-start').value === state.autoClockStart) $('#clock-start').value = '';
+  state.autoClockStart = null;
+}
+
 async function openSample(index) {
   const s = state.samples && state.samples[index];
   if (!s) return;
+  const my = ++openSeq;
+  dropAutoClockStart();
   const clocks = readClocks();
   if (!clocks) return;
   const name = s.file ? s.file.split('/').pop() : s.id;
@@ -357,17 +367,19 @@ async function openSample(index) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     const ref = await refPromise;
+    if (my !== openSeq) return;
     runAnalysis({ csvText: text }, label, clocks, { sample: s, reference: ref.value || null, referenceError: ref.error || null });
   } catch (err) {
+    if (my !== openSeq) return;
     showProblem({ code: 'sample_unavailable', message: `The sample file could not be loaded (${err.message}).` }, label);
   }
 }
 
 async function openFile(file) {
   if (!file) return;
+  const my = ++openSeq;
   // A start time read from the previous EDF file does not belong to this one.
-  if (state.autoClockStart && $('#clock-start').value === state.autoClockStart) $('#clock-start').value = '';
-  state.autoClockStart = null;
+  dropAutoClockStart();
   if (/\.bdf$/i.test(file.name)) {
     showProblem({ code: 'BDF', message: 'BDF (24-bit) recordings are not supported yet. Export the night as EDF (16-bit) and try again.' }, file.name);
     return;
@@ -377,11 +389,14 @@ async function openFile(file) {
     try {
       hdr = await readEdfHeader(file);
     } catch (err) {
+      if (my !== openSeq) return;
       showProblem({ code: err.code || 'read_failed', message: err.code ? err.message : `The file could not be read (${err.message}).`, details: err.details }, file.name);
       return;
     }
+    if (my !== openSeq) return;
     let note = '';
-    if (hdr.startClock && !$('#clock-start').value) {
+    const startEl = $('#clock-start');
+    if (hdr.startClock && !startEl.value && !(startEl.validity && startEl.validity.badInput)) {
       $('#clock-start').value = hdr.startClock;
       state.autoClockStart = hdr.startClock;
       note = `The recording start time (${hdr.startClock}) was read from the EDF file.`;
@@ -396,8 +411,10 @@ async function openFile(file) {
   if (!clocks) return;
   try {
     const text = await file.text();
+    if (my !== openSeq) return;
     runAnalysis({ csvText: text }, file.name, clocks);
   } catch (err) {
+    if (my !== openSeq) return;
     showProblem({ code: 'read_failed', message: `The file could not be read (${err.message}).` }, file.name);
   }
 }
@@ -409,10 +426,14 @@ function parseClock(value) {
   return Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3] || 0);
 }
 
-function setClockMessage(text) {
-  const el = $('#clock-message');
-  el.textContent = text || '';
-  el.hidden = !text;
+const CLOCK_FIELDS = [['#clock-start', 'Recording started at'], ['#clock-off', 'Lights off'], ['#clock-on', 'Lights on']];
+
+function setClockMessage(text, invalidSel = null) {
+  $('#clock-message').textContent = text || '';
+  for (const [sel] of CLOCK_FIELDS) {
+    if (sel === invalidSel) $(sel).setAttribute('aria-invalid', 'true');
+    else $(sel).removeAttribute('aria-invalid');
+  }
 }
 
 /**
@@ -420,6 +441,15 @@ function setClockMessage(text) {
  * the run must not start. Offsets follow the contract: (clock - start) mod 24 h.
  */
 function readClocks() {
+  // A time with only the hour filled in reads as "" — do not treat it as empty.
+  for (const [sel, name] of CLOCK_FIELDS) {
+    const el = $(sel);
+    if (el.validity && el.validity.badInput) {
+      setClockMessage(`${name} is incomplete: enter both hours and minutes, or clear the field.`, sel);
+      el.focus();
+      return null;
+    }
+  }
   const start = parseClock($('#clock-start').value);
   const off = parseClock($('#clock-off').value);
   const on = parseClock($('#clock-on').value);
@@ -435,7 +465,7 @@ function readClocks() {
   const lightsOffS = off === null ? null : (((off - start) % DAY_S) + DAY_S) % DAY_S;
   const lightsOnS = on === null ? null : (((on - start) % DAY_S) + DAY_S) % DAY_S;
   if (lightsOffS !== null && lightsOnS !== null && lightsOnS <= lightsOffS) {
-    setClockMessage('Lights on must come after lights off (within 24 hours of the recording start). Please check the times.');
+    setClockMessage('Lights on must come after lights off (within 24 hours of the recording start). Please check the times.', '#clock-on');
     $('#clock-on').focus();
     return null;
   }
@@ -503,7 +533,7 @@ function runAnalysis(input, fileName, clocks, origin = null, model = 'v2', conve
   state.error = null;
   state.lastRun = { input, fileName, clocks, origin, conversion };
   const stepOrder = input.edf ? STEP_ORDER_ECG : STEP_ORDER;
-  const job = { fileName, clocks, origin, model, steps: {}, worker: null, stepOrder, conversion };
+  const job = { input, fileName, clocks, origin, model, steps: {}, worker: null, stepOrder, conversion };
   state.job = job;
   for (const el of $$('[data-bind="job-file"]')) el.textContent = fileName;
   const featureStep = $('#steps li[data-step="features"] > span:first-child');
@@ -538,7 +568,7 @@ function runAnalysis(input, fileName, clocks, origin = null, model = 'v2', conve
 
 /** Recompute the current report with the other model (same file, clock times and sample). */
 function rerunWithModel(model) {
-  const run = state.lastRun;
+  const run = state.reportRun;
   if (!run || !state.report || state.report.model === model) return;
   const mode = state.mode;
   runAnalysis(run.input, run.fileName, run.clocks, run.origin, model, run.conversion);
@@ -550,8 +580,7 @@ function onWorkerMessage(job, msg) {
   if (msg.type === 'converted') {
     // Keep the RR file: a rerun with the other model reuses it instead of converting again.
     job.conversion = { csvText: msg.csvText, info: msg.info || {} };
-    state.lastRun.input = { csvText: msg.csvText };
-    state.lastRun.conversion = job.conversion;
+    job.input = { csvText: msg.csvText };
   } else if (msg.type === 'progress') {
     job.steps[msg.step] = msg.status;
     updateSteps(job);
@@ -564,6 +593,8 @@ function onWorkerMessage(job, msg) {
     state.reportClockNote = job.clocks.note || '';
     state.reportIsStub = USE_STUB_WORKER;
     state.reportConversion = job.conversion || null;
+    // The inputs of the report on screen (a later failed or cancelled run must not replace them).
+    state.reportRun = { input: job.input, fileName: job.fileName, clocks: job.clocks, origin: job.origin, conversion: job.conversion };
     state.reportSample = (job.origin && job.origin.sample) || null;
     state.reportReference = (job.origin && job.origin.reference) || null;
     state.reportReferenceError = (job.origin && job.origin.referenceError) || null;
@@ -581,7 +612,8 @@ function finishJob(job) {
 function failJob(job, err) {
   if (state.job !== job) return;
   finishJob(job);
-  showProblem(err, job.fileName);
+  const fromEcg = Boolean(job.input && job.input.edf) || Boolean(job.conversion && job.conversion.info && job.conversion.info.fromEcg);
+  showProblem({ ...err, fromEcg }, job.fileName);
 }
 
 function cancelJob() {
@@ -1196,8 +1228,8 @@ function v2Views() {
   const h = datasetShort('hmc');
   const u = datasetShort('ucddb');
   return [
-    { id: 'hmc:primary', ds: 'hmc', analysis: 'primary', label: `${h}, primary (${hmc.records_primary ?? '—'})`, short: `${h} primary` },
-    { id: 'hmc:all_records', ds: 'hmc', analysis: 'all_records', label: `${h}, all records (${hmc.records_all ?? '—'})`, short: `${h} all` },
+    { id: 'hmc:primary', ds: 'hmc', analysis: 'primary', label: `${h}, primary (${hmc.records_primary ?? '—'})`, short: `${h}, primary` },
+    { id: 'hmc:all_records', ds: 'hmc', analysis: 'all_records', label: `${h}, all records (${hmc.records_all ?? '—'})`, short: `${h}, all` },
     { id: 'ucddb:primary', ds: 'ucddb', analysis: 'primary', label: `${u}, second look (${ucd.records_primary ?? '—'})`, short: u },
   ];
 }
@@ -1269,6 +1301,8 @@ function renderMethodV2() {
       if (state.v2View === btn.dataset.view) return;
       state.v2View = btn.dataset.view;
       renderMethodV2();
+      const again = $(`.seg-v2view[data-view="${CSS.escape(state.v2View)}"]`);
+      if (again) again.focus();
     });
   }
 
@@ -1365,7 +1399,7 @@ function renderProblem() {
     reason += ` Channels in this file: ${e.details.labels.filter(Boolean).join(', ') || 'none'}.`;
   }
   $('#problem-reason').textContent = name + reason;
-  const ecgProblem = ECG_CODES.includes(e.code);
+  const ecgProblem = Boolean(e.fromEcg) || ECG_CODES.includes(e.code);
   $('#problem-requirements').hidden = ecgProblem;
   $('#problem-requirements-ecg').hidden = !ecgProblem;
   $('#problem-example-caption').hidden = ecgProblem;
@@ -1445,7 +1479,15 @@ function onResize() {
   resizeTimer = setTimeout(() => {
     const route = currentRoute();
     if (route === 'report' && state.report) { renderChart(); renderTrust(); }
-    if (route === 'method') renderMethod();
+    if (route === 'method') {
+      const active = document.activeElement;
+      const view = active && active.classList && active.classList.contains('seg-v2view') ? active.dataset.view : null;
+      renderMethod();
+      if (view) {
+        const again = $(`.seg-v2view[data-view="${CSS.escape(view)}"]`);
+        if (again) again.focus();
+      }
+    }
   }, 120);
 }
 

@@ -43,7 +43,21 @@ web/
 - Rows with a non-numeric value are skipped and counted (warning).
 - Errors (show the File-problem screen): no `rr_ms` column; fewer than 2 hours
   of beats (`MIN_HOURS = 2`); `time_s` not increasing in more than 1 % of rows;
-  median `rr_ms` outside 300-2000 (wrong unit, e.g. seconds).
+  median `rr_ms` outside 300-2000 (wrong unit, e.g. seconds); `time_s` jumping
+  back by more than 10 s even once (`TIME_RESET`, two nights in one file);
+  median step of `time_s` (in ms) outside 0.5-2 times the median `rr_ms`
+  (`BAD_TIME_UNIT`, e.g. `time_s` in milliseconds); the first interval starting
+  more than 24 h after 0 (`BAD_TIME_START`, clock or Unix time). When no row is
+  usable the message counts the non-numeric rows and points out decimal commas.
+- Other accepted inputs, converted in the worker to the format above:
+  an EDF recording (`.edf`, `.rec`) whose first channel labelled `ECG|EKG` is
+  run through `js/ecg.js` (a port of `somnibeat/edf.py`, `somnibeat/rpeak.py`
+  and the rounding of `scripts/ecg_to_rr.py`, parity-tested in
+  `tests/test_parity_ecg.py`; every EDF recording: `results/ecg_parity.json`),
+  and an RR-interval export with exactly one column named like `RR` and no
+  `rr_ms` column (as `convert_rr_export`). EDF errors: `NOT_EDF`, `TRUNCATED`,
+  `NO_ECG_CHANNEL` (with the channel labels), `LOW_FS` (below 100 Hz),
+  `NO_BEATS`; RR exports: `NO_INTERVALS`; BDF files are refused.
 - Warning (shown above the report): more than 10 % of intervals invalid after
   cleaning, reported as "[xx]% of beats were missing or unusable".
 
@@ -61,10 +75,12 @@ web/
 
 ## Worker protocol (`js/worker.js`)
 
-- In: `{type: "run", csvText, fileName, lightsOffS, lightsOnS, model}`. `model` is
+- In: `{type: "run", csvText | edf, fileName, lightsOffS, lightsOnS, model}` (`edf`: the File). `model` is
   `"v2"` (default when omitted) or `"v1"`; any other value is an `INTERNAL` error.
-- Out: `{type: "progress", step, status}` for steps `read`, `beats`, `features`,
-  `report` (status `running` | `done`); `{type: "result", report}`;
+- Out: `{type: "progress", step, status}` for steps `read`, `ecg` (EDF only), `beats`, `features`,
+  `report` (status `running` | `done`); `{type: "converted", csvText, info}` after an EDF or
+  RR export was converted (the page keeps it for the model switch and the Save button);
+  `{type: "result", report}`;
   `{type: "error", code, message, details}`.
 - `report.model` is the model actually used (`"v2"` or `"v1"`). If
   `data/models_v2.json` cannot be loaded, a v2 request falls back to v1 and
